@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group([
     'namespace' => 'Api'
 ], function () {
+
+    Route::get('test', 'TestController@index');
     // 认证
     Route::post('login', 'AuthController@login');
 
