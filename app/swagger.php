@@ -6,7 +6,7 @@
  *
  * @SWG\Swagger(
  *     basePath="",
- *     host="scaffold.tjb2c.com",
+ *     host="http://scaffold.tjb2c.com",
  *     schemes={"http"},
  *     @SWG\Info(
  *         version="2.0",
