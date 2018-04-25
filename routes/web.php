@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('test', 'TestController@index');
+
 Route::group(['prefix' => 'wechat'], function () {
     Route::any('init', 'WechatController@serve');
 
