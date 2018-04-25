@@ -6,7 +6,5 @@ composer install
 ```
 配置数据库 
 ```
-php artisan migrate
+php artisan migrate --seed
 ```
-```
-php artisan db:seed
