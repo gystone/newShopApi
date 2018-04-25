@@ -6,10 +6,10 @@
  *
  * @SWG\Swagger(
  *     basePath="",
- *     host="127.0.0.1",
+ *     host="scaffold.tjb2c.com",
  *     schemes={"http"},
  *     @SWG\Info(
- *         version="1.0",
+ *         version="2.0",
  *         title="OpenApi",
  *         @SWG\Contact(name="Pek Ratanak", url="https://www.google.com"),
  *     ),
