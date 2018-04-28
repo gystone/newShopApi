@@ -19,14 +19,13 @@ Route::group([
 
     Route::get('test', 'TestController@index');
     // 认证
-    Route::post('login', 'AuthController@login');
-    Route::post('adminlogin', 'AuthController@adminLogin');
+    Route::post('login', 'LoginController@login');;
 
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-auth'
     ], function ($router) {
-        $router->delete('logout', 'AuthController@logout');
+        $router->delete('logout', 'LoginController@logout');
         // 认证后才能访问的路由
     });
 });
@@ -37,13 +36,13 @@ Route::group([
     'namespace' => 'Admin'
 ], function () {
     // 认证
-    Route::post('login', 'AuthController@login')->middleware('admin-change');
+    Route::post('login', 'LoginController@login');
 
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-auth'
     ], function ($router) {
-        $router->delete('logout', 'AuthController@logout');
+        $router->delete('logout', 'LoginController@logout');
         // 认证后才能访问的路由
     });
 });

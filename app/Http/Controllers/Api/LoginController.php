@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Config;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     /**
      * AuthController constructor.
@@ -22,8 +21,6 @@ class AuthController extends Controller
      */
     public function login()
     {
-        Config::set('jwt.user', 'App\Models\User');
-        Config::set('auth.providers.users.model', User::class);
         $credentials = request()->only('email', 'password');
 
         if (! $token = auth('api')->attempt($credentials)) {
