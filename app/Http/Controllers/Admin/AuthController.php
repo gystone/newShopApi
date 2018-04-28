@@ -35,6 +35,17 @@ class AuthController extends Controller
         return respond_token($token);
     }
 
+    public function adminLogin()
+    {
+        $credentials = request()->only('username', 'password');
+
+        if (! $token = \auth()->guard('admin')->attempt($credentials)) {
+            return respond('登录失败，用户名或密码错误', 401);
+        }
+
+        return respond_token($token);
+    }
+
     /**
      * 登出
      * @return \Illuminate\Http\JsonResponse

@@ -20,6 +20,7 @@ Route::group([
     Route::get('test', 'TestController@index');
     // 认证
     Route::post('login', 'AuthController@login');
+    Route::post('adminlogin', 'AuthController@adminLogin');
 
     // JWT-Auth
     Route::group([
