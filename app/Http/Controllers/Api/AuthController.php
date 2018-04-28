@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Support\Facades\Config;
 
 class AuthController extends Controller
 {
@@ -20,13 +22,15 @@ class AuthController extends Controller
      */
     public function login()
     {
+        Config::set('jwt.user', 'App\Models\User');
+        Config::set('auth.providers.users.model', User::class);
         $credentials = request()->only('email', 'password');
 
         if (! $token = auth('api')->attempt($credentials)) {
             return respond('登录失败，用户名或密码错误', 401);
         }
 
-        return $this->respondWithToken($token);
+        return respond_token($token);
     }
 
     /**
@@ -39,19 +43,4 @@ class AuthController extends Controller
 
         return respond(null, 204);
     }
-
-    /**
-     * Token 封装
-     * @param $token
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        return respond('成功生成Token', 201, [
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
-        ]);
-    }
-
 }

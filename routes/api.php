@@ -29,3 +29,20 @@ Route::group([
         // 认证后才能访问的路由
     });
 });
+
+
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin'
+], function () {
+    // 认证
+    Route::post('login', 'AuthController@login')->middleware('admin-change');
+
+    // JWT-Auth
+    Route::group([
+        'middleware' => 'jwt-auth'
+    ], function ($router) {
+        $router->delete('logout', 'AuthController@logout');
+        // 认证后才能访问的路由
+    });
+});

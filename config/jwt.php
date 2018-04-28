@@ -11,6 +11,8 @@
 
 return [
 
+    'user' => 'App\Models\User',
+
     /*
     |--------------------------------------------------------------------------
     | JWT Authentication Secret

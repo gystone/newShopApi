@@ -39,8 +39,27 @@ if (! function_exists('respond')) {
     }
 }
 
-if (! function_exists('modify_env')) {
+if (! function_exists('respond_token')) {
+    /**
+     * Token 封装
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function respond_token($token, $guard = 'api')
+    {
+        return response()->json([
+            'code' => 201,
+            'message' => '成功生成Token',
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth($guard)->factory()->getTTL() * 60
+            ]
+        ], 201);
+    }
+}
 
+if (! function_exists('modify_env')) {
     /**
      * 修改env文件
      * @param array $data
