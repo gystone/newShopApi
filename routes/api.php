@@ -44,5 +44,20 @@ Route::group([
     ], function ($router) {
         $router->delete('logout', 'LoginController@logout');
         // 认证后才能访问的路由
+        $router->get('user', 'UserController@index');
+        $router->post('user', 'UserController@store');
+        $router->patch('user/{user}', 'UserController@update');
+        $router->delete('user/{user}', 'UserController@destroy');
+        $router->post('upload_avatar', 'UserController@uploadAvatar');
+
+        $router->get('role', 'RoleController@index');
+        $router->post('role', 'RoleController@store');
+        $router->patch('role/{role}', 'RoleController@update');
+        $router->delete('role/{role}', 'RoleController@destroy');
+
+        $router->get('permission', 'PermissionController@index');
+        $router->post('permission', 'PermissionController@store');
+        $router->patch('permission/{permission}', 'PermissionController@update');
+        $router->delete('permission/{permission}', 'PermissionController@destroy');
     });
 });
