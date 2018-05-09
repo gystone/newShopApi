@@ -27,7 +27,7 @@ class JWTAdminAuth extends BaseMiddleware
                 return $next($request);
             }
 
-            throw new UnauthorizedHttpException('jwt-admin-auth', '未登录');
+            throw new UnauthorizedHttpException('jwt-auth', '未登录');
         } catch (TokenExpiredException $exception) {
             try {
                 $token = $this->auth->refresh();
