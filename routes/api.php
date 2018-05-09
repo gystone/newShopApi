@@ -40,7 +40,7 @@ Route::group([
 
     // JWT-Auth
     Route::group([
-        'middleware' => 'jwt-auth'
+        'middleware' => 'jwt-admin-auth'
     ], function ($router) {
         $router->delete('logout', 'LoginController@logout');
         // 认证后才能访问的路由
