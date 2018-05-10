@@ -12,4 +12,14 @@ class WechatMaterial extends Model
     protected $fillable = [
         'media_id', 'content'
     ];
+
+    public function getContentAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+    public function setAttribute($value)
+    {
+        $this->attributes['content'] = serialize($value);
+    }
 }
