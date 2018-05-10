@@ -17,6 +17,7 @@ class UserController extends Controller
 
     public function __construct(AdminUser $user)
     {
+        auth()->shouldUse('api_admin');
         $this->user = $user;
     }
 
