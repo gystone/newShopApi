@@ -15,6 +15,7 @@ class PermissionController extends Controller
 
     public function __construct(Permission $permission)
     {
+        auth()->shouldUse('api_admin');
         $this->permission = $permission;
     }
     /**

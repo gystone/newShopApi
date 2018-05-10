@@ -14,6 +14,7 @@ class RoleController extends Controller
 
     public function __construct(Role $role)
     {
+        auth()->shouldUse('api_admin');
         $this->role = $role;
     }
     /**
