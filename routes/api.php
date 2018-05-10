@@ -59,5 +59,12 @@ Route::group([
         $router->post('permission', 'PermissionController@store');
         $router->patch('permission/{permission}', 'PermissionController@update');
         $router->delete('permission/{permission}', 'PermissionController@destroy');
+
+        $router->group([
+            'prefix' => 'wechat',
+            'namespace' => 'Wechat'
+        ], function ($router) {
+            $router->get('material_sync', 'MaterialController@materialSync');
+        });
     });
 });
