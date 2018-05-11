@@ -37,7 +37,7 @@ Route::group([
 ], function () {
     // 认证
     Route::post('login', 'LoginController@login');
-
+    Route::get('material_list', 'MaterialController@materialList');
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-admin-auth'
