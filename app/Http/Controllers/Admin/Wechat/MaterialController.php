@@ -24,11 +24,10 @@ class MaterialController extends Controller
         $offset = 0;
         $count = 20;
         do {
-            $image_list = $this->material->list('image', $offset, $count);
-
-            if ($image_list['item_count'] < 1) {
+            if ($count < 1) {
                 break;
             }
+            $image_list = $this->material->list('image', $offset, $count);
 
             foreach ($image_list['item'] as $k => $v) {
                 WechatMaterial::updateOrCreate([
