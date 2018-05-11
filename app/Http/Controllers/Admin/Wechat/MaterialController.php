@@ -135,4 +135,15 @@ class MaterialController extends Controller
 //        } while (true);
         Log::info('音频素材同步完成');
     }
+
+    public function getMaterialList(Request $request)
+    {
+        $type = $request->type;
+
+        if (! in_array($type, ['news', 'image', 'video', 'voice'])) {
+            return respond('非法访问！', 400);
+        }
+
+        return respond($type.'素材列表', 200, WechatMaterial::where(['type', $type])->get());
+    }
 }
