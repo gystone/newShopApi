@@ -34,6 +34,7 @@ class MaterialController extends Controller
                     'media_id' => $v['media_id']
                 ], [
                     'media_id' => $v['media_id'],
+                    'type' => 'news',
                     'content' => $v['content']
                 ]);
             }

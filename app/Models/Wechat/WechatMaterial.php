@@ -10,7 +10,7 @@ class WechatMaterial extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'media_id', 'content'
+        'media_id', 'type', 'content'
     ];
 
     public function getContentAttribute($value)
