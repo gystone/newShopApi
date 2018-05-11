@@ -26,7 +26,7 @@ class MaterialController extends Controller
         do {
             $news_list = $this->material->list('news', $offset, $count);
 Log::info($news_list);
-            if (! isset($news_list['item_count'])) {
+            if (! isset($news_list['item_count'])) {Log::info('123123');
                 break;
             }
 
