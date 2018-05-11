@@ -38,6 +38,6 @@ class LoginController extends Controller
     {
         auth('api')->logout();
 
-        return respond(null, 204);
+        return respond('注销成功', 204);
     }
 }

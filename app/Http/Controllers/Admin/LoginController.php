@@ -38,7 +38,7 @@ class LoginController extends Controller
     {
         auth('api_admin')->logout();
 
-        return respond(null, 204);
+        return respond('注销成功', 204);
     }
 
     public function info()
