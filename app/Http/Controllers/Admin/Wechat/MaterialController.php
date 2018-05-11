@@ -14,6 +14,7 @@ class MaterialController extends Controller
     
     public function __construct(Application $app)
     {
+        auth()->shouldUse('api_admin');
         $this->material = $app->material;
     }
 
