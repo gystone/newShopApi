@@ -43,6 +43,10 @@ class LoginController extends Controller
 
     public function info()
     {
-        return respond('info', 200, ['roles', 'name', 'avatar']);
+        return respond('info', 200, [
+            'roles' => '',
+            'name' => '',
+            'avatar' => ''
+        ]);
     }
 }
