@@ -23,12 +23,12 @@ class MaterialController extends Controller
         Log::info('正在同步图文素材');
         $offset = 0;
         $count = 20;
-//        do {
+        do {
             $news_list = $this->material->list('news', $offset, $count);
 Log::info($news_list['item_count']);
-//            if ($news_list['item_count'] < 1) {
-//                break;
-//            }
+            if ($news_list['item_count'] < 1) {
+                break;
+            }
 
 //            foreach ($news_list['item_count'] as $k => $v) {
 //                WechatMaterial::updateOrCreate([
@@ -43,7 +43,7 @@ Log::info($news_list['item_count']);
             $count = $news_list['total_count'] - $offset;
             Log::info($news_list);
 
-//        } while (true);
+        } while (true);
         Log::info('图文素材同步完成');
 
         Log::info('正在同步图片素材');
