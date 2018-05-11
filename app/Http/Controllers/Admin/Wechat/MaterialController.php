@@ -28,16 +28,16 @@ class MaterialController extends Controller
                 break;
             }
             $news_list = $this->material->list('news', $offset, $count);
-Log::info($news_list);
 
-//            foreach ($news_list['item_count'] as $k => $v) {
-//                WechatMaterial::updateOrCreate([
-//                    'media_id' => $v['media_id']
-//                ], [
-//                    'media_id' => $v['media_id'],
-//                    'content' => $v['content']
-//                ]);
-//            }
+
+            foreach ($news_list['item_count'] as $k => $v) {
+                WechatMaterial::updateOrCreate([
+                    'media_id' => $v['media_id']
+                ], [
+                    'media_id' => $v['media_id'],
+                    'content' => $v['content']
+                ]);
+            }
 
             $offset += $news_list['item_count'];
             $count = $news_list['total_count'] - $offset;
