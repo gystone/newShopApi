@@ -20,6 +20,37 @@ class MaterialController extends Controller
 
     public function materialSync()
     {
+        Log::info('正在同步图片素材');
+        $offset = 0;
+        $count = 20;
+        do {
+            $image_list = $this->material->list('image', $offset, $count);
+
+            if ($image_list['item_count'] < 1) {
+                break;
+            }
+
+            foreach ($image_list['item'] as $k => $v) {
+                WechatMaterial::updateOrCreate([
+                    'media_id' => $v['media_id']
+                ], [
+                    'media_id' => $v['media_id'],
+                    'type' => 'image',
+                    'content' => array(
+                        'name' => $v['name'],
+                        'update_time' => $v['update_time'],
+                        'url' => $v['url']
+                    )
+                ]);
+            }
+
+            $offset += $image_list['item_count'];
+            $count = $image_list['total_count'] - $offset;
+            Log::info($image_list);
+
+        } while (true);
+        Log::info('图片素材同步完成');
+
         Log::info('正在同步图文素材');
         $offset = 0;
         $count = 20;
@@ -45,36 +76,7 @@ class MaterialController extends Controller
         } while (true);
         Log::info('图文素材同步完成');
 
-        Log::info('正在同步图片素材');
-//        $offset = 0;
-//        $count = 20;
-//        do {
-//            $image_list = $this->material->list('image', $offset, $count);
-//
-//            if ($image_list['item_count'] < 1) {
-//                break;
-//            }
-//
-//            foreach ($image_list['item_count'] as $k => $v) {
-//                WechatMaterial::updateOrCreate([
-//                    'media_id' => $v['media_id']
-//                ], [
-//                    'media_id' => $v['media_id'],
-//                    'type' => 'image',
-//                    'content' => array(
-//                        'name' => $v['name'],
-//                        'update_time' => $v['update_time'],
-//                        'url' => $v['url']
-//                    )
-//                ]);
-//            }
-//
-//            $offset += $image_list['item_count'];
-//            $count = $image_list['total_count'] - $offset;
-//            Log::info($image_list);
-//
-//        } while (true);
-        Log::info('图片素材同步完成');
+
 
         Log::info('正在同步视频素材');
 //        $offset = 0;
