@@ -144,6 +144,6 @@ class MaterialController extends Controller
             return respond('非法访问！', 400);
         }
 
-        return respond($type.'素材列表', 200, WechatMaterial::where(['type', $type])->get());
+        return respond($type.'素材列表', 200, WechatMaterial::where('type', $type)->get());
     }
 }
