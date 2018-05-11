@@ -18,7 +18,7 @@ class WechatMaterial extends Model
         return unserialize($value);
     }
 
-    public function setAttribute($value)
+    public function setContentAttribute($value)
     {
         $this->attributes['content'] = serialize($value);
     }
