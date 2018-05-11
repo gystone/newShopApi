@@ -40,4 +40,9 @@ class LoginController extends Controller
 
         return respond(null, 204);
     }
+
+    public function info()
+    {
+        return respond('info', 200, ['roles', 'name', 'avatar']);
+    }
 }

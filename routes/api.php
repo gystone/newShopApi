@@ -43,6 +43,8 @@ Route::group([
         'middleware' => 'jwt-admin-auth'
     ], function ($router) {
         $router->delete('logout', 'LoginController@logout');
+
+        $router->get('info', 'LoginController@info');
         // 认证后才能访问的路由
         $router->get('user', 'UserController@index');
         $router->post('user', 'UserController@store');

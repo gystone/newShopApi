@@ -60,6 +60,7 @@ class MaterialController extends Controller
 //                    'media_id' => $v['media_id']
 //                ], [
 //                    'media_id' => $v['media_id'],
+//                    'type' => 'image',
 //                    'content' => array(
 //                        'name' => $v['name'],
 //                        'update_time' => $v['update_time'],
@@ -90,6 +91,7 @@ class MaterialController extends Controller
 //                    'media_id' => $v['media_id']
 //                ], [
 //                    'media_id' => $v['media_id'],
+//                    'type' => 'video',
 //                    'content' => array(
 //                        'name' => $v['name'],
 //                        'update_time' => $v['update_time'],
@@ -120,6 +122,7 @@ class MaterialController extends Controller
 //                    'media_id' => $v['media_id']
 //                ], [
 //                    'media_id' => $v['media_id'],
+//                    'type' => 'voice',
 //                    'content' => array(
 //                        'name' => $v['name'],
 //                        'update_time' => $v['update_time'],
