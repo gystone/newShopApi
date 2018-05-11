@@ -136,7 +136,7 @@ class MaterialController extends Controller
         Log::info('音频素材同步完成');
     }
 
-    public function getMaterialList(Request $request)
+    public function materialList(Request $request)
     {
         $type = $request->type;
 

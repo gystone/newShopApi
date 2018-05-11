@@ -65,6 +65,7 @@ Route::group([
             'namespace' => 'Wechat'
         ], function ($router) {
             $router->get('material_sync', 'MaterialController@materialSync');
+            $router->get('material_list', 'MaterialController@materialList');
         });
     });
 });
