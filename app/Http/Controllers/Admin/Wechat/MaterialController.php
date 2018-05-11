@@ -149,4 +149,14 @@ class MaterialController extends Controller
 
         return respond($type.'素材列表', 200, WechatMaterial::where('type', $type)->get());
     }
+
+    public function materialDetail(WechatMaterial $wechatMaterial)
+    {
+        return respond('素材详情', 200, $wechatMaterial);
+    }
+
+    public function materialItemDetail(WechatMaterial $wechatMaterial, $index)
+    {
+        return respond('素材子项详情', 200, $wechatMaterial->content['news_item'][$index]);
+    }
 }

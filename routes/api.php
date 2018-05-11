@@ -68,6 +68,8 @@ Route::group([
         ], function ($router) {
             $router->get('material_sync', 'MaterialController@materialSync');
             $router->get('material_list', 'MaterialController@materialList');
+            $router->get('material_detail/{wechatMaterial}', 'MaterialController@materialDetail');
+            $router->get('material_item_detail/{wechatMaterial}/{index}', 'MaterialController@materialItemDetail');
         });
     });
 });
