@@ -29,8 +29,7 @@ class MaterialController extends Controller
             }
             $news_list = $this->material->list('news', $offset, $count);
 
-
-            foreach ($news_list['item_count'] as $k => $v) {
+            foreach ($news_list['item'] as $k => $v) {
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
                 ], [
