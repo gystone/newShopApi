@@ -41,7 +41,7 @@ Log::info($news_list);
 
             $offset += $news_list['item_count'];
             $count = $news_list['total_count'] - $offset;
-            Log::info($news_list);
+            Log::info($count);
 
         } while (true);
         Log::info('图文素材同步完成');
