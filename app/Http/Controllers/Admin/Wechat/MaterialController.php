@@ -26,7 +26,7 @@ class MaterialController extends Controller
         do {
             $news_list = $this->material->list('news', $offset, $count);
 Log::info($news_list['item_count']);
-            if (empty($news_list) || $news_list['item_count'] < 1) {
+            if (! $news_list) {
                 break;
             }
 
