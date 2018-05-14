@@ -195,6 +195,7 @@ class MaterialController extends Controller
     public function materialNewsUpdate(WechatMaterial $wechatMaterial, Request $request)
     {
         $content = [];
+        $material_content = $wechatMaterial->content;
         foreach ($request->input('content.news_item') as $k => $v) {
             $article = new Article([
                 'title' => $v['title'],
@@ -223,7 +224,6 @@ class MaterialController extends Controller
                     'need_open_comment' => $v['need_open_comment'],
                     'only_fans_can_comment' => $v['only_fans_can_comment']
                 );
-                $material_content = $wechatMaterial->content;
                 $material_content['news_item'][$k] = $content;
             }
         }
