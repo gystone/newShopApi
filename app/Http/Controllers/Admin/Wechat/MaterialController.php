@@ -209,8 +209,8 @@ class MaterialController extends Controller
             ]);
 
             $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
-dd($res);
             if ($res['errcode'] === 0) {
+                dd($res);
                 $content = array(
                     'title' => $v['title'],
                     'digest' => $v['digest'],
