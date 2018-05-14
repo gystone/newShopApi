@@ -229,6 +229,8 @@ class MaterialController extends Controller
             }
         }
 
+        $material_content['update_time'] = date('Y-m-d H:i:s');
+
         if ($wechatMaterial->save()) {
             return respond('更新成功', 200, $wechatMaterial);
         } else {
