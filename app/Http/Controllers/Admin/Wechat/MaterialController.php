@@ -239,6 +239,54 @@ class MaterialController extends Controller
         }
     }
 
+    public function materialNewsUpload(Request $request)
+    {
+        $wechatMaterial = new WechatMaterial();
+        $content = [];
+        $wechatMaterial->content = ['news_item' => []];
+        $material_content = $wechatMaterial->content;
+        foreach ($request->input('content.news_item') as $k => $v) {
+            $article = new Article([
+                'title' => $v['title'],
+                'author' => $v['author'],
+                'content' => $v['content'],
+                'thumb_media_id' => $v['thumb_media_id'],
+                'digest' => $v['digest'],
+                'source_url' => $v['content_source_url'],
+                'show_cover' => $v['show_cover_pic'],
+            ]);
+
+            $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
+
+            if ($res['errcode'] === 0) {
+                $content = array(
+                    'title' => $v['title'],
+                    'digest' => $v['digest'],
+                    'author' => $v['author'],
+                    'content' => $v['content'],
+                    'content_source_url' => $v['content_source_url'],
+                    'thumb_media_id' => $v['thumb_media_id'],
+                    'show_cover_pic' => $v['show_cover_pic'],
+                    'url' => $v['url'],
+                    'thumb_url' => $v['thumb_url'],
+                    'thumb_path' => $v['thumb_path'],
+                    'need_open_comment' => $v['need_open_comment'],
+                    'only_fans_can_comment' => $v['only_fans_can_comment']
+                );
+                $material_content['news_item'][] = $content;
+            }
+        }
+
+        $material_content['update_time'] = date('Y-m-d H:i:s');
+        $wechatMaterial->content = $material_content;
+
+        if ($wechatMaterial->save()) {
+            return respond('上传成功', 200, $wechatMaterial);
+        } else {
+            return respond('上传失败，请稍候重试');
+        }
+    }
+
     public function materialImgUpload(Request $request)
     {
         $image = $request->file('img');
