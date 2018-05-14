@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Models\Wechat\WechatMaterial;
+use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -43,7 +44,7 @@ class MaterialController extends Controller
                             'name' => $v['name'],
                             'update_time' => $v['update_time'],
                             'url' => $v['url'],
-                            'path' => $path,
+                            'path' => Storage::disk('admin')->url($path),
                         )
                     ]);
                 }
@@ -79,7 +80,7 @@ class MaterialController extends Controller
                         'show_cover_pic' => $v1['show_cover_pic'],
                         'url' => $v1['url'],
                         'thumb_url' => $v1['thumb_url'],
-                        'thumb_path' => Storage::disk('admin')->url($img['content']['path']),
+                        'thumb_path' => $img['content']['path'],
                         'need_open_comment' => $v1['need_open_comment'],
                         'only_fans_can_comment' => $v1['only_fans_can_comment'],
                     );
@@ -183,5 +184,31 @@ class MaterialController extends Controller
     public function materialItemDetail(WechatMaterial $wechatMaterial, $index)
     {
         return respond('素材子项详情', 200, $wechatMaterial->content['news_item'][$index]);
+    }
+
+    public function materialNewsUpdate(WechatMaterial $wechatMaterial, $index, Request $request)
+    {
+        $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
+            'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
+
+        $article = new Article([
+            'title' => $request->title,
+            'author' => $request->author,
+            'content' => $request->input('content'),
+            'thumb_media_id' => $request->thumb_media_id,
+            'digest' => $request->digest,
+            'source_url' => $request->content_source_url,
+            'show_cover' => $request->show_cover_pic,
+        ]);
+
+        $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $index);
+
+        if ($res) {
+            $wechatMaterial->content['news_item'][$index] = $content_tb;
+            $wechatMaterial->save();
+            return respond('更新成功', 200, $wechatMaterial);
+        } else {
+            return respond('更新失败，请稍候重试', 200, $wechatMaterial);
+        }
     }
 }
