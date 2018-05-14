@@ -246,15 +246,15 @@ class MaterialController extends Controller
         $wechatMaterial->content = ['news_item' => []];
         $material_content = $wechatMaterial->content;
         foreach ($request->input('content.news_item') as $k => $v) {
-//            $article[] = new Article([
-//                'title' => $v['title'],
-//                'author' => $v['author'],
-//                'content' => $v['content'],
-//                'thumb_media_id' => $v['thumb_media_id'],
-//                'digest' => $v['digest'],
-//                'source_url' => $v['content_source_url'],
-//                'show_cover' => $v['show_cover_pic'],
-//            ]);
+            $article[] = new Article([
+                'title' => $v['title'],
+                'author' => $v['author'],
+                'content' => $v['content'],
+                'thumb_media_id' => $v['thumb_media_id'],
+                'digest' => $v['digest'],
+                'source_url' => $v['content_source_url'],
+                'show_cover' => $v['show_cover_pic'],
+            ]);
 
             $content = array(
                 'title' => $v['title'],
@@ -271,8 +271,6 @@ class MaterialController extends Controller
                 'only_fans_can_comment' => $v['only_fans_can_comment']
             );
             $material_content['news_item'][] = $content;
-
-            $article[] = new Article($content);
         }
 
         $res = $this->material->uploadArticle($article);
