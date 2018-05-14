@@ -223,7 +223,8 @@ class MaterialController extends Controller
                     'need_open_comment' => $v['need_open_comment'],
                     'only_fans_can_comment' => $v['only_fans_can_comment']
                 );
-                $wechatMaterial->content['news_item'][$k] = $content;
+                $material_content = $wechatMaterial->content;
+                $material_content['news_item'][$k] = $content;
             }
         }
 
