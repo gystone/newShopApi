@@ -213,4 +213,35 @@ class MaterialController extends Controller
             return respond('更新失败，请稍候重试', 200, $wechatMaterial);
         }
     }
+
+    public function materialImgUpload(Request $request)
+    {
+        $image = $request->file('img');
+
+        $path = 'wechat/images/'.date('Y-m-d').'/'.md5(date('Y-m-d H:i:s'));
+
+        if (Storage::disk('admin')->put($path, $image)) {
+            $path = Storage::disk('admin')->url($path);
+            $res = $this->material->uploadImage($path);
+
+            if ($res) {
+                $img_res = WechatMaterial::updateOrCreate([
+                    'media_id' => $res['media_id']
+                ], [
+                    'media_id' => $res['media_id'],
+                    'type' => 'image',
+                    'content' => array(
+                        'name' => $path,
+                        'update_time' => time(),
+                        'url' => $res['url'],
+                        'path' =>$path,
+                        )
+                ]);
+                return respond('上传成功', 200, $img_res);
+            } else {
+                return respond('上传失败，请稍候重试');
+            }
+
+        }
+    }
 }
