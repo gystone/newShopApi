@@ -190,7 +190,7 @@ class MaterialController extends Controller
     {
         $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
             'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
-dd($request->al());
+dd($request->all());
         $article = new Article([
             'title' => $request->title,
             'author' => $request->author,
