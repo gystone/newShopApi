@@ -69,23 +69,7 @@ class MaterialController extends Controller
 
                 foreach ($news_list['item'] as $k => $v) {
                     $content = [];
-                    foreach ($v['content']['news_item'] as $k1 => $v1) {
-                        $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
-                        $content['news_item'][] = array(
-                            'title' => $v1['title'],
-                            'digest' => $v1['digest'],
-                            'author' => $v1['author'],
-                            'content' => $v1['content'],
-                            'content_source_url' => $v1['content_source_url'],
-                            'thumb_media_id' => $v1['thumb_media_id'],
-                            'show_cover_pic' => $v1['show_cover_pic'],
-                            'url' => $v1['url'],
-                            'thumb_url' => $v1['thumb_url'],
-                            'thumb_path' => $img['content']['path'],
-                            'need_open_comment' => $v1['need_open_comment'],
-                            'only_fans_can_comment' => $v1['only_fans_can_comment'],
-                        );
-                    }
+                    $content['news_item'] = $this->getNewsItem($v['content']['news_item']);
                     $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
 
                     WechatMaterial::updateOrCreate([
@@ -169,6 +153,27 @@ class MaterialController extends Controller
         } catch (\Exception $exception) {
             return respond('同步失败，错误：'.$exception->getMessage());
         }
+    }
+
+    private function getNewsItem($news_item) {
+        foreach ($news_item as $k1 => $v1) {
+            $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
+            $res_news_item[] = array(
+                'title' => $v1['title'],
+                'digest' => $v1['digest'],
+                'author' => $v1['author'],
+                'content' => $v1['content'],
+                'content_source_url' => $v1['content_source_url'],
+                'thumb_media_id' => $v1['thumb_media_id'],
+                'show_cover_pic' => $v1['show_cover_pic'],
+                'url' => $v1['url'],
+                'thumb_url' => $v1['thumb_url'],
+                'thumb_path' => $img['content']['path'],
+                'need_open_comment' => $v1['need_open_comment'],
+                'only_fans_can_comment' => $v1['only_fans_can_comment'],
+            );
+        }
+        return $res_news_item;
     }
 
     public function materialList(Request $request)
@@ -259,7 +264,7 @@ class MaterialController extends Controller
         $res = $this->material->uploadArticle($article);
         if (isset($res['media_id'])) {
             $res_news = $this->material->get($res['media_id']);
-            $material_content['news_item'] = $res_news['news_item'];
+            $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
             $material_content['update_time'] = date('Y-m-d H:i:s');
             $wechatMaterial->content = $material_content;
             $wechatMaterial->media_id = $res['media_id'];
