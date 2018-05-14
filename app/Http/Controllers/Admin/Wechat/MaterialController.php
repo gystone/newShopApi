@@ -199,7 +199,6 @@ class MaterialController extends Controller
 
     public function materialNewsUpdate(WechatMaterial $wechatMaterial, Request $request)
     {
-        $content = [];
         $wechatMaterial->content = ['news_item' => []];
         $material_content = $wechatMaterial->content;
         foreach ($request->input('content.news_item') as $k => $v) {
@@ -308,6 +307,7 @@ class MaterialController extends Controller
         $res = $this->material->delete($media_id);
 
         if ($res['errcode'] === 0) {
+            WechatMaterial::where('media_id', $media_id)->delete();
             return respond('删除成功');
         }
     }
