@@ -164,6 +164,8 @@ class MaterialController extends Controller
 //
 //        } while (true);
 //            Log::info('音频素材同步完成');
+
+            return respond('同步成功');
         } catch (\Exception $exception) {
             return respond('同步失败，错误：'.$exception->getMessage());
         }
