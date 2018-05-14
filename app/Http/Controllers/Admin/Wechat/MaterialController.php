@@ -22,89 +22,88 @@ class MaterialController extends Controller
 
     public function materialSync()
     {
-        Log::info('正在同步图片素材');
-        $offset = 0;
-        $count = 20;
-        do {
-            if ($count < 1) {
-                break;
-            }
-            $image_list = $this->material->list('image', $offset, $count);
+        try {
+            Log::info('正在同步图片素材');
+            $offset = 0;
+            $count = 20;
+            do {
+                if ($count < 1) {
+                    break;
+                }
+                $image_list = $this->material->list('image', $offset, $count);
 
-            foreach ($image_list['item'] as $k => $v) {
-                $stream = $this->material->get($v['media_id']);
-                $path = 'wechat/images/'.date('Y-m-d').'/'.md5($v['name'].$v['media_id']);
-                if (Storage::disk('admin')->put($path, $stream)) {
+                foreach ($image_list['item'] as $k => $v) {
+                    $stream = $this->material->get($v['media_id']);
+                    $path = 'wechat/images/'.date('Y-m-d').'/'.md5($v['name'].$v['media_id']);
+                    if (Storage::disk('admin')->put($path, $stream)) {
+                        WechatMaterial::updateOrCreate([
+                            'media_id' => $v['media_id']
+                        ], [
+                            'media_id' => $v['media_id'],
+                            'type' => 'image',
+                            'content' => array(
+                                'name' => $v['name'],
+                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
+                                'url' => $v['url'],
+                                'path' => Storage::disk('admin')->url($path),
+                            )
+                        ]);
+                    }
+                }
+
+                $offset += $image_list['item_count'];
+                $count = $image_list['total_count'] - $offset;
+                Log::info($image_list);
+
+            } while (true);
+            Log::info('图片素材同步完成');
+
+            Log::info('正在同步图文素材');
+            $offset = 0;
+            $count = 20;
+            do {
+                if ($count < 1) {
+                    break;
+                }
+                $news_list = $this->material->list('news', $offset, $count);
+
+                foreach ($news_list['item'] as $k => $v) {
+                    $content = [];
+                    foreach ($v['content']['news_item'] as $k1 => $v1) {
+                        $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
+                        $content['news_item'][] = array(
+                            'title' => $v1['title'],
+                            'digest' => $v1['digest'],
+                            'author' => $v1['author'],
+                            'content' => $v1['content'],
+                            'content_source_url' => $v1['content_source_url'],
+                            'thumb_media_id' => $v1['thumb_media_id'],
+                            'show_cover_pic' => $v1['show_cover_pic'],
+                            'url' => $v1['url'],
+                            'thumb_url' => $v1['thumb_url'],
+                            'thumb_path' => $img['content']['path'],
+                            'need_open_comment' => $v1['need_open_comment'],
+                            'only_fans_can_comment' => $v1['only_fans_can_comment'],
+                        );
+                    }
+                    $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
+
                     WechatMaterial::updateOrCreate([
                         'media_id' => $v['media_id']
                     ], [
                         'media_id' => $v['media_id'],
-                        'type' => 'image',
-                        'content' => array(
-                            'name' => $v['name'],
-                            'update_time' => date('Y-m-d H:i:s', $v['update_time']),
-                            'url' => $v['url'],
-                            'path' => Storage::disk('admin')->url($path),
-                        )
+                        'type' => 'news',
+                        'content' => $content
                     ]);
                 }
-            }
 
-            $offset += $image_list['item_count'];
-            $count = $image_list['total_count'] - $offset;
-            Log::info($image_list);
+                $offset += $news_list['item_count'];
+                $count = $news_list['total_count'] - $offset;
 
-        } while (true);
-        Log::info('图片素材同步完成');
+            } while (true);
+            Log::info('图文素材同步完成');
 
-        Log::info('正在同步图文素材');
-        $offset = 0;
-        $count = 20;
-        do {
-            if ($count < 1) {
-                break;
-            }
-            $news_list = $this->material->list('news', $offset, $count);
-
-            foreach ($news_list['item'] as $k => $v) {
-                $content = [];
-                foreach ($v['content']['news_item'] as $k1 => $v1) {
-                    $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
-                    $content['news_item'][] = array(
-                        'title' => $v1['title'],
-                        'digest' => $v1['digest'],
-                        'author' => $v1['author'],
-                        'content' => $v1['content'],
-                        'content_source_url' => $v1['content_source_url'],
-                        'thumb_media_id' => $v1['thumb_media_id'],
-                        'show_cover_pic' => $v1['show_cover_pic'],
-                        'url' => $v1['url'],
-                        'thumb_url' => $v1['thumb_url'],
-                        'thumb_path' => $img['content']['path'],
-                        'need_open_comment' => $v1['need_open_comment'],
-                        'only_fans_can_comment' => $v1['only_fans_can_comment'],
-                    );
-                }
-                $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
-
-                WechatMaterial::updateOrCreate([
-                    'media_id' => $v['media_id']
-                ], [
-                    'media_id' => $v['media_id'],
-                    'type' => 'news',
-                    'content' => $content
-                ]);
-            }
-
-            $offset += $news_list['item_count'];
-            $count = $news_list['total_count'] - $offset;
-
-        } while (true);
-        Log::info('图文素材同步完成');
-
-
-
-        Log::info('正在同步视频素材');
+//            Log::info('正在同步视频素材');
 //        $offset = 0;
 //        $count = 20;
 //        do {
@@ -133,9 +132,9 @@ class MaterialController extends Controller
 //            Log::info($video_list);
 //
 //        } while (true);
-        Log::info('视频素材同步完成');
-
-        Log::info('正在同步音频素材');
+//            Log::info('视频素材同步完成');
+//
+//            Log::info('正在同步音频素材');
 //        $offset = 0;
 //        $count = 20;
 //        do {
@@ -164,7 +163,10 @@ class MaterialController extends Controller
 //            Log::info($voice_list);
 //
 //        } while (true);
-        Log::info('音频素材同步完成');
+//            Log::info('音频素材同步完成');
+        } catch (\Exception $exception) {
+            return respond('同步失败，错误：'.$exception->getMessage());
+        }
     }
 
     public function materialList(Request $request)
