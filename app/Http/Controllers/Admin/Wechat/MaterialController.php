@@ -275,11 +275,17 @@ class MaterialController extends Controller
             $article[] = new Article($content);
         }
 
-        $material_content['update_time'] = date('Y-m-d H:i:s');
-        $wechatMaterial->content = $material_content;
+        $res = $this->material->uploadArticle($article);
+        if (isset($res['media_id'])) {
+            $material_content['update_time'] = date('Y-m-d H:i:s');
+            $wechatMaterial->content = $material_content;
+            $wechatMaterial->media_id = $res['media_id'];
 
-        if ($wechatMaterial->save()) {
-            return respond('上传成功', 200, $wechatMaterial);
+            if ($wechatMaterial->save()) {
+                return respond('上传成功', 200, $wechatMaterial);
+            } else {
+                return respond('上传失败，请稍候重试');
+            }
         } else {
             return respond('上传失败，请稍候重试');
         }
