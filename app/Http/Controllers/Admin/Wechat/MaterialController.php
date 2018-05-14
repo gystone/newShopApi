@@ -218,9 +218,9 @@ class MaterialController extends Controller
     {
         $image = $request->file('img');
 
-        $path = 'wechat/images/'.date('Y-m-d').'/'.md5(date('Y-m-d H:i:s')).'.'.$image->getClientOriginalExtension();
+        $path = 'wechat/images/'.date('Y-m-d');
 
-        if (Storage::disk('admin')->put($path, $image)) {
+        if ($img_path = Storage::disk('admin')->put($path, $image)) {Log::info($img_path);
             $path = Storage::disk('admin')->url($path);
             $res = $this->material->uploadImage($path);Log::info($res);Log::info($path);
 
