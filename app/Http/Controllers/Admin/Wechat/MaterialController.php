@@ -203,7 +203,10 @@ class MaterialController extends Controller
         if ($res) {
             $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
                 'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
-            $wechatMaterial->content['news_item'][$index] = $content_tb;
+            $content = $wechatMaterial->content;
+
+            $content['news_item'][$index] = $content_tb;
+            $wechatMaterial->content = $content;
             $wechatMaterial->save();
             return respond('更新成功', 200, $wechatMaterial);
         } else {
