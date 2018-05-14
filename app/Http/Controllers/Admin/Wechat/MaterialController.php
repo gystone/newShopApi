@@ -7,6 +7,7 @@ use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MaterialController extends Controller
 {
@@ -30,17 +31,22 @@ class MaterialController extends Controller
             $image_list = $this->material->list('image', $offset, $count);
 
             foreach ($image_list['item'] as $k => $v) {
-                WechatMaterial::updateOrCreate([
-                    'media_id' => $v['media_id']
-                ], [
-                    'media_id' => $v['media_id'],
-                    'type' => 'image',
-                    'content' => array(
-                        'name' => $v['name'],
-                        'update_time' => $v['update_time'],
-                        'url' => $v['url']
-                    )
-                ]);
+                $stream = $this->material->get($v['media_id']);
+                $path = 'wechat/images/'.date('Y-m-d').'/'.md5($v['name'].$v['media_id']);
+                if (Storage::disk('admin')->put($path, $stream)) {
+                    WechatMaterial::updateOrCreate([
+                        'media_id' => $v['media_id']
+                    ], [
+                        'media_id' => $v['media_id'],
+                        'type' => 'image',
+                        'content' => array(
+                            'name' => $v['name'],
+                            'update_time' => $v['update_time'],
+                            'url' => $v['url'],
+                            'path' => $path,
+                        )
+                    ]);
+                }
             }
 
             $offset += $image_list['item_count'];
