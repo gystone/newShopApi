@@ -221,8 +221,8 @@ class MaterialController extends Controller
         $path = 'wechat/images/'.date('Y-m-d');
 
         if ($img_path = Storage::disk('admin')->put($path, $image)) {
+            $res = $this->material->uploadImage('uploads'.$img_path);Log::info($res);Log::info($path);
             $path = Storage::disk('admin')->url($img_path);
-            $res = $this->material->uploadImage($path);Log::info($res);Log::info($path);
 
             if ($res['errcode'] === 0) {
                 $img_res = WechatMaterial::updateOrCreate([
