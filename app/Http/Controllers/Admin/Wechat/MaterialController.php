@@ -66,12 +66,30 @@ class MaterialController extends Controller
             $news_list = $this->material->list('news', $offset, $count);
 
             foreach ($news_list['item'] as $k => $v) {
+                $content = [];
+                foreach ($v['content']['news_item'] as $k1 => $v1) {
+                    $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
+                    $content['news_item'][] = array(
+                        'title' => $v1['title'],
+                        'digest' => $v1['digest'],
+                        'author' => $v1['author'],
+                        'content' => $v1['content'],
+                        'content_source_url' => $v1['content_source_url'],
+                        'thumb_media_id' => $v1['thumb_media_id'],
+                        'show_cover_pic' => $v1['show_cover_pic'],
+                        'url' => $v1['url'],
+                        'thumb_url' => $v1['thumb_url'],
+                        'thumb_path' => $img['content']['path'],
+                        'need_open_comment' => $v1['need_open_comment'],
+                        'only_fans_can_comment' => $v1['only_fans_can_comment'],
+                    );
+                }
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
                 ], [
                     'media_id' => $v['media_id'],
                     'type' => 'news',
-                    'content' => $v['content']
+                    'content' => $content
                 ]);
             }
 
