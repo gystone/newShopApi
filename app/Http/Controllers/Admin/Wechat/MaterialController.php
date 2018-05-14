@@ -42,7 +42,7 @@ class MaterialController extends Controller
                         'type' => 'image',
                         'content' => array(
                             'name' => $v['name'],
-                            'update_time' => $v['update_time'],
+                            'update_time' => date('Y-m-d H:i:s', $v['update_time']),
                             'url' => $v['url'],
                             'path' => Storage::disk('admin')->url($path),
                         )
@@ -85,6 +85,8 @@ class MaterialController extends Controller
                         'only_fans_can_comment' => $v1['only_fans_can_comment'],
                     );
                 }
+                $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
+
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
                 ], [
