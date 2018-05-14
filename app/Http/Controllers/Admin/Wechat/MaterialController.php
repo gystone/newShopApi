@@ -217,16 +217,21 @@ class MaterialController extends Controller
 
         }
 
-        $res_news = $this->material->get($wechatMaterial->media_id);dd($res_news);
-        $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
-        $material_content['update_time'] = date('Y-m-d H:i:s');
-        $wechatMaterial->content = $material_content;
+        $res_news = $this->material->get($wechatMaterial->media_id);
+        if (isset($res_news['news_item'])) {
+            $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
+            $material_content['update_time'] = date('Y-m-d H:i:s');
+            $wechatMaterial->content = $material_content;
 
-        if ($wechatMaterial->save()) {
-            return respond('更新成功', 200, $wechatMaterial);
+            if ($wechatMaterial->save()) {
+                return respond('更新成功', 200, $wechatMaterial);
+            } else {
+                return respond('更新失败，请稍候重试', 200, $wechatMaterial);
+            }
         } else {
             return respond('更新失败，请稍候重试', 200, $wechatMaterial);
         }
+
     }
 
     public function materialNewsUpload(Request $request)
