@@ -259,8 +259,8 @@ class MaterialController extends Controller
         $res = $this->material->uploadArticle($article);
         if (isset($res['media_id'])) {
             $res_news = $this->material->get($res['media_id']);
-            $material_content['news_item'] = $res_news['content']['news_item'];
-            $material_content['update_time'] = date('Y-m-d H:i:s', $res_news['content']['update_time']);
+            $material_content['news_item'] = $res_news['news_item'];
+            $material_content['update_time'] = date('Y-m-d H:i:s');
             $wechatMaterial->content = $material_content;
             $wechatMaterial->media_id = $res['media_id'];
             $wechatMaterial->type = 'news';
