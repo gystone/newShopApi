@@ -278,6 +278,7 @@ class MaterialController extends Controller
             $material_content['update_time'] = date('Y-m-d H:i:s');
             $wechatMaterial->content = $material_content;
             $wechatMaterial->media_id = $res['media_id'];
+            $wechatMaterial->type = 'news';
 
             if ($wechatMaterial->save()) {
                 return respond('上传成功', 200, $wechatMaterial);
