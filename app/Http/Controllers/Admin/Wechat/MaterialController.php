@@ -209,8 +209,8 @@ class MaterialController extends Controller
             ]);
 
             $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
+
             if ($res['errcode'] === 0) {
-                dd($res);
                 $content = array(
                     'title' => $v['title'],
                     'digest' => $v['digest'],
@@ -230,6 +230,7 @@ class MaterialController extends Controller
         }
 
         $material_content['update_time'] = date('Y-m-d H:i:s');
+        $wechatMaterial->content = $material_content;
 
         if ($wechatMaterial->save()) {
             return respond('更新成功', 200, $wechatMaterial);
