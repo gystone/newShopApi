@@ -231,7 +231,7 @@ class MaterialController extends Controller
                     'media_id' => $res['media_id'],
                     'type' => 'image',
                     'content' => array(
-                        'name' => $path,
+                        'name' => $image->getClientOriginalName(),
                         'update_time' => time(),
                         'url' => $res['url'],
                         'path' =>$path,
