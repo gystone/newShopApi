@@ -192,19 +192,22 @@ class MaterialController extends Controller
         return respond('素材子项详情', 200, $wechatMaterial->content['news_item'][$index]);
     }
 
-    public function materialNewsUpdate(WechatMaterial $wechatMaterial, $index, Request $request)
-    {
-        $article = new Article([
-            'title' => $request->title,
-            'author' => $request->author,
-            'content' => $request->input('content'),
-            'thumb_media_id' => $request->thumb_media_id,
-            'digest' => $request->digest,
-            'source_url' => $request->content_source_url,
-            'show_cover' => $request->show_cover_pic,
-        ]);
+    public function materialNewsUpdate(WechatMaterial $wechatMaterial, Request $request)
+    {dd($request->all());
+        foreach ($request->input('content.news_item') as $k => $v) {
+            $article = new Article([
+                'title' => $request->title,
+                'author' => $request->author,
+                'content' => $request->input('content'),
+                'thumb_media_id' => $request->thumb_media_id,
+                'digest' => $request->digest,
+                'source_url' => $request->content_source_url,
+                'show_cover' => $request->show_cover_pic,
+            ]);
 
-        $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $index);
+            $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
+        }
+
 
         if ($res) {
             $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
