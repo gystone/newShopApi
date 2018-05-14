@@ -242,8 +242,7 @@ class MaterialController extends Controller
     public function materialNewsUpload(Request $request)
     {
         $wechatMaterial = new WechatMaterial();
-        $content = [];
-        $wechatMaterial->content = ['news_item' => []];
+
         $material_content = $wechatMaterial->content;
         foreach ($request->input('content.news_item') as $k => $v) {
             $article[] = new Article([
@@ -255,27 +254,13 @@ class MaterialController extends Controller
                 'source_url' => $v['content_source_url'],
                 'show_cover' => $v['show_cover_pic'],
             ]);
-
-            $content = array(
-                'title' => $v['title'],
-                'digest' => $v['digest'],
-                'author' => $v['author'],
-                'content' => $v['content'],
-                'content_source_url' => $v['content_source_url'],
-                'thumb_media_id' => $v['thumb_media_id'],
-                'show_cover_pic' => $v['show_cover_pic'],
-                'url' => $v['url'],
-                'thumb_url' => $v['thumb_url'],
-                'thumb_path' => $v['thumb_path'],
-                'need_open_comment' => $v['need_open_comment'],
-                'only_fans_can_comment' => $v['only_fans_can_comment']
-            );
-            $material_content['news_item'][] = $content;
         }
 
         $res = $this->material->uploadArticle($article);
         if (isset($res['media_id'])) {
-            $material_content['update_time'] = date('Y-m-d H:i:s');
+            $res_news = $this->material->get($res['media_id']);
+            $material_content['news_item'] = $res_news['content']['news_item'];
+            $material_content['update_time'] = date('Y-m-d H:i:s', $res_news['content']['update_time']);
             $wechatMaterial->content = $material_content;
             $wechatMaterial->media_id = $res['media_id'];
             $wechatMaterial->type = 'news';
