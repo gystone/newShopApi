@@ -72,6 +72,7 @@ Route::group([
             $router->get('material_item_detail/{wechatMaterial}/{index}', 'MaterialController@materialItemDetail');
             $router->patch('material_news_update/{wechatMaterial}/{index}', 'MaterialController@materialNewsUpdate');
             $router->post('material_img_upload', 'MaterialController@materialImgUpload');
+            $router->delete('material_delete', 'MaterialController@materialDelete');
         });
     });
 });

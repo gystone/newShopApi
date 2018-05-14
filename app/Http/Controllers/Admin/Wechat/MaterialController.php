@@ -244,4 +244,15 @@ class MaterialController extends Controller
 
         }
     }
+
+    public function materialDelete(Request $request)
+    {
+        $media_id = $request->media_id;
+
+        $res = $this->material->delete($media_id);
+
+        if ($res['errcode'] === 0) {
+            return respond('删除成功');
+        }
+    }
 }
