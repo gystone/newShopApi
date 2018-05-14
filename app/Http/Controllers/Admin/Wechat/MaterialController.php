@@ -222,7 +222,7 @@ class MaterialController extends Controller
 
         if (Storage::disk('admin')->put($path, $image)) {
             $path = Storage::disk('admin')->url($path);
-            $res = $this->material->uploadImage($path);
+            $res = $this->material->uploadImage($image);
 
             if ($res) {
                 $img_res = WechatMaterial::updateOrCreate([
