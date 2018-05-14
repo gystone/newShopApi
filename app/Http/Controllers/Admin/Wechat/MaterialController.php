@@ -188,7 +188,6 @@ class MaterialController extends Controller
 
     public function materialNewsUpdate(WechatMaterial $wechatMaterial, $index, Request $request)
     {
-dd($request->all());
         $article = new Article([
             'title' => $request->title,
             'author' => $request->author,
@@ -202,10 +201,10 @@ dd($request->all());
         $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $index);
 
         if ($res) {
-//            $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
-//                'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
-//            $wechatMaterial->content['news_item'][$index] = $content_tb;
-//            $wechatMaterial->save();
+            $content_tb = $request->only(['title', 'digest', 'author', 'content', 'content_source_url', 'thumb_media_id',
+                'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
+            $wechatMaterial->content['news_item'][$index] = $content_tb;
+            $wechatMaterial->save();
             return respond('更新成功', 200, $wechatMaterial);
         } else {
             return respond('更新失败，请稍候重试', 200, $wechatMaterial);
