@@ -205,7 +205,7 @@ class MaterialController extends Controller
                 'show_cover_pic', 'url', 'thumb_url', 'thumb_path', 'need_open_comment', 'only_fans_can_comment']);
             $content = $wechatMaterial->content;
 
-            $content['news_item'][$index] = $content_tb;
+            $content['news_item'][$index] = ['title' => $request->title];
             $wechatMaterial->content = $content;
             $wechatMaterial->save();
             return respond('更新成功', 200, $wechatMaterial);
