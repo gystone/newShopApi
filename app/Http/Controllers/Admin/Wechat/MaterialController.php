@@ -215,25 +215,10 @@ class MaterialController extends Controller
 
             $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
 
-            if ($res['errcode'] === 0) {
-                $content = array(
-                    'title' => $v['title'],
-                    'digest' => $v['digest'],
-                    'author' => $v['author'],
-                    'content' => $v['content'],
-                    'content_source_url' => $v['content_source_url'],
-                    'thumb_media_id' => $v['thumb_media_id'],
-                    'show_cover_pic' => $v['show_cover_pic'],
-                    'url' => $v['url'],
-                    'thumb_url' => $v['thumb_url'],
-                    'thumb_path' => $v['thumb_path'],
-                    'need_open_comment' => $v['need_open_comment'],
-                    'only_fans_can_comment' => $v['only_fans_can_comment']
-                );
-                $material_content['news_item'][] = $content;
-            }
         }
 
+        $res_news = $this->material->get($res['media_id']);
+        $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
         $material_content['update_time'] = date('Y-m-d H:i:s');
         $wechatMaterial->content = $material_content;
 
