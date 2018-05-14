@@ -79,7 +79,7 @@ class MaterialController extends Controller
                         'show_cover_pic' => $v1['show_cover_pic'],
                         'url' => $v1['url'],
                         'thumb_url' => $v1['thumb_url'],
-                        'thumb_path' => $img['content']['path'],
+                        'thumb_path' => Storage::disk('admin')->url($img['content']['path']),
                         'need_open_comment' => $v1['need_open_comment'],
                         'only_fans_can_comment' => $v1['only_fans_can_comment'],
                     );
