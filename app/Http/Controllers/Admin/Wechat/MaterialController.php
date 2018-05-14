@@ -209,7 +209,7 @@ class MaterialController extends Controller
             ]);
 
             $res = $this->material->updateArticle($wechatMaterial->media_id, $article, $k);
-
+dd($res);
             if ($res['errcode'] === 0) {
                 $content = array(
                     'title' => $v['title'],
@@ -225,7 +225,7 @@ class MaterialController extends Controller
                     'need_open_comment' => $v['need_open_comment'],
                     'only_fans_can_comment' => $v['only_fans_can_comment']
                 );
-                $material_content['news_item'][$k] = $content;
+                $material_content['news_item'][] = $content;
             }
         }
 
