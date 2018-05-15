@@ -22,7 +22,6 @@ class MaterialController extends ApiController
 
     /**
      * 同步素材
-     * @method GET
      * @return \Illuminate\Http\JsonResponse
      */
     public function materialSync()
