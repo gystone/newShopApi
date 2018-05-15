@@ -39,7 +39,7 @@ class MaterialController extends Controller
 
                 foreach ($image_list['item'] as $k => $v) {
                     $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/images/'.date('Y-m-d').'/'.md5($v['name'].$v['media_id']);
+                    $path = 'wechat/images/'.date('Y-m-d').'/'.md5($v['name'].$v['media_id']);Log::info($path);
                     if (Storage::disk('admin')->put($path, $stream)) {
                         WechatMaterial::updateOrCreate([
                             'media_id' => $v['media_id']
