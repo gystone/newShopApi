@@ -18,7 +18,7 @@ trait SendWechatTemplateMessage
         $this->template_message = $application->template_message;
     }
 
-    public function send($openid, $template_id, $url, array $data)
+    public function sendTemplateMessage($openid, $template_id, $url, array $data)
     {
         return $this->template_message->send([
             'touser' => $openid,
