@@ -20,6 +20,11 @@ class MaterialController extends Controller
         $this->material = $app->material;
     }
 
+    /**
+     * 同步素材
+     * @method GET
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialSync()
     {
         try {
@@ -155,6 +160,11 @@ class MaterialController extends Controller
         }
     }
 
+    /**
+     * 重构图文素材数据
+     * @param $news_item array|object
+     * @return array
+     */
     private function getNewsItem($news_item) {
         foreach ($news_item as $k1 => $v1) {
             $img = WechatMaterial::where('media_id', $v1['thumb_media_id'])->first();
@@ -176,6 +186,13 @@ class MaterialController extends Controller
         return $res_news_item;
     }
 
+    /**
+     * 素材列表
+     * type 素材类型：news,image,voice,video
+     * @method GET
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialList(Request $request)
     {
         $type = $request->type;
@@ -187,16 +204,37 @@ class MaterialController extends Controller
         return respond($type.'素材列表', 200, WechatMaterial::where('type', $type)->get());
     }
 
+    /**
+     * 素材详情
+     * @method GET
+     * @param WechatMaterial $wechatMaterial interger 素材id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialDetail(WechatMaterial $wechatMaterial)
     {
         return respond('素材详情', 200, $wechatMaterial);
     }
 
+    /**
+     * 图文消息子项详情
+     * @method GET
+     * @param WechatMaterial $wechatMaterial interger 素材id
+     * @param $index integer 图文索引
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialItemDetail(WechatMaterial $wechatMaterial, $index)
     {
         return respond('素材子项详情', 200, $wechatMaterial->content['news_item'][$index]);
     }
 
+    /**
+     * 更新图文素材
+     * content['new_item'][] 消息内容 title,author,content,thumb_media_id,digest,source_url,show_cover
+     * @method PATCH
+     * @param WechatMaterial $wechatMaterial interger 素材id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialNewsUpdate(WechatMaterial $wechatMaterial, Request $request)
     {
         $wechatMaterial->content = ['news_item' => []];
@@ -233,6 +271,13 @@ class MaterialController extends Controller
 
     }
 
+    /**
+     * 新增图文素材
+     * content['new_item'][] 消息内容 title,author,content,thumb_media_id,digest,source_url,show_cover
+     * @method POST
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialNewsUpload(Request $request)
     {
         $wechatMaterial = new WechatMaterial();
@@ -269,6 +314,13 @@ class MaterialController extends Controller
         }
     }
 
+    /**
+     * 上传图片素材
+     * img JPG|PNG...
+     * @method POST
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialImgUpload(Request $request)
     {
         $image = $request->file('img');
@@ -300,6 +352,13 @@ class MaterialController extends Controller
         }
     }
 
+    /**
+     * 删除素材
+     * media_id
+     * @method DELETE
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function materialDelete(Request $request)
     {
         $media_id = $request->media_id;
