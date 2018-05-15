@@ -11,7 +11,7 @@ class LoginController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        auth()->shouldUse('api');
     }
 
     /**
