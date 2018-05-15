@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Resources\Admin\RoleCollection;
 use App\Models\Admin\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class RoleController extends Controller
+class RoleController extends ApiController
 {
     private $role;
 
@@ -24,7 +24,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return respond('角色列表', 200, new RoleCollection($this->role->all()));
+        return $this->success(new RoleCollection($this->role->all()));
     }
 
     /**
@@ -48,10 +48,10 @@ class RoleController extends Controller
             }
 
             DB::commit();
-            return respond('添加成功', 200, $role);
+            return $this->success($role);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('添加失败，请稍候重试');
+            return $this->failed('添加失败，请稍候重试');
         }
     }
 
@@ -78,10 +78,10 @@ class RoleController extends Controller
             }
 
             DB::commit();
-            return respond('更新成功', 200, $role);
+            return $this->success($role);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('更新失败，请稍候重试');
+            return $this->failed('更新失败，请稍候重试');
         }
     }
 
@@ -100,10 +100,10 @@ class RoleController extends Controller
             $role->delete();
 
             DB::commit();
-            return respond('删除成功');
+            return $this->message('删除成功');
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('删除失败，请稍候重试');
+            return $this->failed('删除失败，请稍候重试');
         }
     }
 

@@ -23,10 +23,15 @@ class LoginController extends ApiController
         $credentials = request()->only('email', 'password');
 
         if (! $token = auth('api')->attempt($credentials)) {
-            return respond('登录失败，用户名或密码错误', 401);
+            return $this->failed('登录失败，用户名或密码错误', 401);
         }
 
-        return respond_token($token);
+        return $this->setStatusCode(201)
+            ->success([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60
+            ]);
     }
 
     /**
@@ -37,6 +42,6 @@ class LoginController extends ApiController
     {
         auth('api')->logout();
 
-        return respond('注销成功', 204);
+        return $this->setStatusCode(204)->message('注销成功');
     }
 }

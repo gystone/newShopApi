@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\PermissionRequest;
 use App\Http\Resources\Admin\PermissionCollection;
 use App\Models\Admin\Permission;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class PermissionController extends Controller
+class PermissionController extends ApiController
 {
     private $permission;
 
@@ -25,7 +24,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return respond('权限列表', 200, new PermissionCollection($this->permission->all()));
+        return $this->success(new PermissionCollection($this->permission->all()));
     }
 
     /**
@@ -44,10 +43,10 @@ class PermissionController extends Controller
             $permission = $this->permission->create($attributes);
 
             DB::commit();
-            return respond('添加成功', 200, $permission);
+            return $this->success($permission);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('添加失败，请稍候重试');
+            return $this->failed('添加失败，请稍候重试');
         }
     }
 
@@ -68,10 +67,10 @@ class PermissionController extends Controller
             $permission->update($attributes);
 
             DB::commit();
-            return respond('更新成功', 200, $permission);
+            return $this->success($permission);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('更新失败，请稍候重试');
+            return $this->failed('更新失败，请稍候重试');
         }
     }
 
@@ -89,10 +88,10 @@ class PermissionController extends Controller
             $permission->delete();
 
             DB::commit();
-            return respond('删除成功');
+            return $this->message('删除成功');
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('删除失败，请稍候重试');
+            return $this->failed('删除失败，请稍候重试');
         }
     }
 }

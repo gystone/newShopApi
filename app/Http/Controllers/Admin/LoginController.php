@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class LoginController extends Controller
+class LoginController extends ApiController
 {
     /**
      * AuthController constructor.
@@ -24,10 +24,15 @@ class LoginController extends Controller
         $credentials = request()->only('username', 'password');
 
         if (! $token = auth('api_admin')->attempt($credentials)) {
-            return respond('登录失败，用户名或密码错误', 401);
+            return $this->failed('登录失败，用户名或密码错误', 401);
         }
 
-        return respond_token($token);
+        return $this->setStatusCode(201)
+        ->success([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api_admin')->factory()->getTTL() * 60
+        ]);;
     }
 
     /**
@@ -38,12 +43,12 @@ class LoginController extends Controller
     {
         auth('api_admin')->logout();
 
-        return respond('注销成功', 204);
+        return $this->setStatusCode(204)->message('注销成功');
     }
 
     public function info()
     {
-        return respond('info', 200, [
+        return $this->success([
             'roles' => '',
             'name' => '',
             'avatar' => ''

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Resources\Admin\User;
 use App\Http\Resources\Admin\UserCollection;
 use App\Models\Admin\AdminUser;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     private $user;
 
@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return respond('管理员列表', 200, new UserCollection($this->user->all()));
+        return $this->success(new UserCollection($this->user->all()));
     }
 
     /**
@@ -58,10 +58,10 @@ class UserController extends Controller
 
             DB::commit();
 
-            return respond('添加成功', 200, $user);
+            return $this->success($user);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('添加失败，请稍候重试', 200);
+            return $this->failed('添加失败，请稍候重试');
         }
     }
 
@@ -96,10 +96,10 @@ class UserController extends Controller
 
             DB::commit();
 
-            return respond('更新成功', 200, $user);
+            return $this->success($user);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('更新失败', 200);
+            return $this->failed('更新失败');
         }
     }
 
@@ -118,10 +118,10 @@ class UserController extends Controller
             DB::table('admin_user_permissions')->where('user_id', $user->id)->delete();
             $user->delete();
             DB::commit();
-            return respond('删除成功');
+            return $this->message('删除成功');
         } catch (\Exception $exception) {
             DB::rollBack();
-            return respond('删除失败，请稍候重试');
+            return $this->failed('删除失败，请稍候重试');
         }
     }
 
@@ -148,10 +148,10 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return respond($validator->errors()->first(), 400);
+            return $this->failed($validator->errors()->first());
         }
         $path = $request->file('avatar')->store('images/avatars','admin');
 
-        return respond('上传成功', 200, ['path' => $path]);
+        return $this->success(['path' => $path]);
     }
 }
