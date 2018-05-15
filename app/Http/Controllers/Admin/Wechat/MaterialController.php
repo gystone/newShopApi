@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class MaterialController extends Controller
+class MaterialController extends ApiController
 {
     private $material;
     
@@ -154,9 +154,9 @@ class MaterialController extends Controller
 //        } while (true);
 //            Log::info('音频素材同步完成');
 
-            return respond('同步成功');
+            return $this->message('同步成功');
         } catch (\Exception $exception) {
-            return respond('同步失败，错误：'.$exception->getMessage());
+            return $this->failed('同步失败，错误：'.$exception->getMessage());
         }
     }
 
@@ -198,10 +198,10 @@ class MaterialController extends Controller
         $type = $request->type;
 
         if (! in_array($type, ['news', 'image', 'video', 'voice'])) {
-            return respond('非法访问！', 400);
+            return $this->failed('非法访问！', 400);
         }
 
-        return respond($type.'素材列表', 200, WechatMaterial::where('type', $type)->get());
+        return $this->success(WechatMaterial::where('type', $type)->get());
     }
 
     /**
@@ -212,7 +212,7 @@ class MaterialController extends Controller
      */
     public function materialDetail(WechatMaterial $wechatMaterial)
     {
-        return respond('素材详情', 200, $wechatMaterial);
+        return $this->success($wechatMaterial);
     }
 
     /**
@@ -224,7 +224,7 @@ class MaterialController extends Controller
      */
     public function materialItemDetail(WechatMaterial $wechatMaterial, $index)
     {
-        return respond('素材子项详情', 200, $wechatMaterial->content['news_item'][$index]);
+        return $this->success($wechatMaterial->content['news_item'][$index]);
     }
 
     /**
@@ -261,12 +261,12 @@ class MaterialController extends Controller
             $wechatMaterial->content = $material_content;
 
             if ($wechatMaterial->save()) {
-                return respond('更新成功', 200, $wechatMaterial);
+                return $this->success($wechatMaterial);
             } else {
-                return respond('更新失败，请稍候重试', 200, $wechatMaterial);
+                return $this->failed('更新失败，请稍候重试');
             }
         } else {
-            return respond('更新失败，请稍候重试', 200, $wechatMaterial);
+            return $this->failed('更新失败，请稍候重试');
         }
 
     }
@@ -305,12 +305,12 @@ class MaterialController extends Controller
             $wechatMaterial->type = 'news';
 
             if ($wechatMaterial->save()) {
-                return respond('上传成功', 200, $wechatMaterial);
+                return $this->success($wechatMaterial);
             } else {
-                return respond('上传失败，请稍候重试');
+                return $this->failed('上传失败，请稍候重试');
             }
         } else {
-            return respond('上传失败，请稍候重试');
+            return $this->failed('上传失败，请稍候重试');
         }
     }
 
@@ -325,10 +325,10 @@ class MaterialController extends Controller
     {
         $image = $request->file('img');
 
-        $path = 'wechat/images/'.date('Y-m-d');
+        $path = 'wechat/images/';
 
         if ($img_path = Storage::disk('admin')->put($path, $image)) {
-            $res = $this->material->uploadImage('uploads/'.$img_path);Log::info($res);Log::info($path);
+            $res = $this->material->uploadImage('uploads/'.$img_path);
             $path = Storage::disk('admin')->url($img_path);
 
             if (isset($res['media_id'])) {
@@ -344,9 +344,9 @@ class MaterialController extends Controller
                         'path' =>$path,
                         )
                 ]);
-                return respond('上传成功', 200, $img_res);
+                return $this->success($img_res);
             } else {
-                return respond('上传失败，请稍候重试');
+                return $this->failed('上传失败，请稍候重试');
             }
 
         }
@@ -367,7 +367,9 @@ class MaterialController extends Controller
 
         if ($res['errcode'] === 0) {
             WechatMaterial::where('media_id', $media_id)->delete();
-            return respond('删除成功');
+            return $this->message('删除成功');
+        } else {
+            return $this->failed('删除失败，请稍候重试');
         }
     }
 }
