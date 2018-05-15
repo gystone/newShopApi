@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class MaterialController extends Controller
+class MaterialController extends ApiController
 {
     private $material;
     
@@ -154,9 +154,9 @@ class MaterialController extends Controller
 //        } while (true);
 //            Log::info('音频素材同步完成');
 
-            return respond('同步成功');
+            return $this->message('同步成功');
         } catch (\Exception $exception) {
-            return respond('同步失败，错误：'.$exception->getMessage());
+            return $this->failed('同步失败，错误：'.$exception->getMessage());
         }
     }
 
