@@ -34,7 +34,7 @@ class JWTAdminAuth extends BaseMiddleware
                 $token = $this->auth->refresh();
                 Auth::guard('api_admin')->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
             } catch (JWTException $exception) {
-                throw new UnauthorizedHttpException('jwt-auth', $exception->getMessage());
+                throw new UnauthorizedHttpException('jwt-admin-auth', $exception->getMessage());
             }
         }
 
