@@ -25,7 +25,7 @@ class MaterialController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      */
     public function materialSync()
-    {
+    {return $this->message('ok');
         try {
             Log::info('正在同步图片素材');
             $offset = 0;
