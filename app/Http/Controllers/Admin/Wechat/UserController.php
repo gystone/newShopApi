@@ -37,7 +37,8 @@ class UserController extends ApiController
                         'country' => $user['country'],
                         'headiimgurl' => $user['headimgurl'], // FIXME: 修改字段名多了个i
                         'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
-                        'status' => 'subscribe'
+                        'status' => 'subscribe',
+                        'unionid' => '',
                     ]
                 );
                 Log::info('同步粉丝入库' . $user['nickname'] . $v);dd($list);
