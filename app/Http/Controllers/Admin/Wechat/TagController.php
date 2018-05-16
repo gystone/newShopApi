@@ -34,11 +34,11 @@ dd($list);
                 ]);
             }
             Log::info('标签同步完成');
-        } catch (\Exception $exception) {
-            $this->failed('同步失败，请稍候重试');
-        }
 
-        return $this->message('同步完成');
+            return $this->message('同步完成');
+        } catch (\Exception $exception) {
+            return $this->failed('同步失败，请稍候重试');
+        }
     }
 
     public function list()
