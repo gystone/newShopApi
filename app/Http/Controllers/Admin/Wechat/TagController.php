@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatTag;
 use EasyWeChat\OfficialAccount\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TagController extends ApiController
@@ -17,6 +18,10 @@ class TagController extends ApiController
         $this->tag = $app->user_tag;
     }
 
+    /**
+     * 同步标签
+     * @return mixed
+     */
     public function sync()
     {
         try {
@@ -40,8 +45,64 @@ class TagController extends ApiController
         }
     }
 
+    /**
+     * 标签列表
+     * @return mixed
+     */
     public function list()
     {
         return $this->success(WechatTag::all());
+    }
+
+    /**
+     * 创建标签
+     * name 标签名
+     * @param Request $request
+     * @return mixed
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     */
+    public function create(Request $request)
+    {
+        $name = $request->name;
+
+        $res = $this->tag->create($name);
+
+        if (isset($res['tag'])) {
+            WechatTag::create([
+                'id' => $res['tag']['id'],
+                'name' => $res['tag']['name'],
+                'count' => 0
+            ]);
+            return $this->success($res['tag']);
+        } else {
+            return $this->failed('创建失败，请稍候重试');
+        }
+    }
+
+    public function update(WechatTag $tag, Request $request)
+    {
+        $name = $request->name;
+
+        $res = $this->tag->update($tag->id, $name);
+
+        if ($res['errcode'] === 0) {
+            $tag->update(['name' => $name]);
+            return $this->success($tag);
+        } else {
+            return $this->failed('编辑失败，请稍候重试');
+        }
+    }
+
+    public function delete(WechatTag $tag)
+    {
+        $res = $this->tag->delete($tag->id);
+
+        if ($res['errcode'] === 0) {
+            $tag->delete();
+
+            return $this->message('删除成功');
+        } else {
+            return $this->failed('删除失败，请稍候重试');
+        }
     }
 }
