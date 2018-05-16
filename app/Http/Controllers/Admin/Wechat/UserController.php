@@ -22,7 +22,7 @@ class UserController extends ApiController
     {
 //        try {
             $list = $this->user->list();
-            foreach ($list['data']['openid'] as $k => $v) {dd($list);
+            foreach ($list['data']['openid'] as $k => $v) {
                 $user = $this->user->get($v);
                 WechatUser::updateOrCreate(
                     [
@@ -40,7 +40,7 @@ class UserController extends ApiController
                         'status' => 'subscribe'
                     ]
                 );
-                Log::info('同步粉丝入库' . $user['nickname'] . $v);
+                Log::info('同步粉丝入库' . $user['nickname'] . $v);dd($list);
             }
 
             return $this->message('同步成功');
