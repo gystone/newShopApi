@@ -80,6 +80,9 @@ Route::group([
             $router->post('tag_create', 'TagController@create');
             $router->patch('tag_update/{tag}', 'TagController@update');
             $router->delete('tag_delete/{tag}', 'TagController@delete');
+
+            $router->get('user_sync', 'UserController@sync');
+            $router->get('user_list', 'UserController@list');
         });
     });
 });
