@@ -19,9 +19,9 @@ class TagController extends ApiController
 
     public function sync()
     {
-        $list = $this->tag->list();
-
         try {
+            $list = $this->tag->list();
+
             Log::info('正在同步标签');
             foreach ($list['tags'] as $k => $v) {
                 WechatTag::updateOrCreate([
