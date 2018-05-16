@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends ApiController
 {
@@ -19,11 +20,10 @@ class UserController extends ApiController
 
     public function sync()
     {
-
         try {
             $list = $this->user->list();
             foreach ($list['data']['openid'] as $k => $v) {
-                $user = $this->users->get($v);
+                $user = $this->user->get($v);
                 WechatUser::updateOrCreate(
                     [
                         'openid' => $v
