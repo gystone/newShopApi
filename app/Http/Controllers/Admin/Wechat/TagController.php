@@ -20,7 +20,7 @@ class TagController extends ApiController
     public function sync()
     {
         $list = $this->tag->list();
-
+dd($list);
         try {
             Log::info('正在同步标签');
             foreach ($list as $k => $v) {
