@@ -23,7 +23,7 @@ class TagController extends ApiController
             $list = $this->tag->list();
 
             Log::info('正在同步标签');
-            foreach ($list['tags'] as $k => $v) {dd($list);
+            foreach ($list['tags'] as $k => $v) {
                 WechatTag::updateOrCreate([
                     'id' => $v['id']
                 ], [
@@ -33,7 +33,7 @@ class TagController extends ApiController
                 ]);
             }
             Log::info('标签同步完成');
-
+            dd($list);
             return $this->message('同步完成');
         } catch (\Exception $exception) {
             return $this->failed('同步失败，请稍候重试');
