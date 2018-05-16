@@ -25,8 +25,7 @@ class TagController extends ApiController
             Log::info('正在同步标签');
             foreach ($list['tags'] as $k => $v) {
                 WechatTag::updateOrCreate([
-                    'id' => $v['id'],
-                    'name' => $v['name']
+                    'id' => $v['id']
                 ], [
                     'id' => $v['id'],
                     'name' => $v['name'],
