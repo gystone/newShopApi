@@ -21,7 +21,7 @@ class UserController extends ApiController
     public function sync()
     {
 //        try {
-            $list = $this->user->list();
+            $list = $this->user->list();dd($list);
             foreach ($list['data']['openid'] as $k => $v) {
                 $user = $this->user->get($v);
                 WechatUser::updateOrCreate(
