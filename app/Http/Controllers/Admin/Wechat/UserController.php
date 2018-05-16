@@ -35,7 +35,7 @@ class UserController extends ApiController
                         'city' => $user['city'],
                         'province' => $user['province'],
                         'country' => $user['country'],
-                        'headimgurl' => $user['headimgurl'],
+                        'headiimgurl' => $user['headimgurl'],
                         'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
                         'status' => 'subscribe'
                     ]
