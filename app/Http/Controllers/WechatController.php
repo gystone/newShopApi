@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Patient;
-use App\Mail\ClinicReport;
 use App\Models\Wechat\WechatKeyword;
 use App\Models\Wechat\WechatKF;
 use App\Models\Wechat\WechatMenu;
