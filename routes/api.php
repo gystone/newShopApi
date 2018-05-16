@@ -77,6 +77,9 @@ Route::group([
 
             $router->get('tag_sync', 'TagController@sync');
             $router->get('tag_list', 'TagController@list');
+            $router->post('tag_create', 'TagController@create');
+            $router->patch('tag_update/{tag}', 'TagController@update');
+            $router->delete('tag_delete/{tag}', 'TagController@delete');
         });
     });
 });
