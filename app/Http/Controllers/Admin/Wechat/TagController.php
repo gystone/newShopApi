@@ -19,7 +19,7 @@ class TagController extends ApiController
 
     public function sync()
     {
-//        try {
+        try {
             $list = $this->tag->list();
 
             Log::info('正在同步标签');
@@ -35,9 +35,9 @@ class TagController extends ApiController
             Log::info('标签同步完成');
             dd($list);
             return $this->message('同步完成');
-//        } catch (\Exception $exception) {
-//            return $this->failed('同步失败，请稍候重试');
-//        }
+        } catch (\Exception $exception) {
+            return $this->failed('同步失败，请稍候重试');
+        }
     }
 
     public function list()
