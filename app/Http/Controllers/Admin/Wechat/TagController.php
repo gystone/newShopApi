@@ -40,4 +40,9 @@ class TagController extends ApiController
 
         return $this->message('同步完成');
     }
+
+    public function list()
+    {
+        return $this->success(WechatTag::all());
+    }
 }

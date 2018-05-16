@@ -74,6 +74,9 @@ Route::group([
             $router->post('material_news_upload', 'MaterialController@materialNewsUpload');
             $router->post('material_img_upload', 'MaterialController@materialImgUpload');
             $router->delete('material_delete', 'MaterialController@materialDelete');
+
+            $router->get('tag_sync', 'TagController@sync');
+            $router->get('tag_list', 'TagController@list');
         });
     });
 });
