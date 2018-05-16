@@ -33,7 +33,7 @@ class TagController extends ApiController
                 ]);
             }
             Log::info('标签同步完成');
-            dd($list);
+
             return $this->message('同步完成');
         } catch (\Exception $exception) {
             return $this->failed('同步失败，请稍候重试');
