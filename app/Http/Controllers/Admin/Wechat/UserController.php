@@ -20,7 +20,7 @@ class UserController extends ApiController
 
     public function sync()
     {
-//        try {
+        try {
             $list = $this->user->list();
             foreach ($list['data']['openid'] as $k => $v) {
                 $user = $this->user->get($v);
@@ -41,13 +41,13 @@ class UserController extends ApiController
                         'unionid' => '',
                     ]
                 );
-                Log::info('同步粉丝入库' . $user['nickname'] . $v);dd($list);
+                Log::info('同步粉丝入库' . $user['nickname'] . $v);
             }
 
             return $this->message('同步成功');
-//        } catch (\Exception $exception) {
-//            return $this->failed('同步失败，请稍候重试');
-//        }
+        } catch (\Exception $exception) {
+            return $this->failed('同步失败，请稍候重试');
+        }
     }
 
     public function list()
