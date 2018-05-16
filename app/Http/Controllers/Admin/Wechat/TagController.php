@@ -105,4 +105,20 @@ class TagController extends ApiController
             return $this->failed('删除失败，请稍候重试');
         }
     }
+
+    public function tagUsers(Request $request)
+    {
+        $openids = $request->openid;
+
+        if (is_array($openids)) {
+            $res = $this->tag->tagUsers($openids);
+            if ($res['errcode'] === 0) {
+                return $this->message('标签设置成功');
+            } else {
+                return $this->failed('标签设置失败，请稍候重试');
+            }
+        } else {
+            return $this->failed('参数有误');
+        }
+    }
 }

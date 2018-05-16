@@ -52,6 +52,52 @@ class UserController extends ApiController
 
     public function list()
     {
-        return $this->success(WechatUser::all());
+        return $this->success(WechatUser::paginate(10));
+    }
+
+    public function remark(WechatUser $user, Request $request)
+    {
+        $remark = $request->remark;
+
+        $res = $this->user->remark($user->openid, $remark);
+
+        if ($res['errcode'] === 0) {
+            // TODO: 存入数据表
+            return $this->message('设置成功');
+        } else {
+            return $this->failed('设置失败，请稍候重试');
+        }
+    }
+
+    public function block(Request $request)
+    {
+        $openids = $request->openid;
+
+        if (is_array($openids)) {
+            $res = $this->user->block($openids);
+            if ($res['errcode'] === 0) {
+                return $this->message('拉黑设置成功');
+            } else {
+                return $this->failed('拉黑失败，请稍候重试');
+            }
+        } else {
+            return $this->failed('参数有误');
+        }
+    }
+
+    public function unblock(Request $request)
+    {
+        $openids = $request->openid;
+
+        if (is_array($openids)) {
+            $res = $this->user->unblock($openids);
+            if ($res['errcode'] === 0) {
+                return $this->message('取消拉黑设置成功');
+            } else {
+                return $this->failed('取消拉黑失败，请稍候重试');
+            }
+        } else {
+            return $this->failed('参数有误');
+        }
     }
 }
