@@ -73,7 +73,7 @@ class WechatController extends Controller
                     if ($reply_equal) {
                         return $this->messageContent($reply_equal);
                     }
-                    $replys_contain = $replys->where('is_equal', 'contain')->latest()->get();Log::info($replys_contain);
+                    $replys_contain = $replys->where(['is_equal' => 'contain'])->latest()->get();Log::info($replys_contain);
                     foreach ($replys_contain as $reply) {
                         if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
                             return $this->messageContent($reply);
