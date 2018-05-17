@@ -92,6 +92,11 @@ class WechatController extends Controller
 //                    break;
 //            }
 //        });
+        $this->server->push(function ($message) {
+            // $message['FromUserName'] // 用户的 openid
+            // $message['MsgType'] // 消息类型：event, text....
+            return "您好！欢迎使用 EasyWeChat";
+        });
         Log::info('return response');
         return $this->server->serve();
     }
