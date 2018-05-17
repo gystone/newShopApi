@@ -28,6 +28,6 @@ class ReplyController extends ApiController
 
     public function list()
     {
-        return $this->success(WechatReply::all());
+        return $this->success(WechatReply::latest()->get());
     }
 }
