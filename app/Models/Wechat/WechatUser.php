@@ -18,6 +18,6 @@ class WechatUser extends Model
 
     public function setTagidListAttribute($value)
     {
-        return $this->attributes['tagid_list'] = is_array($value) ? implode(',', $value) : $value;
+        $this->attributes['tagid_list'] = is_array($value) ? implode(',', $value) : $value;
     }
 }

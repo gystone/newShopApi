@@ -19,7 +19,7 @@ class WechatMenu extends Model
 
     public function setButtonsAttribute($value)
     {
-        return $this->attributes['buttons'] = is_array($value) ? implode(',', $value) : $value;
+        $this->attributes['buttons'] = is_array($value) ? implode(',', $value) : $value;
     }
 
     public function getMatchRuleAttribute($value)
@@ -29,6 +29,6 @@ class WechatMenu extends Model
 
     public function setMatchRuleAttribute($value)
     {
-        return $this->attributes['match_rule'] = is_array($value) ? implode(',', $value) : $value;
+        $this->attributes['match_rule'] = is_array($value) ? implode(',', $value) : $value;
     }
 }
