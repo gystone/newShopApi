@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Patient;
-use App\Models\Wechat\WechatKeyword;
-use App\Models\Wechat\WechatKF;
 use App\Models\Wechat\WechatMenu;
-use App\Models\Wechat\WechatNews;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Transfer;
 use EasyWeChat\OfficialAccount\Application;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class WechatController extends Controller
 {
