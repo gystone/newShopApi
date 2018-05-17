@@ -21,7 +21,7 @@ class MenuController extends ApiController
     public function sync()
     {
         try {
-            $list = $this->menu->list();
+            $list = $this->menu->current();
             if (isset($list['menu']) && count($list['menu']['button'])) {
                 WechatMenu::updateOrCreate([
                     'type' => 'normal'
@@ -42,5 +42,24 @@ class MenuController extends ApiController
         $menu = WechatMenu::where('type', 'normal')->first();
 
         return $menu ? $menu->buttons : [];
+    }
+
+    public function create(Request $request)
+    {
+        $buttons = $request->buttons;
+
+        $res = $this->menu->create($buttons);
+
+        if ($res['errcode'] === 0) {
+            WechatMenu::updateOrCreate([
+                'type' => 'normal'
+            ], [
+                'type' => 'normal',
+                'buttons' => $buttons
+            ]);
+            return $this->message('创建成功');
+        } else {
+            return $this->failed('创建失败，请稍候重试');
+        }
     }
 }
