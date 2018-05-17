@@ -73,9 +73,8 @@ class WechatController extends Controller
                     foreach ($replys->get() as $reply) {
                         if ($reply->is_equal === 'equal' && $reply->keyword === $message['Content']) {
                             return $this->messageContent($reply);
-                            return $reply->content['body'];
-                        } elseif ($reply->is_equal === 'contain' && strpos($message['Content'], $reply->keyword)) {
-                            return $reply->content['body'];
+                        } elseif ($reply->is_equal === 'contain' && stripos($message['Content'], $reply->keyword)) {
+                            return $this->messageContent($reply);
                         }
                     }
                     $default_reply = $replys->where('keyword', '默认回复')->first();
