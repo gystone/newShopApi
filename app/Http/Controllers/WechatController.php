@@ -6,6 +6,7 @@ use App\Models\Wechat\WechatReply;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Transfer;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Support\Facades\Log;
@@ -71,6 +72,7 @@ class WechatController extends Controller
 
                     foreach ($replys->get() as $reply) {
                         if ($reply->is_equal === 'equal' && $reply->keyword === $message['Content']) {
+                            return $this->messageContent($reply);
                             return $reply->content['body'];
                         } elseif ($reply->is_equal === 'contain' && strpos($message['Content'], $reply->keyword)) {
                             return $reply->content['body'];
@@ -106,5 +108,16 @@ class WechatController extends Controller
 
         Log::info('return response');
         return $this->server->serve();
+    }
+
+    public function messageContent(WechatReply $reply)
+    {
+        switch ($reply->type) {
+            case 'text':
+                return new Text($reply->content['body']);
+                break;
+            case 'image':
+                break;
+        }
     }
 }
