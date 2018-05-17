@@ -20,7 +20,7 @@ class MenuController extends ApiController
 
     public function sync()
     {
-        try {
+//        try {
             $list = $this->menu->list();
             if (isset($list['menu']) && count($list['menu']['button'])) {
                 WechatMenu::updateOrCreate([
@@ -31,10 +31,10 @@ class MenuController extends ApiController
                 ]);
             }
             return $this->message('同步成功');
-        } catch (\Exception $exception) {
-            Log::info('menu_sync error:'.$exception->getMessage());
-            return $this->failed('同步失败，请稍候重试');
-        }
+//        } catch (\Exception $exception) {
+//            Log::info('menu_sync error:'.$exception->getMessage());
+//            return $this->failed('同步失败，请稍候重试');
+//        }
     }
 
     public function list()
