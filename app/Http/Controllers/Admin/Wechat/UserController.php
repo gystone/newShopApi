@@ -35,10 +35,13 @@ class UserController extends ApiController
                         'city' => $user['city'],
                         'province' => $user['province'],
                         'country' => $user['country'],
-                        'headiimgurl' => $user['headimgurl'], // FIXME: 修改字段名多了个i
+                        'headimgurl' => $user['headimgurl'],
                         'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
                         'status' => 'subscribe',
-                        'unionid' => '',
+                        'unionid' => $user['unionid'] ?? '',
+                        'remark' => $user['remark'],
+                        'tagid_list' => $user['tagid_list'],
+                        'subscribe_scene' => $user['subscribe_scene'],
                     ]
                 );
                 Log::info('同步粉丝入库' . $user['nickname'] . $v);
@@ -62,7 +65,7 @@ class UserController extends ApiController
         $res = $this->user->remark($user->openid, $remark);
 
         if ($res['errcode'] === 0) {
-            // TODO: 存入数据表
+            $user->update(['remark' => $remark]);
             return $this->message('设置成功');
         } else {
             return $this->failed('设置失败，请稍候重试');

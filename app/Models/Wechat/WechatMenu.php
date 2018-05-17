@@ -2,23 +2,29 @@
 
 namespace App\Models\Wechat;
 
-use Encore\Admin\Traits\AdminBuilder;
-use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 
 class WechatMenu extends Model
 {
-    use ModelTree, AdminBuilder;
+    protected $table = 'wechat_menus';
 
-    protected $table = 'wechat_menu';
-
-    public $timestamps = false;
-
-    public function __construct(array $attributes = [])
+    public function getButtonsAttribute($value)
     {
-        parent::__construct($attributes);
-        $this->setParentColumn('pid');
-        $this->setOrderColumn('order');
-        $this->setTitleColumn('title');
+        return explode(',', $value);
+    }
+
+    public function setButtonsAttribute($value)
+    {
+        return $this->attributes['buttons'] = is_array($value) ? implode(',', $value) : $value;
+    }
+
+    public function getMatchRuleAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    public function setMatchRuleAttribute($value)
+    {
+        return $this->attributes['match_rule'] = is_array($value) ? implode(',', $value) : $value;
     }
 }

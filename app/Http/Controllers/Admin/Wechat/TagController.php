@@ -112,6 +112,7 @@ class TagController extends ApiController
 
         if (is_array($openids)) {
             $res = $this->tag->tagUsers($openids);
+            // FIXME: 存入数据表
             if ($res['errcode'] === 0) {
                 return $this->message('标签设置成功');
             } else {

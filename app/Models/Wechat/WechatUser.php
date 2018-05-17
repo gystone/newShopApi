@@ -10,4 +10,14 @@ class WechatUser extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+    public function getTagidListAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    public function setTagidListAttribute($value)
+    {
+        return $this->attributes['tagid_list'] = is_array($value) ? implode(',', $value) : $value;
+    }
 }
