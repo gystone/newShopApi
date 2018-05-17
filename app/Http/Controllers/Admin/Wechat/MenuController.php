@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
+use App\Http\Controllers\ApiController;
+use App\Models\Wechat\WechatMenu;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
-class MenuController extends Controller
+class MenuController extends ApiController
 {
     private $menu;
 
@@ -18,6 +20,27 @@ class MenuController extends Controller
 
     public function sync()
     {
-        return $this->menu->list();
+        try {
+            $list = $this->menu->list();
+            if (isset($list['menu']) && count($list['menu']['button'])) {
+                WechatMenu::updateOrCreate([
+                    'type' => 'normal'
+                ], [
+                    'type' => 'normal',
+                    'buttons' => $list['menu']['button']
+                ]);
+            }
+            return $this->message('同步成功');
+        } catch (\Exception $exception) {
+            Log::info('menu_sync error:'.$exception->getMessage());
+            return $this->failed('同步失败，请稍候重试');
+        }
+    }
+
+    public function list()
+    {
+        $menu = WechatMenu::where('type', 'normal')->first();
+
+        return $menu ? $menu->buttons : [];
     }
 }
