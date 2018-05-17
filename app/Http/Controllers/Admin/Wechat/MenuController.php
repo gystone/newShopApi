@@ -62,4 +62,16 @@ class MenuController extends ApiController
             return $this->failed('创建失败，请稍候重试');
         }
     }
+
+    public function delete()
+    {
+        $res = $this->menu->delete();
+
+        if ($res['errcode'] === 0) {
+            WechatMenu::delete();
+            return $this->message('删除成功');
+        } else {
+            return $this->failed('删除失败，请稍候重试');
+        }
+    }
 }
