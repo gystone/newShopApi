@@ -73,7 +73,7 @@ class WechatController extends Controller
                     foreach ($replys_all as $reply) {Log::info(stripos($message['Content'], $reply->keyword));
                         if ($reply->is_equal === 'equal' && $reply->keyword === $message['Content']) {
                             return $this->messageContent($reply);
-                        } elseif ($reply->is_equal === 'contain' && stripos($message['Content'], $reply->keyword) === true) {
+                        } elseif ($reply->is_equal === 'contain' && stripos($message['Content'], $reply->keyword)) {
                             return $this->messageContent($reply);
                         }
                     }
