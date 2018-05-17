@@ -25,4 +25,9 @@ class ReplyController extends ApiController
             return $this->failed('设置失败，请稍候重试');
         }
     }
+
+    public function list()
+    {
+        return $this->success(WechatReply::all());
+    }
 }

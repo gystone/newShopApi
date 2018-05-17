@@ -94,6 +94,7 @@ Route::group([
             $router->delete('menu_delete', 'MenuController@delete');
 
             $router->post('reply_add', 'ReplyController@store');
+            $router->get('reply_list', 'ReplyController@list');
         });
     });
 });
