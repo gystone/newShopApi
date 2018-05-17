@@ -11,6 +11,7 @@ use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Transfer;
+use EasyWeChat\OfficialAccount\Application;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -19,19 +20,12 @@ use Illuminate\Support\Facades\Mail;
 class WechatController extends Controller
 {
     protected $server;
-    protected $menu;
-    protected $template_message;
-    protected $app;
     protected $users;
 
-    public function __construct()
+    public function __construct(Application $application)
     {
-        $app = app('wechat.official_account');
-        $this->app = $app;
-        $this->server = $app->server;
-        $this->menu = $app->menu;
-        $this->template_message = $app->template_message;
-        $this->users = $app->user;
+        $this->server = $application->server;
+        $this->users = $application->user;
     }
 
     public function serve()
