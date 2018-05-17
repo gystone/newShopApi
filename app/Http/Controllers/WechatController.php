@@ -22,7 +22,7 @@ class WechatController extends Controller
     }
 
     public function serve()
-    {
+    {return $this->server->serve();
         Log::info('request arrived.');
 //        $this->server->push(function ($message) {
 //            switch ($message['MsgType']) {
