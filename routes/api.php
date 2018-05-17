@@ -86,6 +86,7 @@ Route::group([
             $router->get('user_list', 'UserController@list');
             $router->post('user_block', 'UserController@block');
             $router->post('user_unblock', 'UserController@unblock');
+            $router->get('user_blacklist', 'UserController@blacklist');
 
             $router->get('menu_sync', 'MenuController@sync');
             $router->get('menu_list', 'MenuController@list');

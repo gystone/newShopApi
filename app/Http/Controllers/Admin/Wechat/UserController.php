@@ -104,4 +104,9 @@ class UserController extends ApiController
             return $this->failed('参数有误');
         }
     }
+
+    public function blacklist()
+    {
+        return $this->success($this->user->blacklist());
+    }
 }
