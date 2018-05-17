@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ReplyController extends ApiController
 {
+    public function __construct()
+    {
+        auth()->shouldUse('api_admin');
+    }
+
     public function store(Request $request)
     {
         $attributes = $request->only('keyword', 'type', 'content', 'is_equal', 'is_open');
