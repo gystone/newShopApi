@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Wechat\WechatReply;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
@@ -66,8 +67,18 @@ class WechatController extends Controller
                     break;
                 case 'text':
                     Log::info($message['Content']);
-                    if ($message['Content'] === '客服') {
-                        return new Transfer();
+                    $replys = WechatReply::where('is_open', 1);
+
+                    foreach ($replys->get() as $reply) {
+                        if ($reply->is_equal == 1 && $reply->keyword === $message['Content']) {
+                            return $reply->content['body'];
+                        } elseif ($reply->is_equal != 1 && strpos($message['Content'], $reply->keyword)) {
+                            return $reply->content['body'];
+                        }
+                    }
+                    $default_reply = $replys->where('keyword', '默认回复')->first();
+                    if ($default_reply) {
+                        return $default_reply->content['body'];
                     }
                     return '你好';
                     break;
