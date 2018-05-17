@@ -41,9 +41,10 @@ class MenuController extends ApiController
     {
         $menu = WechatMenu::where('type', 'normal')->first();
 
-        return $menu ? $menu->buttons : [];
+        return $this->success($menu ? $menu->buttons : []);
     }
 
+    // TODO: request加验证
     public function create(Request $request)
     {
         $buttons = $request->buttons;

@@ -92,6 +92,8 @@ Route::group([
             $router->get('menu_list', 'MenuController@list');
             $router->post('menu_create', 'MenuController@create');
             $router->delete('menu_delete', 'MenuController@delete');
+
+            $router->post('reply_add', 'ReplyController@store');
         });
     });
 });
