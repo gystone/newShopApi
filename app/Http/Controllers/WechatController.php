@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wechat\WechatMenu;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
@@ -67,9 +66,10 @@ class WechatController extends Controller
                     break;
                 case 'text':
                     Log::info($message['Content']);
-                    if ($message['Content'] == '客服') {
+                    if ($message['Content'] === '客服') {
                         return new Transfer();
                     }
+                    return '你好';
                     break;
                 case 'image':
                     return '收到图片消息';
