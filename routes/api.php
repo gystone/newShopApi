@@ -90,6 +90,7 @@ Route::group([
             $router->get('menu_sync', 'MenuController@sync');
             $router->get('menu_list', 'MenuController@list');
             $router->post('menu_create', 'MenuController@create');
+            $router->delete('menu_delete', 'MenuController@delete');
         });
     });
 });
