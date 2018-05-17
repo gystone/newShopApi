@@ -88,6 +88,7 @@ Route::group([
             $router->post('user_unblock', 'UserController@unblock');
 
             $router->get('menu_sync', 'MenuController@sync');
+            $router->get('menu_list', 'MenuController@list');
         });
     });
 });
