@@ -69,11 +69,13 @@ class WechatController extends Controller
                 case 'text':
                     Log::info($message['Content']);
                     $replys = WechatReply::where('is_open', 1);
-                    $replys_all = $replys->latest()->get();
-                    foreach ($replys_all as $reply) {
-                        if ($reply->is_equal === 'equal' && $reply->keyword === strtolower($message['Content'])) {
-                            return $this->messageContent($reply);
-                        } elseif ($reply->is_equal === 'contain' && stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
+                    $reply_equal = $replys->where(['is_equal' => 'equal', 'keyword' => strtolower($message['Content'])])->first();
+                    if ($reply_equal) {
+                        return $this->messageContent($reply_equal);
+                    }
+                    $replys_contain = $replys->where('is_equal', 'contain')->latest()->get();
+                    foreach ($replys_contain as $reply) {
+                        if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
                             return $this->messageContent($reply);
                         }
                     }
