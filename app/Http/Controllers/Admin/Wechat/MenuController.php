@@ -68,7 +68,7 @@ class MenuController extends ApiController
         $res = $this->menu->delete();
 
         if ($res['errcode'] === 0) {
-            WechatMenu::destroy();
+            WechatMenu::where('type', 'normal')->delete();
             return $this->message('删除成功');
         } else {
             return $this->failed('删除失败，请稍候重试');
