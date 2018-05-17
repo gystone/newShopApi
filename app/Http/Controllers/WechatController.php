@@ -57,41 +57,13 @@ class WechatController extends Controller
                                     'country' => $user['country'],
                                     'headimgurl' => $user['headimgurl'],
                                     'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
-                                    'status' => 'subscribe'
+                                    'status' => 'subscribe',
+                                    'remark' => $user['remark'],
+                                    'tagid_list' => $user['tagid_list'],
+                                    'subscribe_scene' => $user['subscribe_scene'],
                                 ]
                             );
 
-                            if ($msg = WechatKeyword::where('key_text', '关注')->first()) {
-                                switch ($msg->msg_type) {
-                                    case 'text':
-                                        return $msg->text->content;
-                                        break;
-                                    case 'news':
-                                        $items = [
-                                            new NewsItem([
-                                                'title'       => $msg->news->title,
-                                                'description' => $msg->news->description,
-                                                'url'         => $msg->news->url,
-                                                'image'       => url('upload/'.$msg->news->image),
-                                            ]),
-                                        ];
-                                        $news = WechatNews::where('pid', $msg->news->id)->get();
-                                        if (count($news) > 0 && count($news) <= 7) {
-                                            foreach ($news as $k1 => $v1) {
-                                                $items[] = new NewsItem([
-                                                    'title'       => $v1->title,
-                                                    'description' => $v1->description,
-                                                    'url'         => $v1->url,
-                                                    'image'       => url('upload/'.$v1->image),
-                                                ]);
-                                            }
-                                        } else {
-                                            Log::warning('多图文消息最多8条');
-                                        }
-                                        return new News($items);
-                                        break;
-                                }
-                            }
                             return '欢迎关注，亲爱的'.$user['nickname'];
                             break;
                         case 'unsubscribe':
@@ -110,44 +82,6 @@ class WechatController extends Controller
                     Log::info($message['Content']);
                     if ($message['Content'] == '客服') {
                         return new Transfer();
-                    }
-                    foreach (WechatKeyword::all() as $k => $v) {
-                        $res = stripos($message['Content'], $v->key_text);
-                        if (is_numeric($res)) {
-                            Log::info($res);
-                            switch ($v->msg_type) {
-                                case 'text':
-                                    return $v->text->content;
-                                    break;
-                                case 'news':
-                                    $items = [
-                                        new NewsItem([
-                                            'title'       => $v->news->title,
-                                            'description' => $v->news->description,
-                                            'url'         => $v->news->url,
-                                            'image'       => url('upload/'.$v->news->image),
-                                        ]),
-                                    ];
-                                    $news = WechatNews::where('pid', $v->news->id)->get();
-                                    if (count($news) > 0 && count($news) <= 7) {
-                                        foreach ($news as $k1 => $v1) {
-                                            $items[] = new NewsItem([
-                                                'title'       => $v1->title,
-                                                'description' => $v1->description,
-                                                'url'         => $v1->url,
-                                                'image'       => url('upload/'.$v1->image),
-                                            ]);
-                                        }
-                                    } else {
-                                        Log::warning('多图文消息最多8条');
-                                    }
-                                    return new News($items);
-                                    break;
-                                default:
-                                    return '收到文字消息';
-                                    break;
-                            }
-                        }
                     }
                     break;
                 case 'image':
