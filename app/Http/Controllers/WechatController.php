@@ -70,9 +70,9 @@ class WechatController extends Controller
                     $replys = WechatReply::where('is_open', 1);
 
                     foreach ($replys->get() as $reply) {
-                        if ($reply->is_equal == 1 && $reply->keyword === $message['Content']) {
+                        if ($reply->is_equal === 'equal' && $reply->keyword === $message['Content']) {
                             return $reply->content['body'];
-                        } elseif ($reply->is_equal != 1 && strpos($message['Content'], $reply->keyword)) {
+                        } elseif ($reply->is_equal === 'contain' && strpos($message['Content'], $reply->keyword)) {
                             return $reply->content['body'];
                         }
                     }
