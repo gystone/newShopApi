@@ -78,6 +78,7 @@ class UserController extends ApiController
 
         if (is_array($openids)) {
             $res = $this->user->block($openids);
+            dd($openids);
             if ($res['errcode'] === 0) {
                 return $this->message('拉黑设置成功');
             } else {
