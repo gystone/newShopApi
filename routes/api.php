@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::any('wechat', 'WechatController@serve');
+
 Route::group([
     'namespace' => 'Api'
 ], function () {
