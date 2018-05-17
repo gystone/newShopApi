@@ -75,7 +75,7 @@ class UserController extends ApiController
     public function block(Request $request)
     {
         $openids = $request->openid;
-
+dd($openids);
         if (is_array($openids)) {
             $res = $this->user->block($openids);
             dd($openids);
