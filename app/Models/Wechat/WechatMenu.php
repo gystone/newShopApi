@@ -8,6 +8,10 @@ class WechatMenu extends Model
 {
     protected $table = 'wechat_menus';
 
+    protected $fillable = [
+        'type', 'buttons', 'match_rule'
+    ];
+
     public function getButtonsAttribute($value)
     {
         return explode(',', $value);
