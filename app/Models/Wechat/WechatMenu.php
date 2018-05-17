@@ -14,21 +14,21 @@ class WechatMenu extends Model
 
     public function getButtonsAttribute($value)
     {
-        return explode(',', $value);
+        return unserialize($value);
     }
 
     public function setButtonsAttribute($value)
     {
-        $this->attributes['buttons'] = is_array($value) ? implode(',', $value) : $value;
+        $this->attributes['buttons'] = is_array($value) ? serialize($value) : $value;
     }
 
     public function getMatchRuleAttribute($value)
     {
-        return explode(',', $value);
+        return unserialize($value);
     }
 
     public function setMatchRuleAttribute($value)
     {
-        $this->attributes['match_rule'] = is_array($value) ? implode(',', $value) : $value;
+        $this->attributes['match_rule'] = is_array($value) ? serialize($value) : $value;
     }
 }
