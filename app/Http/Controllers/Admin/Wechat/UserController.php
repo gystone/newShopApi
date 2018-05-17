@@ -108,10 +108,10 @@ class UserController extends ApiController
     public function blacklist()
     {
         $list = $this->user->blacklist();
-dd($list);
+
         $res_list = [];
 
-        if (count($list['data']['openid'])) {
+        if (isset($list['data']) && count($list['data']['openid'])) {
             foreach ($list['data']['openid'] as $k => $v) {
                 $res_list[] = WechatUser::where('openid', $v)->first();
             }
