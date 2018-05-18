@@ -31,9 +31,9 @@ class WechatController extends Controller
     {
         Log::info('request arrived.');
         $this->server->push(function ($message) {
-            $this->customer_service->message('kak1')->to($message['FromUserName'])->send();
-            $this->customer_service->message('aa2')->to($message['FromUserName'])->send();
-            return 'bcd';
+            $this->customer_service->message('a')->to($message['FromUserName'])->send();
+            $this->customer_service->message('b')->to($message['FromUserName'])->send();
+            return 'c';
 //            switch ($message['MsgType']) {
 //                case 'event':
 //                    switch ($message['Event']) {
