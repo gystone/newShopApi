@@ -38,14 +38,12 @@ class ReplyController extends ApiController
 
     public function update(WechatReply $reply, Request $request)
     {
-        $attributes = $request->only('keywords','contents', 'is_reply_all', 'is_open');
-
         $reply->keywords = $request->keywords ?? $reply->keywords;
         $reply->contents = $request->contents ?? $reply->contents;
         $reply->is_reply_all = $request->is_reply_all ?? $reply->is_reply_all;
         $reply->is_open = $request->is_open ?? $reply->is_open;
         $res = $reply->save();
-
+Log::info($reply);
         if ($res) {
             return $this->success($reply);
         } else {
