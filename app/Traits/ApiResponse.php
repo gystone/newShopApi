@@ -80,11 +80,11 @@ trait ApiResponse
      * @param string $status
      * @return mixed
      */
-    public function message($message, $status = "success"){
+    public function message($message, $status = "success", $code = null){
 
         return $this->status($status,[
             'message' => $message
-        ]);
+        ], $code);
     }
 
     /**
