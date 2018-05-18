@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReplyController extends ApiController
 {
@@ -16,7 +17,7 @@ class ReplyController extends ApiController
     public function store(Request $request)
     {
         $attributes = $request->only('rule_name', 'keywords','contents', 'is_reply_all', 'is_open');
-
+Log::info($attributes);
         $res = WechatReply::create($attributes);
 
         if ($res) {
