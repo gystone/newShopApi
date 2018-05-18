@@ -30,4 +30,28 @@ class ReplyController extends ApiController
     {
         return $this->success(WechatReply::latest()->get());
     }
+
+    public function update(WechatReply $reply, Request $request)
+    {
+        $attributes = $request->only('type', 'content', 'is_equal', 'is_open');
+
+        $res = $reply->update($attributes);
+
+        if ($res) {
+            return $this->success($res);
+        } else {
+            $this->failed('修改失败，请稍候重试');
+        }
+    }
+
+    public function delete(WechatReply $reply)
+    {
+        $res = $reply->delete();
+
+        if ($res) {
+            return $this->message('删除成功');
+        } else {
+            return $this->failed('删除失败，请稍候重试');
+        }
+    }
 }

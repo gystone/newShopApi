@@ -97,6 +97,8 @@ Route::group([
 
             $router->post('reply_add', 'ReplyController@store');
             $router->get('reply_list', 'ReplyController@list');
+            $router->patch('reply_update/{reply}', 'ReplyController@update');
+            $router->delete('reply_delete/{reply}', 'ReplyController@delete');
         });
     });
 });
