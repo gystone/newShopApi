@@ -295,7 +295,7 @@ class MaterialController extends ApiController
             ]);
         }
 
-        $res = $this->material->uploadArticle($article);
+        $res = $this->material->uploadArticle($article);Log::info($res);
         if (isset($res['media_id'])) {
             $res_news = $this->material->get($res['media_id']);
             $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
@@ -304,7 +304,7 @@ class MaterialController extends ApiController
             $wechatMaterial->media_id = $res['media_id'];
             $wechatMaterial->type = 'news';
 
-            if ($wechatMaterial->save()) {
+            if ($wechatMaterial->save()) {Log::info($wechatMaterial);
                 return $this->success($wechatMaterial);
             } else {
                 return $this->failed('上传失败，请稍候重试');
