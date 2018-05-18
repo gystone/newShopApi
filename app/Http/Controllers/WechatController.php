@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Wechat\WechatMaterial;
 use App\Models\Wechat\WechatReply;
 use App\Models\Wechat\WechatUser;
+use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Transfer;
+use EasyWeChat\Kernel\Messages\Voice;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Support\Facades\Log;
 
@@ -116,7 +119,36 @@ class WechatController extends Controller
             case 'text':
                 return new Text($reply->content['body']);
                 break;
+            case 'news':
+                $msg = WechatMaterial::where(['media_id' => $reply->content['media_id'], 'type' => 'news'])->first();
+                if ($msg && count($msg->content['news_item'])) {
+                    $news_items = [];
+                    foreach ($msg->content['news_item'] as $news_item) {
+                        $news_items[] = new NewsItem([
+                            'title'       => $news_item['title'],
+                            'description' => $news_item['digest'],
+                            'url'         => $news_item['url'],
+                            'image'       => $news_item['thumb_url'],
+                        ]);
+                    }
+                    return new News($news_items);
+                }
+                break;
             case 'image':
+                $msg = WechatMaterial::where(['media_id' => $reply->content['media_id'], 'type' => 'image'])->first();
+                if ($msg) {
+                    return new Image($reply->content['media_id']);
+                }
+                break;
+            case 'video':
+                $msg = WechatMaterial::where(['media_id' => $reply->content['media_id'], 'type' => 'video'])->first();
+                if ($msg) {}
+                break;
+            case 'voice':
+                $msg = WechatMaterial::where(['media_id' => $reply->content['media_id'], 'type' => 'voice'])->first();
+                if ($msg) {
+                    return new Voice($reply->content['media_id']);
+                }
                 break;
         }
     }
