@@ -61,7 +61,7 @@ class MenuController extends ApiController
             ]);
             return $this->message('创建成功');
         } else {
-            throw new ApiException('创建失败，请稍候重试', 400);
+            throw new ApiException();
 //            return $this->failed('创建失败，请稍候重试');
         }
     }
