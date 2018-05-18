@@ -28,85 +28,85 @@ class WechatController extends Controller
     public function serve()
     {
         Log::info('request arrived.');
-        $this->server->push(function ($message) {
-            switch ($message['MsgType']) {
-                case 'event':
-                    switch ($message['Event']) {
-                        case 'subscribe':
-                            $user = $this->users->get($message['FromUserName']);
-
-                            WechatUser::updateOrCreate(
-                                [
-                                    'openid' => $message['FromUserName']
-                                ],
-                                [
-                                    'openid' => $message['FromUserName'],
-                                    'nickname' => $user['nickname'],
-                                    'sex' => $user['sex'],
-                                    'city' => $user['city'],
-                                    'province' => $user['province'],
-                                    'country' => $user['country'],
-                                    'headimgurl' => $user['headimgurl'],
-                                    'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
-                                    'status' => 'subscribe',
-                                    'remark' => $user['remark'],
-                                    'tagid_list' => $user['tagid_list'],
-                                    'subscribe_scene' => $user['subscribe_scene'],
-                                ]
-                            );
-
-                            return '欢迎关注，亲爱的'.$user['nickname'];
-                            break;
-                        case 'unsubscribe':
-                            WechatUser::where('openid', $message['FromUserName'])->update(
-                                [
-                                    'unsubscribe_time' => date('Y-m-d H:i:s'),
-                                    'status' => 'unsubscribe'
-                                ]
-                            );
-                            break;
-                    }
-
-                    return '收到事件消息';
-                    break;
-                case 'text':
-                    Log::info($message['Content']);
-                    $reply_equal = WechatReply::where('is_open', 1)->where(['is_equal' => 'equal', 'keyword' => strtolower($message['Content'])])->first();
-                    if ($reply_equal) {
-                        return $this->messageContent($reply_equal);
-                    }
-                    $reply_contain = WechatReply::where('is_open', 1)->where('is_equal', 'contain')->latest()->get();Log::info($reply_contain);
-                    foreach ($reply_contain as $reply) {
-                        if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
-                            return $this->messageContent($reply);
-                        }
-                    }
-                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
-                    if ($default_reply) {
-                        return $default_reply->content['body'];
-                    }
-                    return '你好';
-                    break;
-                case 'image':
-                    return '收到图片消息';
-                    break;
-                case 'voice':
-                    return '收到语音消息';
-                    break;
-                case 'video':
-                    return '收到视频消息';
-                    break;
-                case 'location':
-                    return '收到坐标消息';
-                    break;
-                case 'link':
-                    return '收到链接消息';
-                    break;
-                // ... 其它消息
-                default:
-                    return '收到其它消息';
-                    break;
-            }
+        $this->server->push(function ($message) {return ['abcd', 'bcd', 'cde'];
+//            switch ($message['MsgType']) {
+//                case 'event':
+//                    switch ($message['Event']) {
+//                        case 'subscribe':
+//                            $user = $this->users->get($message['FromUserName']);
+//
+//                            WechatUser::updateOrCreate(
+//                                [
+//                                    'openid' => $message['FromUserName']
+//                                ],
+//                                [
+//                                    'openid' => $message['FromUserName'],
+//                                    'nickname' => $user['nickname'],
+//                                    'sex' => $user['sex'],
+//                                    'city' => $user['city'],
+//                                    'province' => $user['province'],
+//                                    'country' => $user['country'],
+//                                    'headimgurl' => $user['headimgurl'],
+//                                    'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
+//                                    'status' => 'subscribe',
+//                                    'remark' => $user['remark'],
+//                                    'tagid_list' => $user['tagid_list'],
+//                                    'subscribe_scene' => $user['subscribe_scene'],
+//                                ]
+//                            );
+//
+//                            return '欢迎关注，亲爱的'.$user['nickname'];
+//                            break;
+//                        case 'unsubscribe':
+//                            WechatUser::where('openid', $message['FromUserName'])->update(
+//                                [
+//                                    'unsubscribe_time' => date('Y-m-d H:i:s'),
+//                                    'status' => 'unsubscribe'
+//                                ]
+//                            );
+//                            break;
+//                    }
+//
+//                    return '收到事件消息';
+//                    break;
+//                case 'text':
+//                    Log::info($message['Content']);
+//                    $reply_equal = WechatReply::where('is_open', 1)->where(['is_equal' => 'equal', 'keyword' => strtolower($message['Content'])])->first();
+//                    if ($reply_equal) {
+//                        return $this->messageContent($reply_equal);
+//                    }
+//                    $reply_contain = WechatReply::where('is_open', 1)->where('is_equal', 'contain')->latest()->get();Log::info($reply_contain);
+//                    foreach ($reply_contain as $reply) {
+//                        if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
+//                            return $this->messageContent($reply);
+//                        }
+//                    }
+//                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
+//                    if ($default_reply) {
+//                        return $default_reply->content['body'];
+//                    }
+//                    return '你好';
+//                    break;
+//                case 'image':
+//                    return '收到图片消息';
+//                    break;
+//                case 'voice':
+//                    return '收到语音消息';
+//                    break;
+//                case 'video':
+//                    return '收到视频消息';
+//                    break;
+//                case 'location':
+//                    return '收到坐标消息';
+//                    break;
+//                case 'link':
+//                    return '收到链接消息';
+//                    break;
+//                // ... 其它消息
+//                default:
+//                    return '收到其它消息';
+//                    break;
+//            }
         });
 
         Log::info('return response');
