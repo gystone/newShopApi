@@ -48,7 +48,7 @@ class MenuController extends ApiController
     // TODO: request加验证
     public function create(Request $request)
     {
-        return respond('hah', 500);
+        return respond('hah', 400);
         $buttons = $request->buttons;
 
         $res = $this->menu->create($buttons);
