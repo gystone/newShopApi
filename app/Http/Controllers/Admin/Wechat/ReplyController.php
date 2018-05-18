@@ -38,7 +38,7 @@ class ReplyController extends ApiController
         $res = $reply->update($attributes);
 
         if ($res) {
-            return $this->success($res);
+            return $this->success($reply);
         } else {
             $this->failed('修改失败，请稍候重试');
         }
