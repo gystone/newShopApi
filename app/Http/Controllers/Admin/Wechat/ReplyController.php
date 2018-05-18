@@ -16,9 +16,13 @@ class ReplyController extends ApiController
 
     public function store(Request $request)
     {
-        $attributes = $request->only('rule_name', 'keywords','contents', 'is_reply_all', 'is_open');
-Log::info($attributes);
-        $res = WechatReply::create($attributes);
+        $res = WechatReply::create([
+            'rule_name' => $request->rule_name,
+            'keywords' => $request->keywords,
+            'contents' => $request->contents,
+            'is_reply_all' => $request->is_reply_all,
+            'is_open' => $request->is_open
+        ]);
 
         if ($res) {
             return $this->success($res);
@@ -36,7 +40,11 @@ Log::info($attributes);
     {
         $attributes = $request->only('keywords','contents', 'is_reply_all', 'is_open');
 
-        $res = $reply->update($attributes);
+        $reply->keywords = $request->keywords ?? $reply->keywords;
+        $reply->contents = $request->contents ?? $reply->contents;
+        $reply->is_reply_all = $request->is_reply_all ?? $reply->is_reply_all;
+        $reply->is_open = $request->is_open ?? $reply->is_open;
+        $res = $reply->save();
 
         if ($res) {
             return $this->success($reply);

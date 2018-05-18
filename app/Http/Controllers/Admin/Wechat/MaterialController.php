@@ -304,7 +304,7 @@ class MaterialController extends ApiController
             $wechatMaterial->media_id = $res['media_id'];
             $wechatMaterial->type = 'news';
 
-            if ($wechatMaterial->save()) {Log::info($wechatMaterial);
+            if ($wechatMaterial->save()) {
                 return $this->success($wechatMaterial);
             } else {
                 return $this->failed('上传失败，请稍候重试');
