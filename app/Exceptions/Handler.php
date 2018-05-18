@@ -59,10 +59,6 @@ class Handler extends ExceptionHandler
             return respond('Token无效', 500);
         }
 
-        if ($exception instanceof ValidationException) {
-            return respond($exception->validator->errors()->first(), 400);
-        }
-
         return parent::render($request, $exception);
     }
 }
