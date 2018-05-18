@@ -18,17 +18,22 @@ class WechatController extends Controller
 {
     protected $server;
     protected $users;
+    protected $customer_service;
 
     public function __construct(Application $application)
     {
         $this->server = $application->server;
         $this->users = $application->user;
+        $this->customer_service = $application->customer_service;
     }
 
     public function serve()
     {
         Log::info('request arrived.');
-        $this->server->push(function ($message) {return ['abcd', 'bcd', 'cde'];
+        $this->server->push(function ($message) {
+            $this->customer_service->message('kak1')->to($message['FromUserName'])->send();
+            $this->customer_service->message('aa2')->to($message['FromUserName'])->send();
+            return 'bcd';
 //            switch ($message['MsgType']) {
 //                case 'event':
 //                    switch ($message['Event']) {
