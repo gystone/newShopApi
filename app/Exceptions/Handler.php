@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
@@ -10,6 +11,8 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponse;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -57,6 +60,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof TokenInvalidException) {
             return respond('Token无效', 500);
+        }
+
+        if ($exception instanceof ApiException) {
+            return $this->failed($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);

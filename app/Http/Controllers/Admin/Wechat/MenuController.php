@@ -60,7 +60,7 @@ class MenuController extends ApiController
             ]);
             return $this->message('创建成功');
         } else {
-            return $this->setStatusCode(400)->message('创建失败，请稍候重试','error');
+            return $this->failed('创建失败，请稍候重试');
         }
     }
 
