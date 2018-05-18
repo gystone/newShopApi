@@ -68,18 +68,17 @@ class WechatController extends Controller
                     break;
                 case 'text':
                     Log::info($message['Content']);
-                    $replys = WechatReply::where('is_open', 1);
-                    $reply_equal = $replys->where(['is_equal' => 'equal', 'keyword' => strtolower($message['Content'])])->first();
+                    $reply_equal = WechatReply::where('is_open', 1)->where(['is_equal' => 'equal', 'keyword' => strtolower($message['Content'])])->first();
                     if ($reply_equal) {
                         return $this->messageContent($reply_equal);
                     }
-                    $reply_contain = $replys->where('is_equal', 'contain')->latest()->toSql();Log::info($reply_contain);
-//                    foreach ($reply_contain as $reply) {
-//                        if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
-//                            return $this->messageContent($reply);
-//                        }
-//                    }
-                    $default_reply = $replys->where('keyword', '默认回复')->first();
+                    $reply_contain = WechatReply::where('is_open', 1)->where('is_equal', 'contain')->latest()->get();Log::info($reply_contain);
+                    foreach ($reply_contain as $reply) {
+                        if (stripos(strtolower($message['Content']), $reply->keyword) >= 0) {
+                            return $this->messageContent($reply);
+                        }
+                    }
+                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
                     if ($default_reply) {
                         return $default_reply->content['body'];
                     }
