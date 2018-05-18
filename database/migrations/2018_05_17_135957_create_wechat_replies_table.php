@@ -15,11 +15,11 @@ class CreateWechatRepliesTable extends Migration
     {
         Schema::create('wechat_replies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('keyword', 255);
-            $table->enum('type', ['text', 'image', 'voice', 'video', 'news']);
-            $table->text('content');
-            $table->enum('is_equal', ['equal', 'contain'])->default('equal');
-            $table->boolean('is_open');
+            $table->string('rule_name', 255);
+            $table->text('keywords');
+            $table->text('contents');
+            $table->boolean('is_reply_all')->default(1);
+            $table->boolean('is_open')->default(1);
             $table->timestamps();
         });
     }
