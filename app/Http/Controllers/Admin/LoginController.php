@@ -48,8 +48,8 @@ class LoginController extends ApiController
     public function info()
     {
         return $this->success([
-            'roles' => '',
-            'name' => '',
+            'roles' => ['admin'],
+            'name' => 'zhao',
             'avatar' => ''
         ]);
     }
