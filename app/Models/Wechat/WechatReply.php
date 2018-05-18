@@ -15,6 +15,11 @@ class WechatReply extends Model
 
     public function setKeywordsAttribute($value)
     {
+        foreach ($value as $k => &$v) {
+            if (is_string($v)) {
+                $v = json_decode($v);
+            }
+        }
         $this->attributes['keywords'] = serialize($value);
     }
 
@@ -25,6 +30,11 @@ class WechatReply extends Model
 
     public function setContentsAttribute($value)
     {
+        foreach ($value as $k => &$v) {
+            if (is_string($v)) {
+                $v = json_decode($v);
+            }
+        }
         $this->attributes['contents'] = serialize($value);
     }
 }
