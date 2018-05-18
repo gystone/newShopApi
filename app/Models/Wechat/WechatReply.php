@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WechatReply extends Model
 {
-    protected $fillable = ['keyword', 'type', 'content', 'is_equal', 'is_open'];
+    protected $fillable = ['rule_name', 'keywords','contents', 'is_reply_all', 'is_open'];
 
     public function getKeywordsAttribute($value)
     {
