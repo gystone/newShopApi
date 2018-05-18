@@ -25,6 +25,6 @@ class WechatReply extends Model
 
     public function setContentsAttribute($value)
     {
-        $this->attributes['content'] = serialize($value);
+        $this->attributes['contents'] = serialize($value);
     }
 }
