@@ -61,6 +61,7 @@ class MenuController extends ApiController
             ]);
             return $this->message('创建成功');
         } else {
+            return $this->notFond('');
             throw new ApiException('abc', 400);
 //            return $this->failed('创建失败，请稍候重试');
         }
