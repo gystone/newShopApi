@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
+use App\Exceptions\ApiException;
 use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatMenu;
 use EasyWeChat\OfficialAccount\Application;
@@ -60,7 +61,8 @@ class MenuController extends ApiController
             ]);
             return $this->message('创建成功');
         } else {
-            return $this->failed('创建失败，请稍候重试');
+            throw new ApiException('创建失败，请稍候重试', 400);
+//            return $this->failed('创建失败，请稍候重试');
         }
     }
 
