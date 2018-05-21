@@ -75,8 +75,10 @@ class WechatController extends Controller
                     Log::info($message['Content']);
                     $replys = WechatReply::where('is_open', 1)->get();
 
-                    foreach ($replys as $reply) {Log::info($reply);
-                        return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
+                    foreach ($replys as $reply) {
+                        if ($this->isMatch($reply->keywords, strtolower($message['Content']))) {
+                            return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
+                        }
                     }
 //                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
 //                    if ($default_reply) {
@@ -111,28 +113,25 @@ class WechatController extends Controller
     }
 
     private function messageContent(WechatReply $reply, $openid = null, $content = null)
-    {Log::info($reply->keywords);Log::info($content);
-        if ($this->isMatch($reply->keywords, $content)) {
-            $contents = $reply->contents;
-            if ($reply->is_reply_all) {
-                // 全部发送
-                $last = array_pop($contents);
-                foreach ($contents as $value) {
-                    $this->customer_service->message($this->replyContent($value))->to($openid)->send();
-                }
-                return $this->replyContent($last);
-
-            } else {
-                // 随机一条
-                $reply_rand = $contents[array_rand($contents)];
-
-                return $this->replyContent($reply_rand);
+    {
+        $contents = $reply->contents;
+        if ($reply->is_reply_all) {
+            // 全部发送
+            $last = array_pop($contents);
+            foreach ($contents as $value) {
+                $this->customer_service->message($this->replyContent($value))->to($openid)->send();
             }
-        }
+            return $this->replyContent($last);
 
+        } else {
+            // 随机一条
+            $reply_rand = $contents[array_rand($contents)];
+
+            return $this->replyContent($reply_rand);
+        }
     }
 
-    private function isMatch($keywords, $content) : bool
+    private function isMatch(array $keywords, $content) : bool
     {
         // 匹配关键词
         // 按匹配方式排序
