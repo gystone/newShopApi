@@ -136,7 +136,7 @@ class WechatController extends Controller
     {
         // 匹配关键词
         // 按匹配方式排序
-        $new_keywords = $this->sortArray($keywords);
+        $new_keywords = $this->sortArray($keywords);Log::info($keywords);
         foreach ($new_keywords as $keyword) {
             if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {
                 return true;
