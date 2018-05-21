@@ -111,7 +111,7 @@ class WechatController extends Controller
     }
 
     private function messageContent(WechatReply $reply, $openid = null, $content = null)
-    {Log::info($reply);Log::info($content);
+    {Log::info($reply->keywords);Log::info($content);
         if ($this->isMatch($reply->keywords, $content)) {
             $contents = $reply->contents;
             if ($reply->is_reply_all) {
