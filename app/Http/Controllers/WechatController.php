@@ -57,6 +57,11 @@ class WechatController extends Controller
                                 ]
                             );
 
+                            $subscribe_reply = WechatReply::where('is_open', 1)->where('rule_name', '关注回复')->first();
+                            if ($subscribe_reply) {
+                                return $this->messageContent($subscribe_reply, $message['FromUserName'], strtolower($message['Content']));
+                            }
+
                             return '欢迎关注，亲爱的'.$user['nickname'];
                             break;
                         case 'unsubscribe':
@@ -75,13 +80,15 @@ class WechatController extends Controller
                     Log::info($message['Content']);
                     $replys = WechatReply::where('is_open', 1)->get();
 
-                    foreach ($replys as $reply) {Log::info($reply);
-                        return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
+                    foreach ($replys as $reply) {
+                        if ($this->isMatch($reply->keywords, strtolower($message['Content'])) === true) {
+                            return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
+                        }
                     }
-//                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
-//                    if ($default_reply) {
-//                        return $default_reply->content['body'];
-//                    }
+                    $default_reply = WechatReply::where('is_open', 1)->where('rule_name', '默认回复')->first();
+                    if ($default_reply) {
+                        return $this->messageContent($default_reply, $message['FromUserName'], strtolower($message['Content']));
+                    }
                     return '你好';
                     break;
                 case 'image':
@@ -112,35 +119,32 @@ class WechatController extends Controller
 
     private function messageContent(WechatReply $reply, $openid = null, $content = null)
     {
-        if ($this->isMatch($reply->keywords, $content)) {
-            $contents = $reply->contents;
-            if ($reply->is_reply_all) {
-                // 全部发送
-                $last = array_pop($contents);
-                foreach ($contents as $value) {
-                    $this->customer_service->message($this->replyContent($value))->to($openid)->send();
-                }
-                return $this->replyContent($last);
-
-            } else {
-                // 随机一条
-                $reply_rand = $contents[array_rand($contents)];
-
-                return $this->replyContent($reply_rand);
+        $contents = $reply->contents;
+        if ($reply->is_reply_all) {
+            // 全部发送
+            $last = array_pop($contents);
+            foreach ($contents as $value) {
+                $this->customer_service->message($this->replyContent($value))->to($openid)->send();
             }
-        }
+            return $this->replyContent($last);
 
+        } else {
+            // 随机一条
+            $reply_rand = $contents[array_rand($contents)];
+
+            return $this->replyContent($reply_rand);
+        }
     }
 
     private function isMatch(array $keywords, $content) : bool
     {
         // 匹配关键词
         // 按匹配方式排序
-        $new_keywords = $this->sortArray($keywords);Log::info($keywords);
+        $new_keywords = $this->sortArray($keywords);
         foreach ($new_keywords as $keyword) {
             if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {
                 return true;
-            } elseif ($keyword['match_mode'] === 'contain' && stripos($content, $keyword['content']) >= 0) {
+            } elseif ($keyword['match_mode'] === 'contain' && stripos($keyword['content'], $content) >= 0) {
                 return true;
             }
         }
@@ -152,10 +156,10 @@ class WechatController extends Controller
     {
         $equal_arr = [];
         $contain_arr = [];
-        foreach ($array as $value) {Log::info($value);
+        foreach ($array as $value) {
             if ($value['match_mode'] === 'equal') {
                 $equal_arr[] = $value;
-            } else {
+            } elseif ($value['match_mode'] === 'contain') {
                 $contain_arr[] = $value;
             }
         }
@@ -201,5 +205,10 @@ class WechatController extends Controller
                 }
                 break;
         }
+    }
+
+    public function test()
+    {
+        return $this->customer_service->messages('2018-05-20', '2018-05-21');
     }
 }

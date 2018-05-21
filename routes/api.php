@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::any('wechat', 'WechatController@serve');
+Route::any('test', 'WechatController@test');
 
 Route::group([
     'namespace' => 'Api'
@@ -99,6 +100,10 @@ Route::group([
             $router->get('reply_list', 'ReplyController@list');
             $router->patch('reply_update/{reply}', 'ReplyController@update');
             $router->delete('reply_delete/{reply}', 'ReplyController@delete');
+
+            $router->post('broadcast_send', 'BroadcastRecordController@send');
+            $router->get('broadcast_history', 'BroadcastRecordController@history');
+            $router->delete('broadcast_delete/{record}', 'BroadcastRecordController@delete');
         });
     });
 });

@@ -17,7 +17,7 @@ class WechatReply extends Model
     {
         foreach ($value as $k => &$v) {
             if (is_string($v)) {
-                $v = json_decode($v);
+                $v = json_decode($v, true);
             }
         }
         $this->attributes['keywords'] = serialize($value);
@@ -32,7 +32,7 @@ class WechatReply extends Model
     {
         foreach ($value as $k => &$v) {
             if (is_string($v)) {
-                $v = json_decode($v);
+                $v = json_decode($v, true);
             }
         }
         $this->attributes['contents'] = serialize($value);
