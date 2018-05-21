@@ -35,27 +35,30 @@ class BroadcastMessage implements ShouldQueue
     {
         $record = BroadcastRecord::where(['is_cron' => 1, 'send_time' => date('Y-m-d H:i')])->first();
 
-        switch ($record->types) {
-            case 'text':
-                $message = new Text($record->message);
-                break;
-            case 'image':
-                $message = new Image($record->message);
-                break;
-            case 'news':
-                $message = new Media($record->message, 'mpnews');
-                break;
-            case 'voice':
-                $message = new Media($record->message, 'voice');
-                break;
-            case 'video':
-                $message = new Media($record->message, 'mpvideo');
-                break;
-            default:
-                $message = new Text($record->message);
+        if ($record) {
+            switch ($record->types) {
+                case 'text':
+                    $message = new Text($record->message);
+                    break;
+                case 'image':
+                    $message = new Image($record->message);
+                    break;
+                case 'news':
+                    $message = new Media($record->message, 'mpnews');
+                    break;
+                case 'voice':
+                    $message = new Media($record->message, 'voice');
+                    break;
+                case 'video':
+                    $message = new Media($record->message, 'mpvideo');
+                    break;
+                default:
+                    $message = new Text($record->message);
+            }
+
+            $broadcasting = app('wechat.official_account')->broadcasting;
+            $broadcasting->sendMessage($message, $record->to['users']);
         }
 
-        $broadcasting = app('wechat.official_account')->broadcasting;
-        $broadcasting->sendMessage($message, $record->to['users']);
     }
 }
