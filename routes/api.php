@@ -99,6 +99,9 @@ Route::group([
             $router->get('reply_list', 'ReplyController@list');
             $router->patch('reply_update/{reply}', 'ReplyController@update');
             $router->delete('reply_delete/{reply}', 'ReplyController@delete');
+
+            $router->post('broadcast_send', 'BroadcastController@send');
+            $router->post('broadcast_history', 'BroadcastController@history');
         });
     });
 });

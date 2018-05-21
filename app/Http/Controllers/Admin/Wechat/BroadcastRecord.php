@@ -82,4 +82,9 @@ class BroadcastRecord extends ApiController
         }
 
     }
+
+    public function history()
+    {
+        return $this->success(\App\Models\Wechat\BroadcastRecord::paginate(10));
+    }
 }
