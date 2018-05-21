@@ -100,8 +100,8 @@ Route::group([
             $router->patch('reply_update/{reply}', 'ReplyController@update');
             $router->delete('reply_delete/{reply}', 'ReplyController@delete');
 
-            $router->post('broadcast_send', 'BroadcastController@send');
-            $router->post('broadcast_history', 'BroadcastController@history');
+            $router->post('broadcast_send', 'BroadcastRecordController@send');
+            $router->post('broadcast_history', 'BroadcastRecordController@history');
         });
     });
 });
