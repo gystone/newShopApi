@@ -15,10 +15,12 @@ class BroadcastRecord extends Resource
     public function toArray($request)
     {
         $app = app('wechat.official_account');
-        if (is_array($this->tos['users'])) {
+        if (isset($this->tos['users']) && is_array($this->tos['users'])) {
             $count = count($this->tos['users']);
-        } else {
+        } elseif (isset($this->tos['users'])) {
             $count = $app->user_tag->usersOfTag($this->tos['users'])['count'] ?? 0;
+        } else {
+            $count = $app->user->list()['total'];
         }
         if ($this->msg_id) {
             $status = $app->broadcasting->status($this->msg_id);
