@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\Wechat\BroadcastRecordCollection;
+use App\Jobs\BroadcastMessage;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\Text;
@@ -89,7 +90,7 @@ class BroadcastRecordController extends ApiController
     }
 
     public function history()
-    {
+    {BroadcastMessage::dispatch()->delay();
         return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(10)));
     }
 }

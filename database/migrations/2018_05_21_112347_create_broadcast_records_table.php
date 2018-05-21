@@ -20,7 +20,7 @@ class CreateBroadcastRecordsTable extends Migration
             $table->string('message');
             $table->boolean('is_cron')->default(0);
             $table->timestamp('send_time');
-            $table->string('msg_id');
+            $table->string('msg_id')->nullable();
         });
     }
 
