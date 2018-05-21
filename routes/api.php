@@ -103,6 +103,7 @@ Route::group([
 
             $router->post('broadcast_send', 'BroadcastRecordController@send');
             $router->get('broadcast_history', 'BroadcastRecordController@history');
+            $router->delete('broadcast_delete/{record}', 'BroadcastRecordController@delete');
         });
     });
 });

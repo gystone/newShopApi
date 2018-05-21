@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\Wechat\BroadcastRecordCollection;
 use App\Jobs\BroadcastMessage;
+use App\Models\Wechat\BroadcastRecord;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\Text;
@@ -98,5 +99,15 @@ class BroadcastRecordController extends ApiController
     public function history()
     {
         return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(10)));
+    }
+
+    public function delete(BroadcastRecord $record)
+    {
+        $res = $this->broadcasting->delete($record->msg_id);
+
+        if ($res['errcode'] === 0) {
+            $record->delete();
+            return $this->message('删除成功');
+        }
     }
 }
