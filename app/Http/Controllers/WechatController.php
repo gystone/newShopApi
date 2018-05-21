@@ -75,7 +75,7 @@ class WechatController extends Controller
                     Log::info($message['Content']);
                     $replys = WechatReply::where('is_open', 1)->get();
 
-                    foreach ($replys as $reply) {
+                    foreach ($replys as $reply) {Log::info($reply);
                         return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                     }
 //                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
