@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Wechat;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Log;
 
 class BroadcastRecord extends Resource
 {
@@ -19,7 +20,7 @@ class BroadcastRecord extends Resource
             $count = count($this->tos['users']);
         } elseif (isset($this->tos['users'])) {
             $count = $app->user_tag->usersOfTag($this->tos['users'])['count'] ?? 0;
-        } else {
+        } else {Log::info($app->user->list());
             $count = $app->user->list()['total'] ?? 0;
         }
         if ($this->msg_id) {
