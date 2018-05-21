@@ -13,7 +13,7 @@ class BroadcastRecord extends Model
 
     public function getSendTimeAttribute($value)
     {
-        return date('Y-m-d H:i', $value);
+        return date('Y-m-d H:i', strtotime($value));
     }
 
     public function setToAttribute($value)
