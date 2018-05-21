@@ -206,4 +206,9 @@ class WechatController extends Controller
                 break;
         }
     }
+
+    public function test()
+    {
+        return $this->customer_service->messages('2018-05-20', '2018-05-21');
+    }
 }
