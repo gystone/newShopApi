@@ -9,7 +9,7 @@ use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
 
-class BroadcastRecord extends ApiController
+class BroadcastRecordController extends ApiController
 {
     private $broadcasting;
 
