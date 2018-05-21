@@ -8,7 +8,7 @@ class BroadcastRecord extends Model
 {
     protected $table = 'wechat_broadcast_records';
     protected $fillable = [
-        'to', 'types', 'message', 'is_cron', 'send_time'
+        'tos', 'types', 'message', 'is_cron', 'send_time'
     ];
     public $timestamps = false;
 
