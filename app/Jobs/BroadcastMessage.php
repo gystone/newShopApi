@@ -16,14 +16,16 @@ class BroadcastMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $record;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(BroadcastRecord $record)
     {
+        $this->record = $record;
     }
 
     /**
@@ -33,7 +35,8 @@ class BroadcastMessage implements ShouldQueue
      */
     public function handle()
     {
-        $record = BroadcastRecord::where(['is_cron' => 1, 'send_time' => date('Y-m-d H:i')])->first();
+//        $record = BroadcastRecord::where(['is_cron' => 1, 'send_time' => date('Y-m-d H:i')])->first();
+        $record = $this->record;
 
         if ($record) {
             switch ($record->types) {
