@@ -153,11 +153,11 @@ class WechatController extends Controller
         $equal_arr = [];
         $contain_arr = [];
         foreach ($array as $value) {Log::info($value);
-//            if ($value['match_mode'] === 'equal') {
-//                $equal_arr[] = $value;
-//            } else {
-//                $contain_arr[] = $value;
-//            }
+            if ($value['match_mode'] === 'equal') {
+                $equal_arr[] = $value;
+            } else {
+                $contain_arr[] = $value;
+            }
         }
 
         return array_merge($equal_arr, $contain_arr);
