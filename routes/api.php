@@ -76,6 +76,8 @@ Route::group([
             $router->patch('material_news_update/{wechatMaterial}', 'MaterialController@materialNewsUpdate');
             $router->post('material_news_upload', 'MaterialController@materialNewsUpload');
             $router->post('material_img_upload', 'MaterialController@materialImgUpload');
+            $router->post('material_voice_upload', 'MaterialController@materialVoiceUpload');
+            $router->post('material_video_upload', 'MaterialController@materialVideoUpload');
             $router->delete('material_delete', 'MaterialController@materialDelete');
 
             $router->get('tag_sync', 'TagController@sync');

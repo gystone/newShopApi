@@ -92,67 +92,67 @@ class MaterialController extends ApiController
             } while (true);
             Log::info('图文素材同步完成');
 
-//            Log::info('正在同步视频素材');
-//        $offset = 0;
-//        $count = 20;
-//        do {
-//            $video_list = $this->material->list('video', $offset, $count);
-//
-//            if ($video_list['item_count'] < 1) {
-//                break;
-//            }
-//
-//            foreach ($video_list['item_count'] as $k => $v) {
-//                WechatMaterial::updateOrCreate([
-//                    'media_id' => $v['media_id']
-//                ], [
-//                    'media_id' => $v['media_id'],
-//                    'type' => 'video',
-//                    'content' => array(
-//                        'name' => $v['name'],
-//                        'update_time' => $v['update_time'],
-//                        'url' => $v['url']
-//                    )
-//                ]);
-//            }
-//
-//            $offset += $video_list['item_count'];
-//            $count = $video_list['total_count'] - $offset;
-//            Log::info($video_list);
-//
-//        } while (true);
-//            Log::info('视频素材同步完成');
-//
-//            Log::info('正在同步音频素材');
-//        $offset = 0;
-//        $count = 20;
-//        do {
-//            $voice_list = $this->material->list('voice', $offset, $count);
-//
-//            if ($voice_list['item_count'] < 1) {
-//                break;
-//            }
-//
-//            foreach ($voice_list['item_count'] as $k => $v) {
-//                WechatMaterial::updateOrCreate([
-//                    'media_id' => $v['media_id']
-//                ], [
-//                    'media_id' => $v['media_id'],
-//                    'type' => 'voice',
-//                    'content' => array(
-//                        'name' => $v['name'],
-//                        'update_time' => $v['update_time'],
-//                        'url' => $v['url']
-//                    )
-//                ]);
-//            }
-//
-//            $offset += $voice_list['item_count'];
-//            $count = $voice_list['total_count'] - $offset;
-//            Log::info($voice_list);
-//
-//        } while (true);
-//            Log::info('音频素材同步完成');
+            Log::info('正在同步视频素材');
+        $offset = 0;
+        $count = 20;
+        do {
+            $video_list = $this->material->list('video', $offset, $count);
+
+            if ($video_list['item_count'] < 1) {
+                break;
+            }
+
+            foreach ($video_list['item_count'] as $k => $v) {
+                WechatMaterial::updateOrCreate([
+                    'media_id' => $v['media_id']
+                ], [
+                    'media_id' => $v['media_id'],
+                    'type' => 'video',
+                    'content' => array(
+                        'name' => $v['name'],
+                        'update_time' => $v['update_time'],
+                        'url' => $v['url']
+                    )
+                ]);
+            }
+
+            $offset += $video_list['item_count'];
+            $count = $video_list['total_count'] - $offset;
+            Log::info($video_list);
+
+        } while (true);
+        Log::info('视频素材同步完成');
+
+        Log::info('正在同步音频素材');
+        $offset = 0;
+        $count = 20;
+        do {
+            $voice_list = $this->material->list('voice', $offset, $count);
+
+            if ($voice_list['item_count'] < 1) {
+                break;
+            }
+
+            foreach ($voice_list['item_count'] as $k => $v) {
+                WechatMaterial::updateOrCreate([
+                    'media_id' => $v['media_id']
+                ], [
+                    'media_id' => $v['media_id'],
+                    'type' => 'voice',
+                    'content' => array(
+                        'name' => $v['name'],
+                        'update_time' => $v['update_time'],
+                        'url' => $v['url']
+                    )
+                ]);
+            }
+
+            $offset += $voice_list['item_count'];
+            $count = $voice_list['total_count'] - $offset;
+            Log::info($voice_list);
+
+        } while (true);
+        Log::info('音频素材同步完成');
 
             return $this->message('同步成功');
         } catch (\Exception $exception) {
@@ -341,10 +341,72 @@ class MaterialController extends ApiController
                         'name' => $image->getClientOriginalName(),
                         'update_time' => date('Y-m-d H:i:s'),
                         'url' => $res['url'],
-                        'path' =>$path,
+                        'path' => $path,
                         )
                 ]);
                 return $this->success($img_res);
+            } else {
+                return $this->failed('上传失败，请稍候重试');
+            }
+
+        }
+    }
+
+    public function materialVoiceUpload(Request $request)
+    {
+        $image = $request->file('voice');
+
+        $path = 'wechat/voices/';
+
+        if ($img_path = Storage::disk('admin')->put($path, $image)) {
+            $res = $this->material->uploadImage('uploads/'.$img_path);
+            $path = Storage::disk('admin')->url($img_path);
+
+            if (isset($res['media_id'])) {
+                $voice_res = WechatMaterial::updateOrCreate([
+                    'media_id' => $res['media_id']
+                ], [
+                    'media_id' => $res['media_id'],
+                    'type' => 'voice',
+                    'content' => array(
+                        'name' => $image->getClientOriginalName(),
+                        'update_time' => date('Y-m-d H:i:s'),
+                        'url' => $res['url'],
+                        'path' => $path,
+                    )
+                ]);
+                return $this->success($voice_res);
+            } else {
+                return $this->failed('上传失败，请稍候重试');
+            }
+
+        }
+    }
+
+    public function materialVideoUpload(Request $request)
+    {
+        $image = $request->file('video');
+
+        $path = 'wechat/videos/';
+
+        if ($img_path = Storage::disk('admin')->put($path, $image)) {
+            $res = $this->material->uploadImage('uploads/'.$img_path);
+            $path = Storage::disk('admin')->url($img_path);
+
+            if (isset($res['media_id'])) {
+                $video_res = WechatMaterial::updateOrCreate([
+                    'media_id' => $res['media_id']
+                ], [
+                    'media_id' => $res['media_id'],
+                    'type' => 'video',
+                    'content' => array(
+                        'name' => $image->getClientOriginalName(),
+                        'update_time' => date('Y-m-d H:i:s'),
+                        'url' => $res['url'],
+                        'path' => $path,
+                    )
+                ]);
+                return $this->success($video_res);
             } else {
                 return $this->failed('上传失败，请稍候重试');
             }
