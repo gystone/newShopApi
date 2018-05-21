@@ -101,7 +101,7 @@ Route::group([
             $router->delete('reply_delete/{reply}', 'ReplyController@delete');
 
             $router->post('broadcast_send', 'BroadcastRecordController@send');
-            $router->post('broadcast_history', 'BroadcastRecordController@history');
+            $router->get('broadcast_history', 'BroadcastRecordController@history');
         });
     });
 });
