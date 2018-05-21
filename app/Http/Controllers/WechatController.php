@@ -78,10 +78,10 @@ class WechatController extends Controller
                     foreach ($replys as $reply) {
                         return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                     }
-                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
-                    if ($default_reply) {
-                        return $default_reply->content['body'];
-                    }
+//                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
+//                    if ($default_reply) {
+//                        return $default_reply->content['body'];
+//                    }
                     return '你好';
                     break;
                 case 'image':
