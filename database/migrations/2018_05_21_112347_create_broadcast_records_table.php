@@ -13,13 +13,14 @@ class CreateBroadcastRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('broadcast_records', function (Blueprint $table) {
+        Schema::create('wechat_broadcast_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('to')->nullable();
+            $table->text('tos')->nullable();
             $table->enum('types', ['text', 'image', 'news', 'voice', 'video']);
             $table->string('message');
             $table->boolean('is_cron')->default(0);
             $table->timestamp('send_time');
+            $table->string('msg_id');
         });
     }
 

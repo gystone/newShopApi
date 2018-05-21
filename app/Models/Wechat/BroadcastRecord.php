@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BroadcastRecord extends Model
 {
+    protected $table = 'wechat_broadcast_records';
     protected $fillable = [
         'to', 'types', 'message', 'is_cron', 'send_time'
     ];

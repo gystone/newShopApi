@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\Wechat\BroadcastRecordCollection;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\Text;
@@ -25,7 +26,7 @@ class BroadcastRecordController extends ApiController
             $send_time = $request->send_time;
 
             $record = \App\Models\Wechat\BroadcastRecord::create([
-                'to' => $request->to,
+                'tos' => $request->to,
                 'message' => $request->message,
                 'types' => $request->types,
                 'is_cron' => $request->is_cron,
@@ -64,12 +65,15 @@ class BroadcastRecordController extends ApiController
             $res = $this->broadcasting->sendMessage($message, $request->to['users']);
             if ($res['errcode'] === 0) {
                 $record = \App\Models\Wechat\BroadcastRecord::create([
-                    'to' => $request->to,
+                    'tos' => $request->to,
                     'message' => $request->message,
                     'types' => $request->types,
                     'is_cron' => $request->is_cron,
                     'send_time' => $send_time
                 ]);
+
+                $record->msg_id = $res['msg_id'];
+                $record->save();
 
                 if ($record) {
                     return $this->success($record);
@@ -86,6 +90,6 @@ class BroadcastRecordController extends ApiController
 
     public function history()
     {
-        return $this->success(\App\Models\Wechat\BroadcastRecord::paginate(10));
+        return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(10)));
     }
 }

@@ -57,7 +57,9 @@ class BroadcastMessage implements ShouldQueue
             }
 
             $broadcasting = app('wechat.official_account')->broadcasting;
-            $broadcasting->sendMessage($message, $record->to['users']);
+            $res = $broadcasting->sendMessage($message, $record->to['users']);
+            $record->msg_id = $res['msg_id'];
+            $record->save();
         }
 
     }
