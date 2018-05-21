@@ -85,14 +85,14 @@ class BroadcastRecordController extends ApiController
 //                return $this->failed('发送失败, 消息未发送');
 //            }
 
-            if ($record) {
-                BroadcastMessage::dispatch($record)->delay($send_time);
-                return $this->success($record);
-            } else {
-                return $this->failed('发送失败, 消息未发送');
-            }
         }
 
+        if ($record) {
+            BroadcastMessage::dispatch($record)->delay($send_time);
+            return $this->success($record);
+        } else {
+            return $this->failed('发送失败, 消息未发送');
+        }
     }
 
     public function history()
