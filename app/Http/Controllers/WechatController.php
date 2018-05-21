@@ -139,7 +139,7 @@ class WechatController extends Controller
         foreach ($new_keywords as $keyword) {
             if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {Log::info(1);Log::info($content === strtolower($keyword['content']));
                 return true;
-            } elseif ($keyword['match_mode'] === 'contain' && stripos($content, $keyword['content']) >= 0) {Log::info(2);Log::info(stripos($content, $keyword['content']));
+            } elseif ($keyword['match_mode'] === 'contain' && stripos($keyword['content'], $content) >= 0) {Log::info(2);Log::info(stripos($content, $keyword['content']));
                 return true;
             }
         }
