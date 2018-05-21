@@ -15,6 +15,7 @@ class BroadcastRecordController extends ApiController
 
     public function __construct(Application $application)
     {
+        auth()->shouldUse('api_admin');
         $this->broadcasting = $application->broadcasting;
     }
 
