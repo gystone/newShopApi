@@ -132,7 +132,7 @@ class WechatController extends Controller
 
     }
 
-    private function isMatch(array $keywords, $content) : bool
+    private function isMatch($keywords, $content) : bool
     {
         // 匹配关键词
         // 按匹配方式排序
