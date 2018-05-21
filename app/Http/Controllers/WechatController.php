@@ -57,6 +57,11 @@ class WechatController extends Controller
                                 ]
                             );
 
+                            $subscribe_reply = WechatReply::where('is_open', 1)->where('rule_name', '关注回复')->first();
+                            if ($subscribe_reply) {
+                                return $this->messageContent($subscribe_reply, $message['FromUserName'], strtolower($message['Content']));
+                            }
+
                             return '欢迎关注，亲爱的'.$user['nickname'];
                             break;
                         case 'unsubscribe':
@@ -80,10 +85,10 @@ class WechatController extends Controller
                             return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                         }
                     }
-//                    $default_reply = WechatReply::where('is_open', 1)->where('keyword', '默认回复')->first();
-//                    if ($default_reply) {
-//                        return $default_reply->content['body'];
-//                    }
+                    $default_reply = WechatReply::where('is_open', 1)->where('rule_name', '默认回复')->first();
+                    if ($default_reply) {
+                        return $this->messageContent($default_reply, $message['FromUserName'], strtolower($message['Content']));
+                    }
                     return '你好';
                     break;
                 case 'image':
@@ -137,9 +142,9 @@ class WechatController extends Controller
         // 按匹配方式排序
         $new_keywords = $this->sortArray($keywords);
         foreach ($new_keywords as $keyword) {
-            if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {Log::info(1);Log::info($content === strtolower($keyword['content']));
+            if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {
                 return true;
-            } elseif ($keyword['match_mode'] === 'contain' && stripos($keyword['content'], $content) >= 0) {Log::info(2);Log::info(stripos($content, $keyword['content']));
+            } elseif ($keyword['match_mode'] === 'contain' && stripos($keyword['content'], $content) >= 0) {
                 return true;
             }
         }
