@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Wechat\BroadcastRecordController;
+use App\Models\Wechat\BroadcastRecord;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\Text;
@@ -33,7 +33,7 @@ class BroadcastMessage implements ShouldQueue
      */
     public function handle()
     {
-        $record = BroadcastRecordController::where(['is_cron' => 1, 'send_time' => date('Y-m-d H:i')])->first();
+        $record = BroadcastRecord::where(['is_cron' => 1, 'send_time' => date('Y-m-d H:i')])->first();
 
         switch ($record->types) {
             case 'text':

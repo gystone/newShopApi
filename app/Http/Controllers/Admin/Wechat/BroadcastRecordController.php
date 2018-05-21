@@ -23,7 +23,7 @@ class BroadcastRecordController extends ApiController
         if ($request->is_cron) {
             $send_time = $request->send_time;
 
-            $record = \App\Models\Wechat\BroadcastRecordController::create([
+            $record = \App\Models\Wechat\BroadcastRecord::create([
                 'to' => $request->to,
                 'message' => $request->message,
                 'types' => $request->types,
@@ -62,7 +62,7 @@ class BroadcastRecordController extends ApiController
 
             $res = $this->broadcasting->sendMessage($message, $request->to['users']);
             if ($res['errcode'] === 0) {
-                $record = \App\Models\Wechat\BroadcastRecordController::create([
+                $record = \App\Models\Wechat\BroadcastRecord::create([
                     'to' => $request->to,
                     'message' => $request->message,
                     'types' => $request->types,
@@ -85,6 +85,6 @@ class BroadcastRecordController extends ApiController
 
     public function history()
     {
-        return $this->success(\App\Models\Wechat\BroadcastRecordController::paginate(10));
+        return $this->success(\App\Models\Wechat\BroadcastRecord::paginate(10));
     }
 }

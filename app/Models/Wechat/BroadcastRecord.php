@@ -4,7 +4,7 @@ namespace App\Models\Wechat;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BroadcastRecordController extends Model
+class BroadcastRecord extends Model
 {
     protected $fillable = [
         'to', 'types', 'message', 'is_cron', 'send_time'
