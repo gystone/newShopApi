@@ -351,13 +351,13 @@ class MaterialController extends ApiController
 
     public function materialVoiceUpload(Request $request)
     {
-        $image = $request->file('voice');
+        $voice = $request->file('voice');
 
         $path = 'wechat/voices/';
 
-        if ($img_path = Storage::disk('admin')->put($path, $image)) {
-            $res = $this->material->uploadVoice('uploads/'.$img_path);
-            $path = Storage::disk('admin')->url($img_path);
+        if ($voice_path = Storage::disk('admin')->put($path, $voice)) {
+            $res = $this->material->uploadVoice('uploads/'.$voice_path);
+            $path = Storage::disk('admin')->url($voice_path);
 Log::info($res);
             if (isset($res['media_id'])) {
                 $voice_res = WechatMaterial::updateOrCreate([
@@ -366,7 +366,7 @@ Log::info($res);
                     'media_id' => $res['media_id'],
                     'type' => 'voice',
                     'content' => array(
-                        'name' => $image->getClientOriginalName(),
+                        'name' => $voice->getClientOriginalName(),
                         'update_time' => date('Y-m-d H:i:s'),
                         'url' => $res['url'],
                         'path' => $path,
@@ -382,13 +382,15 @@ Log::info($res);
 
     public function materialVideoUpload(Request $request)
     {
-        $image = $request->file('video');
+        $video = $request->file('video');
+        $title = $request->title;
+        $description = $request->description;
 
         $path = 'wechat/videos/';
 
-        if ($img_path = Storage::disk('admin')->put($path, $image)) {
-            $res = $this->material->uploadVideo('uploads/'.$img_path);
-            $path = Storage::disk('admin')->url($img_path);
+        if ($video_path = Storage::disk('admin')->put($path, $video)) {
+            $res = $this->material->uploadVideo('uploads/'.$video_path, $title, $description);
+            $path = Storage::disk('admin')->url($video_path);
 Log::info($res);
             if (isset($res['media_id'])) {
                 $video_res = WechatMaterial::updateOrCreate([
@@ -397,7 +399,8 @@ Log::info($res);
                     'media_id' => $res['media_id'],
                     'type' => 'video',
                     'content' => array(
-                        'name' => $image->getClientOriginalName(),
+                        'title' => $title,
+                        'description' => $description,
                         'update_time' => date('Y-m-d H:i:s'),
                         'url' => $res['url'],
                         'path' => $path,
