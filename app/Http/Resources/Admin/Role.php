@@ -15,14 +15,14 @@ class Role extends Resource
     public function toArray($request)
     {
         $checkedCities = [];
-        if (is_array($this->premissions)) {
-            foreach ($this->premissions as $premission) {dd($premission);
-                if (isset($premission['children'])) {
-                    foreach ($premission['children'] as $child) {
+        if (is_array($this->permissions)) {
+            foreach ($this->permissions as $permission) {dd($permission);
+                if (isset($permission['children'])) {
+                    foreach ($permission['children'] as $child) {
                         $checkedCities = array_merge($checkedCities, $child['meta']['checkedCities']);
                     }
                 } else {
-                    $checkedCities = array_merge($checkedCities, $premission['meta']['checkedCities']);
+                    $checkedCities = array_merge($checkedCities, $permission['meta']['checkedCities']);
                 }
             }
         }
