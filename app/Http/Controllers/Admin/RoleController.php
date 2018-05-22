@@ -38,7 +38,7 @@ class RoleController extends ApiController
     {
         DB::beginTransaction();
 
-        $attributes = $request->only('name', 'slug', 'permissions');
+        $attributes = $request->only('name', 'permissions');
         $permission_ids = $request->permission_id;
 
         try {
@@ -67,7 +67,7 @@ class RoleController extends ApiController
     {
         DB::beginTransaction();
 
-        $attributes = $request->only('name', 'slug', 'permissions');
+        $attributes = $request->only('name', 'permissions');
         $permission_ids = $request->permission_id;
 
         try {
