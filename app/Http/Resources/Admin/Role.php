@@ -16,7 +16,7 @@ class Role extends Resource
     {
         $checkedCities = [];
         if (isset($this->premissions) && $this->permissions) {
-            foreach ($this->premissions as $premission) {
+            foreach ($this->premissions as $premission) {dd($premission);
                 if (isset($premission['children'])) {
                     foreach ($premission['children'] as $child) {
                         $checkedCities = array_merge($checkedCities, $child['meta']['checkedCities']);
