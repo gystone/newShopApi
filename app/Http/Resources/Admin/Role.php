@@ -15,7 +15,7 @@ class Role extends Resource
     public function toArray($request)
     {
         $checkedCities = [];
-        if (isset($this->premissions) && $this->permissions) {
+        if (isset($this->premissions)) {
             foreach ($this->premissions as $premission) {dd($premission);
                 if (isset($premission['children'])) {
                     foreach ($premission['children'] as $child) {
