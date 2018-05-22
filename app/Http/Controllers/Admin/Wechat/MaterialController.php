@@ -39,7 +39,7 @@ class MaterialController extends ApiController
 
                 foreach ($image_list['item'] as $k => $v) {
                     $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/images/'.pathinfo(parse_url($v['url'])['path'])['basename'];
+                    $path = 'wechat/images/'.md5($v['media_id'].$v['name']);
                     if (Storage::disk('admin')->put($path, $stream)) {
                         WechatMaterial::updateOrCreate([
                             'media_id' => $v['media_id']
