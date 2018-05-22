@@ -39,7 +39,7 @@ class MaterialController extends ApiController
 
                 foreach ($image_list['item'] as $k => $v) {
                     $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/images/'.md5($v['name'].$v['media_id']);
+                    $path = 'wechat/images/'.pathinfo(parse_url($v['url'])['path'])['basename'];
                     if (Storage::disk('admin')->put($path, $stream)) {
                         WechatMaterial::updateOrCreate([
                             'media_id' => $v['media_id']
@@ -139,17 +139,21 @@ Log::info($voice_list);
             }
 
             foreach ($voice_list['item'] as $k => $v) {
-                WechatMaterial::updateOrCreate([
-                    'media_id' => $v['media_id']
-                ], [
-                    'media_id' => $v['media_id'],
-                    'type' => 'voice',
-                    'content' => array(
-                        'name' => $v['name'],
-                        'update_time' => $v['update_time'],
-                        'url' => $v['url']
-                    )
-                ]);
+                $stream = $this->material->get($v['media_id']);
+                $path = 'wechat/images/'.$v['name'];
+                if (Storage::disk('admin')->put($path, $stream)) {
+                    WechatMaterial::updateOrCreate([
+                        'media_id' => $v['media_id']
+                    ], [
+                        'media_id' => $v['media_id'],
+                        'type' => 'voice',
+                        'content' => array(
+                            'name' => $v['name'],
+                            'update_time' => $v['update_time'],
+                            'path' => $path
+                        )
+                    ]);
+                }
             }
 
             $offset += $voice_list['item_count'];
