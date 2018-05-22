@@ -103,8 +103,9 @@ class MaterialController extends ApiController
 
             foreach ($video_list['item'] as $k => $v) {
                 $video_source = $this->material->get($v['media_id']);
-                if ($video_path = Storage::disk('admin')->put('wechat/videos/'.$video_source['title'], file_get_contents($video_source['down_url']))) {
-                    $path = Storage::disk('admin')->url($video_path);Log::info($video_path);
+                $path = 'wechat/videos/'.md5($video_source['title']);
+                if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url']))) {
+                    $video_path = Storage::disk('admin')->url($path);
                     WechatMaterial::updateOrCreate([
                         'media_id' => $v['media_id']
                     ], [
@@ -115,7 +116,7 @@ class MaterialController extends ApiController
                             'description' => $video_source['description'],
                             'update_time' => $v['update_time'],
                             'down_url' => $video_source['down_url'],
-                            'path' => $path
+                            'path' => $video_path
                         )
                     ]);
                 }
