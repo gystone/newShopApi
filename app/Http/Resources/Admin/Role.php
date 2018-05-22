@@ -18,7 +18,7 @@ class Role extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'permissions' => new RolePermissionCollection($this->permissions),
+//            'permissions' => new RolePermissionCollection($this->permissions),
             'created_at' => $this->created_at !== null ? date_format($this->created_at, 'Y-m-d H:i:s') : null,
             'updated_at' => $this->updated_at !== null ? date_format($this->updated_at, 'Y-m-d H:i:s') : null,
         );
