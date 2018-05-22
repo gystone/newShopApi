@@ -152,7 +152,7 @@ class MaterialController extends ApiController
         Log::info('音频素材同步完成');
 
             return $this->message('同步成功');
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
             return $this->failed('同步失败，错误：'.$exception->getMessage());
         }
     }
@@ -393,6 +393,7 @@ Log::info($res);
             $path = Storage::disk('admin')->url($video_path);
 Log::info($res);
             if (isset($res['media_id'])) {
+                $video_source = $this->material->get($res['media_id']);
                 $video_res = WechatMaterial::updateOrCreate([
                     'media_id' => $res['media_id']
                 ], [
@@ -402,7 +403,7 @@ Log::info($res);
                         'title' => $title,
                         'description' => $description,
                         'update_time' => date('Y-m-d H:i:s'),
-                        'url' => $res['url'],
+                        'down_url' => $video_source['down_url'] ?? '',
                         'path' => $path,
                     )
                 ]);
