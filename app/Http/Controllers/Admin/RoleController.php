@@ -37,15 +37,15 @@ class RoleController extends ApiController
     {
         DB::beginTransaction();
 
-        $attributes = $request->only('name', 'slug');
+        $attributes = $request->only('name', 'slug', 'permissions');
         $permission_ids = $request->permission_id;
 
         try {
             $role = $this->role->create($attributes);
 
-            if (isset($permission_ids) && is_array($permission_ids)) {
-                $this->insertRolePermission($permission_ids, $role->id);
-            }
+//            if (isset($permission_ids) && is_array($permission_ids)) {
+//                $this->insertRolePermission($permission_ids, $role->id);
+//            }
 
             DB::commit();
             return $this->success($role);
@@ -66,16 +66,16 @@ class RoleController extends ApiController
     {
         DB::beginTransaction();
 
-        $attributes = $request->only('name', 'slug');
+        $attributes = $request->only('name', 'slug', 'permissions');
         $permission_ids = $request->permission_id;
 
         try {
             $role->update($attributes);
 
-            if (isset($permission_ids) && is_array($permission_ids)) {
-                DB::table('admin_role_permissions')->where('role_id', $role->id)->delete();
-                $this->insertRolePermission($permission_ids, $role->id);
-            }
+//            if (isset($permission_ids) && is_array($permission_ids)) {
+//                DB::table('admin_role_permissions')->where('role_id', $role->id)->delete();
+//                $this->insertRolePermission($permission_ids, $role->id);
+//            }
 
             DB::commit();
             return $this->success($role);

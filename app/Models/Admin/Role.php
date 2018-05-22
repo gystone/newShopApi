@@ -9,8 +9,18 @@ class Role extends Model
     protected $table = 'admin_roles';
 
     protected $fillable = [
-        'name', 'slug'
+        'name', 'slug', 'permissions'
     ];
+
+    public function getPermissionsAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+    public function setPermissionsAttribute($value)
+    {
+        $this->attributes['permissions'] = serialize($value);
+    }
 
     public function users()
     {
