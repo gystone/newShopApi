@@ -6,7 +6,6 @@ use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -102,12 +101,9 @@ class MaterialController extends ApiController
                 break;
             }
 
-            $client = new Client(['verify' => false]);
             foreach ($video_list['item'] as $k => $v) {
                 $video_source = $this->material->get($v['media_id']);
-                $response = $client->get($video_source['down_url'], ['save_to' => public_path('uploads/wechat/videos/'.$video_source['title'])]);
-                dd($response);
-                if ($video_path = Storage::disk('admin')->put('wechat/videos/'.$video_source['title'], $video_source['down_url'])) {
+                if ($video_path = Storage::disk('admin')->put('wechat/videos/'.$video_source['title'], file_get_contents($video_source['down_url']))) {
                     $path = Storage::disk('admin')->url($video_path);Log::info($video_path);
                     WechatMaterial::updateOrCreate([
                         'media_id' => $v['media_id']
