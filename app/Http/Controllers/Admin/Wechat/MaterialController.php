@@ -356,9 +356,9 @@ class MaterialController extends ApiController
         $path = 'wechat/voices/';
 
         if ($img_path = Storage::disk('admin')->put($path, $image)) {
-            $res = $this->material->uploadImage('uploads/'.$img_path);
+            $res = $this->material->uploadVoice('uploads/'.$img_path);
             $path = Storage::disk('admin')->url($img_path);
-
+Log::info($res);
             if (isset($res['media_id'])) {
                 $voice_res = WechatMaterial::updateOrCreate([
                     'media_id' => $res['media_id']
@@ -387,9 +387,9 @@ class MaterialController extends ApiController
         $path = 'wechat/videos/';
 
         if ($img_path = Storage::disk('admin')->put($path, $image)) {
-            $res = $this->material->uploadImage('uploads/'.$img_path);
+            $res = $this->material->uploadVideo('uploads/'.$img_path);
             $path = Storage::disk('admin')->url($img_path);
-
+Log::info($res);
             if (isset($res['media_id'])) {
                 $video_res = WechatMaterial::updateOrCreate([
                     'media_id' => $res['media_id']
