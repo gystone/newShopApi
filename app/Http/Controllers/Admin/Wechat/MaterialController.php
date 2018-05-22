@@ -101,7 +101,7 @@ class MaterialController extends ApiController
                 break;
             }
 
-            foreach ($video_list['item_count'] as $k => $v) {
+            foreach ($video_list['item'] as $k => $v) {
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
                 ], [
@@ -131,7 +131,7 @@ class MaterialController extends ApiController
                 break;
             }
 
-            foreach ($voice_list['item_count'] as $k => $v) {
+            foreach ($voice_list['item'] as $k => $v) {
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
                 ], [
