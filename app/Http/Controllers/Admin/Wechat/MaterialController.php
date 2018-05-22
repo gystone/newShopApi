@@ -106,7 +106,7 @@ class MaterialController extends ApiController
             foreach ($video_list['item'] as $k => $v) {
                 $video_source = $this->material->get($v['media_id']);
                 $response = $client->get($video_source['down_url'], ['save_to' => public_path('uploads/wechat/videos/'.$video_source['title'])]);
-                Log::info($response);
+                dd($response);
                 if ($video_path = Storage::disk('admin')->put('wechat/videos/'.$video_source['title'], $video_source['down_url'])) {
                     $path = Storage::disk('admin')->url($video_path);Log::info($video_path);
                     WechatMaterial::updateOrCreate([
