@@ -100,7 +100,7 @@ class MaterialController extends ApiController
             if ($video_list['item_count'] < 1) {
                 break;
             }
-
+Log::info($video_list);
             foreach ($video_list['item'] as $k => $v) {
                 WechatMaterial::updateOrCreate([
                     'media_id' => $v['media_id']
