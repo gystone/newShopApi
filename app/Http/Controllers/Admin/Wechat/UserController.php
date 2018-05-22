@@ -89,7 +89,7 @@ class UserController extends ApiController
 
     public function unblock(Request $request)
     {
-        $openids = $request->openid;
+        $openids = $request->openids;
 
         if (is_array($openids)) {
             $res = $this->user->unblock($openids);
