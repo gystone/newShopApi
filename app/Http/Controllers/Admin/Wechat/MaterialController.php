@@ -102,17 +102,23 @@ class MaterialController extends ApiController
             }
 Log::info($video_list);
             foreach ($video_list['item'] as $k => $v) {
-                WechatMaterial::updateOrCreate([
-                    'media_id' => $v['media_id']
-                ], [
-                    'media_id' => $v['media_id'],
-                    'type' => 'video',
-                    'content' => array(
-                        'name' => $v['name'],
-                        'update_time' => $v['update_time'],
-                        'url' => $v['url']
-                    )
-                ]);
+                $video_source = $this->material->get($v['media_id']);
+                if ($video_path = Storage::disk('admin')->put('wechat/voices/', $video_source['down_url'])) {
+                    $path = Storage::disk('admin')->url($video_path);
+                    WechatMaterial::updateOrCreate([
+                        'media_id' => $v['media_id']
+                    ], [
+                        'media_id' => $v['media_id'],
+                        'type' => 'video',
+                        'content' => array(
+                            'name' => $video_source['title'],
+                            'description' => $video_source['description'],
+                            'update_time' => $v['update_time'],
+                            'down_url' => $video_source['down_url'],
+                            'path' => $path
+                        )
+                    ]);
+                }
             }
 
             $offset += $video_list['item_count'];
@@ -126,7 +132,7 @@ Log::info($video_list);
         $count = 20;
         do {
             $voice_list = $this->material->list('voice', $offset, $count);
-
+Log::info($voice_list);
             if ($voice_list['item_count'] < 1) {
                 break;
             }
@@ -400,7 +406,7 @@ Log::info($res);
                     'media_id' => $res['media_id'],
                     'type' => 'video',
                     'content' => array(
-                        'title' => $title,
+                        'name' => $title,
                         'description' => $description,
                         'update_time' => date('Y-m-d H:i:s'),
                         'down_url' => $video_source['down_url'] ?? '',
