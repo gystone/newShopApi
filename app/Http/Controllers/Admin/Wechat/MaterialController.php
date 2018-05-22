@@ -369,9 +369,8 @@ Log::info($voice_list);
         if ($voice_path = Storage::disk('admin')->put($path, $voice)) {
             $res = $this->material->uploadVoice('uploads/'.$voice_path);
             $path = Storage::disk('admin')->url($voice_path);
-Log::info($res);
+
             if (isset($res['media_id'])) {
-                $voice_source = $this->material->get($res['media_id']);Log::info($voice_source);
                 $voice_res = WechatMaterial::updateOrCreate([
                     'media_id' => $res['media_id']
                 ], [
@@ -380,7 +379,6 @@ Log::info($res);
                     'content' => array(
                         'name' => $voice->getClientOriginalName(),
                         'update_time' => date('Y-m-d H:i:s'),
-                        'url' => $res['url'],
                         'path' => $path,
                     )
                 ]);
