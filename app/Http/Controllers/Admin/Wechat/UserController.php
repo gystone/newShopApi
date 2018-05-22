@@ -6,7 +6,6 @@ use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends ApiController
 {
@@ -44,7 +43,6 @@ class UserController extends ApiController
                         'subscribe_scene' => $user['subscribe_scene'],
                     ]
                 );
-                Log::info('同步粉丝入库' . $user['nickname'] . $v);
             }
 
             return $this->message('同步成功');

@@ -39,7 +39,7 @@ class MaterialController extends ApiController
 
                 foreach ($image_list['item'] as $k => $v) {
                     $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/images/'.md5($v['name'].$v['media_id']);Log::info($path);
+                    $path = 'wechat/images/'.md5($v['name'].$v['media_id']);
                     if (Storage::disk('admin')->put($path, $stream)) {
                         WechatMaterial::updateOrCreate([
                             'media_id' => $v['media_id']
@@ -58,7 +58,6 @@ class MaterialController extends ApiController
 
                 $offset += $image_list['item_count'];
                 $count = $image_list['total_count'] - $offset;
-                Log::info($image_list);
 
             } while (true);
             Log::info('图片素材同步完成');
@@ -118,7 +117,6 @@ class MaterialController extends ApiController
 
             $offset += $video_list['item_count'];
             $count = $video_list['total_count'] - $offset;
-            Log::info($video_list);
 
         } while (true);
         Log::info('视频素材同步完成');
@@ -149,7 +147,6 @@ class MaterialController extends ApiController
 
             $offset += $voice_list['item_count'];
             $count = $voice_list['total_count'] - $offset;
-            Log::info($voice_list);
 
         } while (true);
         Log::info('音频素材同步完成');
@@ -295,7 +292,7 @@ class MaterialController extends ApiController
             ]);
         }
 
-        $res = $this->material->uploadArticle($article);Log::info($res);
+        $res = $this->material->uploadArticle($article);
         if (isset($res['media_id'])) {
             $res_news = $this->material->get($res['media_id']);
             $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
