@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\RoleCollection;
 use App\Models\Admin\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RoleController extends ApiController
 {
@@ -49,7 +50,7 @@ class RoleController extends ApiController
 
             DB::commit();
             return $this->success($role);
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
             return $this->failed('添加失败，请稍候重试');
         }
@@ -79,7 +80,7 @@ class RoleController extends ApiController
 
             DB::commit();
             return $this->success($role);
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
             return $this->failed('更新失败，请稍候重试');
         }
