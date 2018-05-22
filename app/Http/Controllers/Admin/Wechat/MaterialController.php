@@ -150,7 +150,7 @@ Log::info($voice_list);
                         'content' => array(
                             'name' => $v['name'],
                             'update_time' => $v['update_time'],
-                            'path' => $path
+                            'path' => Storage::disk('admin')->url($path)
                         )
                     ]);
                 }
