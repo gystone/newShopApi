@@ -140,7 +140,7 @@ Log::info($voice_list);
 
             foreach ($voice_list['item'] as $k => $v) {
                 $stream = $this->material->get($v['media_id']);
-                $path = 'wechat/images/'.$v['name'];
+                $path = 'wechat/voices/'.$v['name'];
                 if (Storage::disk('admin')->put($path, $stream)) {
                     WechatMaterial::updateOrCreate([
                         'media_id' => $v['media_id']
