@@ -367,6 +367,7 @@ Log::info($voice_list);
             $path = Storage::disk('admin')->url($voice_path);
 Log::info($res);
             if (isset($res['media_id'])) {
+                $voice_source = $this->material->get($res['media_id']);Log::info($voice_source);
                 $voice_res = WechatMaterial::updateOrCreate([
                     'media_id' => $res['media_id']
                 ], [
@@ -398,7 +399,7 @@ Log::info($res);
         if ($video_path = Storage::disk('admin')->put($path, $video)) {
             $res = $this->material->uploadVideo('uploads/'.$video_path, $title, $description);
             $path = Storage::disk('admin')->url($video_path);
-Log::info($res);
+
             if (isset($res['media_id'])) {
                 $video_source = $this->material->get($res['media_id']);
                 $video_res = WechatMaterial::updateOrCreate([
