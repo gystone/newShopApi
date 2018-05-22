@@ -27,7 +27,7 @@ class MaterialController extends ApiController
      */
     public function materialSync()
     {
-        try {
+//        try {
             Log::info('正在同步图片素材');
             $offset = 0;
             $count = 20;
@@ -152,9 +152,9 @@ class MaterialController extends ApiController
         Log::info('音频素材同步完成');
 
             return $this->message('同步成功');
-        } catch (\Exception $exception) {Log::info($exception->getMessage());
-            return $this->failed('同步失败，错误：'.$exception->getMessage());
-        }
+//        } catch (\Exception $exception) {Log::info($exception->getMessage());
+//            return $this->failed('同步失败，错误：'.$exception->getMessage());
+//        }
     }
 
     /**
