@@ -104,7 +104,7 @@ class MaterialController extends ApiController
             foreach ($video_list['item'] as $k => $v) {
                 $video_source = $this->material->get($v['media_id']);
                 if ($video_path = Storage::disk('admin')->put('wechat/voices/', $video_source['down_url'])) {
-                    $path = Storage::disk('admin')->url($video_path);
+                    $path = Storage::disk('admin')->url($video_path);Log::info($video_path);
                     WechatMaterial::updateOrCreate([
                         'media_id' => $v['media_id']
                     ], [
@@ -133,7 +133,7 @@ class MaterialController extends ApiController
         do {
             $voice_list = $this->material->list('voice', $offset, $count);
 Log::info($voice_list);
-            if ($voice_list['item_count'] < 1) {
+            if (!isset($voice_list['item_count']) || $voice_list['item_count'] < 1) {
                 break;
             }
 
