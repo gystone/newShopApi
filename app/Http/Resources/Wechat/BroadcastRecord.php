@@ -20,7 +20,7 @@ class BroadcastRecord extends Resource
             $count = count($this->tos['users']);
         } elseif (isset($this->tos['users'])) {
             $count = $app->user_tag->usersOfTag($this->tos['users'])['count'] ?? 0;
-        } else {Log::info($app->user->list());
+        } else {
             $count = $app->user->list()['total'] ?? 0;
         }
         if ($this->msg_id) {
