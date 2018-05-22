@@ -21,7 +21,7 @@ class Role extends Resource
                     foreach ($permission['children'] as $child) {
                         $checkedCities = array_merge($checkedCities, $child['meta']['checkedCities']);
                     }
-                } else {
+                } elseif (isset($permission['meta'])) {
                     $checkedCities = array_merge($checkedCities, $permission['meta']['checkedCities']);
                 }
             }
