@@ -20,18 +20,4 @@ trait CheckedCities
         }
         return collect($checkedCities);
     }
-
-    public function can(string $permission) : bool
-    {
-        if ($this->getCheckedCities()->contains($permission)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function cannot(string $permission) : bool
-    {
-        return !$this->can($permission);
-    }
 }

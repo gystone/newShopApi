@@ -2,13 +2,14 @@
 
 namespace App\Models\Admin;
 
+use App\Traits\HasPermissioins;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class AdminUser extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, HasPermissioins;
 
     /**
      * The attributes that are mass assignable.
