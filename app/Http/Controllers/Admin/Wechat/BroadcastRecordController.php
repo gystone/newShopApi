@@ -108,9 +108,13 @@ class BroadcastRecordController extends ApiController
 
     public function delete(BroadcastRecord $record)
     {
-        $res = $this->broadcasting->delete($record->msg_id);
+        if (isset($record->msg_id)) {
+            $res = $this->broadcasting->delete($record->msg_id);
+        } else {
+            $res = 0;
+        }
 
-        if ($res['errcode'] === 0) {
+        if ($res['errcode'] === 0 || $res === 0) {
             $record->delete();
             return $this->message('删除成功');
         }
