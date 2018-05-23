@@ -90,8 +90,8 @@ class BroadcastRecordController extends ApiController
         }
 
         if ($record) {
-            $delay_d = ceil((strtotime($send_time) - time()) / 86400);Log::info($delay_d);
-            $delay_h = ceil((strtotime($send_time) - time()) % 86400 / 3600);Log::info($delay_h);
+            $delay_d = floor((strtotime($send_time) - time()) / 86400);Log::info($delay_d);
+            $delay_h = floor((strtotime($send_time) - time()) % 86400 / 3600);Log::info($delay_h);
             $delay_m = ceil((strtotime($send_time) - time()) % 86400 % 3600 / 60);Log::info($delay_m);
             BroadcastMessage::dispatch($record)->delay(now()->addMinutes($delay_m)->addHours($delay_h)->addDays($delay_d));
             return $this->success($record);
