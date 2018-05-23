@@ -25,7 +25,7 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {Permission::check('abc');
+    {
         return $this->success(new RoleCollection($this->role->all()));
     }
 
