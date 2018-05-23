@@ -49,8 +49,9 @@ class LoginController extends ApiController
     {
         return $this->success([
             'roles' => '',
-            'name' => 'zhao',
-            'avatar' => ''
+            'name' => auth('api_admin')->user()->username,
+            'avatar' => '',
+            'checkedCities' => auth('api_admin')->user()->getCheckedCities(),
         ]);
     }
 }

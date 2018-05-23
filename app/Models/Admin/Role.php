@@ -2,13 +2,10 @@
 
 namespace App\Models\Admin;
 
-use App\Traits\CheckedCities;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    use CheckedCities;
-
     protected $table = 'admin_roles';
 
     protected $fillable = [
