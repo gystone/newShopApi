@@ -89,6 +89,7 @@ Route::group([
 
             $router->get('user_sync', 'UserController@sync');
             $router->get('user_list', 'UserController@list');
+            $router->patch('user_remark/{user}', 'UserController@remark');
             $router->post('user_block', 'UserController@block');
             $router->post('user_unblock', 'UserController@unblock');
             $router->get('user_blacklist', 'UserController@blacklist');
