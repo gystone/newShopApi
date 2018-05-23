@@ -40,4 +40,15 @@ class Permission
 
         exit;
     }
+
+    public function handle($request, \Closure $next)
+    {
+        $response = $next($request);
+
+        if (auth('api_admin')->guest()) {
+            return $response;
+        }
+
+        return $response;
+    }
 }
