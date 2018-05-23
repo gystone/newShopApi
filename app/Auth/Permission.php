@@ -3,7 +3,9 @@
 namespace App\Auth;
 
 use App\Traits\ApiResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class Permission
 {
@@ -23,7 +25,19 @@ class Permission
     }
 
     public static function error()
-    {Log::info('kaka');dd('拒绝访问，权限不足');
-        return response()->json('拒绝访问，权限不足', 400);
+    {Log::info('kaka');
+        $response = response('拒绝访问，权限不足', 400);
+        return static::respond($response);
+    }
+
+    public static function respond(Response $response)
+    {
+        $next = function () use ($response) {
+            return $response;
+        };
+
+        (new static())->handle(Request::capture(), $next)->send();
+
+        exit;
     }
 }
