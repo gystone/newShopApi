@@ -17,6 +17,11 @@ class BroadcastRecord extends Model
         return date('Y-m-d H:i', strtotime($value));
     }
 
+    public function setSendTimeAttribute($value)
+    {
+        $this->attributes['send_time'] = is_string($value) ? date('Y-m-d H:i', strtotime($value)) : $value;
+    }
+
     public function setToAttribute($value)
     {
         $this->attributes['to'] = serialize($value);
