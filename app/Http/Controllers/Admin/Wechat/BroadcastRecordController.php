@@ -91,7 +91,7 @@ class BroadcastRecordController extends ApiController
 
         if ($record) {
             $delay = floor((strtotime($send_time) - time()) % 86400 / 60);Log::info($delay);
-            BroadcastMessage::dispatch($record)->delay($delay);
+            BroadcastMessage::dispatch($record)->delay(now()->addMinutes($delay));
             return $this->success($record);
         } else {
             return $this->failed('发送失败, 消息未发送');
