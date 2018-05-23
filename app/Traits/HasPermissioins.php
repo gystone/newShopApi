@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
+
 trait HasPermissioins
 {
     public function getCheckedCities()
@@ -22,7 +24,7 @@ trait HasPermissioins
     }
 
     public function isCan(string $permission) : bool
-    {
+    {Log::info($this->getCheckedCities());
         if ($this->getCheckedCities()->contains($permission)) {
             return true;
         }
