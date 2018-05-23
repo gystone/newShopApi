@@ -55,11 +55,11 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof UnauthorizedHttpException) {
-            return respond($exception->getMessage(), 401);
+            return $this->failed($exception->getMessage(), 401);
         }
 
         if ($exception instanceof TokenInvalidException) {
-            return respond('Token无效', 500);
+            return $this->failed('Token无效', 500);
         }
 
         if ($exception instanceof ApiException) {
