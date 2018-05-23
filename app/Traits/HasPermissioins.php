@@ -33,7 +33,7 @@ trait HasPermissioins
     }
 
     public function isCannot(string $permission) : bool
-    {
+    {Log::info($this->isCan($permission));
         return !$this->isCan($permission);
     }
 }

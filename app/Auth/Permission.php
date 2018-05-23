@@ -3,6 +3,7 @@
 namespace App\Auth;
 
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Log;
 
 class Permission
 {
@@ -18,7 +19,7 @@ class Permission
             return;
         }
 
-        if (auth('api_admin')->user()->isCannot($permission)) {
+        if (auth('api_admin')->user()->isCannot($permission)) {Log::info(1231);
             static::error();
         }
     }
