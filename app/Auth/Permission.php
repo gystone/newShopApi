@@ -26,6 +26,6 @@ class Permission
 
     public static function error()
     {Log::info('kaka');
-        return '拒绝访问，权限不足';
+        return response()->json('拒绝访问，权限不足', 400);
     }
 }
