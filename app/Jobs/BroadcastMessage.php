@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class BroadcastMessage implements ShouldQueue
 {
@@ -58,11 +59,11 @@ class BroadcastMessage implements ShouldQueue
                 default:
                     $message = new Text($record->message);
             }
-
-            $broadcasting = app('wechat.official_account')->broadcasting;
-            $res = $broadcasting->sendMessage($message, $record->to['users']);
-            $record->msg_id = $res['msg_id'];
-            $record->save();
+Log::info('定时群发消息3：00');
+//            $broadcasting = app('wechat.official_account')->broadcasting;
+//            $res = $broadcasting->sendMessage($message, $record->to['users']);
+//            $record->msg_id = $res['msg_id'];
+//            $record->save();
         }
 
     }
