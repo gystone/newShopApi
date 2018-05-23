@@ -2,7 +2,6 @@
 
 namespace App\Auth;
 
-use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;

@@ -43,17 +43,12 @@ class UserController extends ApiController
 
         $attributes = $request->only(['username', 'name', 'avatar', 'password']);
         $role_ids = $request->role_id;
-        $permission_ids = $request->permission_id;
 
         try {
             $user = $this->user->create($attributes);
 
             if (isset($role_ids) && is_array($role_ids)) {
                 $this->insertRoleUser($role_ids, $user->id);
-            }
-
-            if (isset($permission_ids) && is_array($permission_ids)) {
-                $this->insertUserPermission($permission_ids, $user->id);
             }
 
             DB::commit();
@@ -76,7 +71,6 @@ class UserController extends ApiController
     {
         $attributes = $request->only(['username', 'name', 'avatar', 'password']);
         $role_ids = $request->role_id;
-        $permission_ids = $request->permission_id;
 
         DB::beginTransaction();
 
@@ -87,12 +81,6 @@ class UserController extends ApiController
                 DB::table('admin_role_users')->where('user_id', $user->id)->delete();
                 $this->insertRoleUser($role_ids, $user->id);
             }
-
-            if (isset($permission_ids) && is_array($permission_ids)) {
-                DB::table('admin_user_permissions')->where('user_id', $user->id)->delete();
-                $this->insertUserPermission($permission_ids, $user->id);
-            }
-
 
             DB::commit();
 
@@ -115,7 +103,6 @@ class UserController extends ApiController
 
         try {
             DB::table('admin_role_users')->where('user_id', $user->id)->delete();
-            DB::table('admin_user_permissions')->where('user_id', $user->id)->delete();
             $user->delete();
             DB::commit();
             return $this->message('删除成功');
@@ -131,14 +118,6 @@ class UserController extends ApiController
             $role_users[$k] = array('role_id' => $v, 'user_id' => $id);
         }
         DB::table('admin_role_users')->insert($role_users);
-    }
-
-    private function insertUserPermission(array $permission_ids, int $id) {
-        $user_permissions = array();
-        foreach ($permission_ids as $k => $v) {
-            $user_permissions[$k] = array('permission_id' => $v, 'user_id' => $id);
-        }
-        DB::table('admin_user_permissions')->insert($user_permissions);
     }
 
     public function uploadAvatar(Request $request)

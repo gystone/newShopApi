@@ -31,14 +31,12 @@ class UserRequest extends FormRequest
                     'avatar' => 'required|mimes:jpeg,bmp,png,gif',
                     'password' => 'required|confirmed',
                     'role_id' => 'required',
-                    'permission_id' => 'required|exists:admin_permissions,id',
                 ];
                 break;
             case 'PATCH':
                 return [
                     'password' => 'min:6|confirmed',
                     'role_id' => 'exists:admin_roles,id',
-                    'permission_id' => 'exists:admin_permissions,id',
                 ];
                 break;
         }
