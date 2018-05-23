@@ -59,7 +59,7 @@ class BroadcastMessage implements ShouldQueue
                 default:
                     $message = new Text($record->message);
             }
-Log::info('定时群发消息3：00');
+Log::info($record->send_time);
 //            $broadcasting = app('wechat.official_account')->broadcasting;
 //            $res = $broadcasting->sendMessage($message, $record->to['users']);
 //            $record->msg_id = $res['msg_id'];
