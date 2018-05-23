@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Log;
 
 class Permission
 {
-    use ApiResponse;
-
     public static function check($permission)
     {
         if (is_array($permission)) {
