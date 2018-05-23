@@ -27,6 +27,10 @@ class BroadcastRecordController extends ApiController
     {
         if ($request->is_cron) {
             $send_time = $request->send_time;
+            $delay_d = floor((strtotime($send_time) - time()) / 86400);
+            $delay_h = floor((strtotime($send_time) - time()) % 86400 / 3600);
+            $delay_m = ceil((strtotime($send_time) - time()) % 86400 % 3600 / 60);
+            $delay = $delay_d * 24 * 60 + $delay_h * 60 + $delay_m;
 
             $record = \App\Models\Wechat\BroadcastRecord::create([
                 'tos' => $request->to,
@@ -43,6 +47,7 @@ class BroadcastRecordController extends ApiController
 //            }
         } else {
             $send_time = date('Y-m-d H:i');
+            $delay = 0;
 
             // 群发消息
 //            switch ($request->types) {
@@ -90,10 +95,6 @@ class BroadcastRecordController extends ApiController
         }
 
         if ($record) {
-            $delay_d = floor((strtotime($send_time) - time()) / 86400);Log::info($delay_d);
-            $delay_h = floor((strtotime($send_time) - time()) % 86400 / 3600);Log::info($delay_h);
-            $delay_m = ceil((strtotime($send_time) - time()) % 86400 % 3600 / 60);Log::info($delay_m);
-            $delay = $delay_d * 24 * 60 + $delay_h * 60 + $delay_m; Log::info($delay);
             BroadcastMessage::dispatch($record)->delay(now()->addMinutes($delay));
             return $this->success($record);
         } else {
