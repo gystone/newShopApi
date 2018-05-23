@@ -6,9 +6,9 @@ trait HasPermissioins
 {
     public function can(string $permission) : bool
     {
-        if ($this->roles->getCheckedCities()->flatten()->contains($permission)) {
-            return true;
-        }
+//        if ($this->roles->getCheckedCities()->flatten()->contains($permission)) {
+//            return true;
+//        }
 
         return false;
     }
