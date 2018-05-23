@@ -18,6 +18,6 @@ trait CheckedCities
                 }
             }
         }
-        return $checkedCities;
+        return collect($checkedCities);
     }
 }
