@@ -11,6 +11,7 @@ use EasyWeChat\Kernel\Messages\Media;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BroadcastRecordController extends ApiController
 {
@@ -89,7 +90,8 @@ class BroadcastRecordController extends ApiController
         }
 
         if ($record) {
-            BroadcastMessage::dispatch($record)->delay(date_parse_from_format('Y-m-d H:i', $send_time));
+            $delay = floor((strtotime($send_time) - now()) % 86400 / 60);Log::info($delay);
+            BroadcastMessage::dispatch($record)->delay($delay);
             return $this->success($record);
         } else {
             return $this->failed('发送失败, 消息未发送');
