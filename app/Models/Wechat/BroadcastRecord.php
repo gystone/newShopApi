@@ -19,7 +19,7 @@ class BroadcastRecord extends Model
 
     public function setToAttribute($value)
     {
-        $this->attributes['to'] = serialize($value);
+        $this->attributes['tos'] = serialize($value);
     }
 
     public function getToAttribute($value)
