@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Auth\Permission;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\Admin\RoleCollection;
 use App\Models\Admin\Role;
@@ -24,7 +25,7 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {Permission::check('abc');
         return $this->success(new RoleCollection($this->role->all()));
     }
 
