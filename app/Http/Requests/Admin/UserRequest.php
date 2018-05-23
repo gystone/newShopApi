@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
                     'name' => 'required',
                     'avatar' => 'required|mimes:jpeg,bmp,png,gif',
                     'password' => 'required|confirmed',
-                    'role_id' => 'required',
+                    'role_id' => 'required|exists:admin_roles,id',
                 ];
                 break;
             case 'PATCH':
@@ -40,6 +40,19 @@ class UserRequest extends FormRequest
                 ];
                 break;
         }
+    }
 
+    public function messages()
+    {
+        return [
+            'username.required' => '请输入用户名',
+            'name.required' => '请输入姓名',
+            'avatar.required' => '头像不能为空',
+            'avatar.mimes' => '头像格式不合法',
+            'password.required' => '请输入密码',
+            'password.confirmed' => '密码不匹配',
+            'role_id.required' => '请分配角色',
+            'role_id.exists' => '角色非法'
+        ];
     }
 }
