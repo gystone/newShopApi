@@ -62,6 +62,10 @@ class Handler extends ExceptionHandler
             return $this->failed('Token无效', 500);
         }
 
+        if ($exception instanceof ValidationException) {
+            return $this->failed($exception->getMessage(), 400);
+        }
+
         if ($exception instanceof ApiException) {
             return $this->failed($exception->getMessage(), $exception->getCode());
         }
