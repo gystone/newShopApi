@@ -25,6 +25,6 @@ class Permission
 
     public static function error()
     {
-        return self::failed('拒绝访问，权限不足');
+        return '拒绝访问，权限不足';
     }
 }
