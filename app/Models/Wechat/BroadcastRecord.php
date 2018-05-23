@@ -17,12 +17,12 @@ class BroadcastRecord extends Model
         return date('Y-m-d H:i', strtotime($value));
     }
 
-    public function setToAttribute($value)
+    public function setTosAttribute($value)
     {
         $this->attributes['tos'] = serialize($value);
     }
 
-    public function getToAttribute($value)
+    public function getTosAttribute($value)
     {
         return unserialize($value);
     }
