@@ -10,6 +10,7 @@ use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Transfer;
+use EasyWeChat\Kernel\Messages\Video;
 use EasyWeChat\Kernel\Messages\Voice;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Support\Facades\Log;
@@ -196,7 +197,12 @@ class WechatController extends Controller
                 break;
             case 'video':
                 $msg = WechatMaterial::where(['media_id' => $reply['content'], 'type' => 'video'])->first();
-                if ($msg) {}
+                if ($msg) {
+                    return new Video($msg->media_id, [
+                        'title' => $msg->content['name'],
+                        'description' => $msg->content['description']
+                    ]);
+                }
                 break;
             case 'voice':
                 $msg = WechatMaterial::where(['media_id' => $reply['content'], 'type' => 'voice'])->first();
