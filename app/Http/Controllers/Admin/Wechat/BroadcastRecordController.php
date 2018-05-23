@@ -26,7 +26,7 @@ class BroadcastRecordController extends ApiController
     {
         if ($request->is_cron) {
             $send_time = $request->send_time;
-dd($send_time);
+
             $record = \App\Models\Wechat\BroadcastRecord::create([
                 'tos' => $request->to,
                 'message' => $request->message,
