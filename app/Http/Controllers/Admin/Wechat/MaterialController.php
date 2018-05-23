@@ -209,7 +209,7 @@ Log::info($voice_list);
             return $this->failed('非法访问！', 400);
         }
 
-        return $this->success(WechatMaterial::where('type', $type)->get());
+        return $this->success(WechatMaterial::where('type', $type)->paginate(10));
     }
 
     /**
