@@ -18,7 +18,7 @@ class Permission
             return;
         }
 
-        if (auth('api_admin')->user()->cannot($permission)) {
+        if (auth('api_admin')->user()->isCannot($permission)) {
             static::error();
         }
     }

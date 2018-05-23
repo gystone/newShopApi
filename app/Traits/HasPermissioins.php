@@ -21,7 +21,7 @@ trait HasPermissioins
         return collect($checkedCities);
     }
 
-    public function can(string $permission) : bool
+    public function isCan(string $permission) : bool
     {
         if ($this->getCheckedCities()->contains($permission)) {
             return true;
@@ -30,8 +30,8 @@ trait HasPermissioins
         return false;
     }
 
-    public function cannot(string $permission) : bool
+    public function isCannot(string $permission) : bool
     {
-        return !$this->can($permission);
+        return !$this->isCan($permission);
     }
 }
