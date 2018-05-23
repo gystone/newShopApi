@@ -48,16 +48,16 @@ class MenuController extends ApiController
     // TODO: request加验证
     public function create(Request $request)
     {
-        $buttons = $request->buttons;
+        $body = $request->body;
 
-        $res = $this->menu->create($buttons);
+        $res = $this->menu->create($body['buttons']);
 
         if ($res['errcode'] === 0) {
             WechatMenu::updateOrCreate([
                 'type' => 'normal'
             ], [
                 'type' => 'normal',
-                'buttons' => $buttons
+                'buttons' => $body
             ]);
             return $this->message('创建成功');
         } else {

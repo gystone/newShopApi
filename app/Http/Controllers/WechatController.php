@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wechat\WechatMaterial;
+use App\Models\Wechat\WechatMenu;
 use App\Models\Wechat\WechatReply;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\Kernel\Messages\Image;
@@ -73,9 +74,14 @@ class WechatController extends Controller
                                 ]
                             );
                             break;
+                        case 'CLICK':
+                            $menu = WechatMenu::where('type', 'normal')->first();
+                            if ($menu) {
+                                $msg = $menu->buttons['msg'][$message['EventKey']];
+                                return $this->replyContent($msg);
+                            }
+                            break;
                     }
-
-                    return '收到事件消息';
                     break;
                 case 'text':
                     Log::info($message['Content']);
@@ -86,31 +92,15 @@ class WechatController extends Controller
                             return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                         }
                     }
-                    $default_reply = WechatReply::where('is_open', 1)->where('rule_name', '默认回复')->first();
-                    if ($default_reply) {
-                        return $this->messageContent($default_reply, $message['FromUserName'], strtolower($message['Content']));
-                    }
                     return '你好';
                     break;
-                case 'image':
-                    return '收到图片消息';
-                    break;
-                case 'voice':
-                    return '收到语音消息';
-                    break;
-                case 'video':
-                    return '收到视频消息';
-                    break;
-                case 'location':
-                    return '收到坐标消息';
-                    break;
-                case 'link':
-                    return '收到链接消息';
-                    break;
-                // ... 其它消息
                 default:
                     return '收到其它消息';
                     break;
+            }
+            $default_reply = WechatReply::where('is_open', 1)->where('rule_name', '默认回复')->first();
+            if ($default_reply) {
+                return $this->messageContent($default_reply, $message['FromUserName'], strtolower($message['Content']));
             }
         });
 
