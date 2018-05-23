@@ -19,14 +19,18 @@ class Permission
             return;
         }
 
-        if (auth('api_admin')->user()->isCannot($permission)) {Log::info(1231);
+        if (auth('api_admin')->user()->isCannot($permission)) {
             static::error();
         }
     }
 
     public static function error()
-    {Log::info('kaka');
-        $response = response('拒绝访问，权限不足', 400);
+    {
+        $response = response([
+            'status' => 'error',
+            'code' => 400,
+            'message' => '拒绝访问，权限不足'
+        ], 400);
         return static::respond($response);
     }
 
