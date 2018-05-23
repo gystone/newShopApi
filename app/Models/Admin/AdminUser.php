@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class AdminUser extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasPermissioins;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
