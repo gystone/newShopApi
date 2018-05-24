@@ -54,7 +54,7 @@ class RoleController extends ApiController
 
     public function show(Role $role)
     {
-        return new \App\Http\Resources\Admin\Role($role);
+        return $this->success(new \App\Http\Resources\Admin\Role($role));
     }
 
     /**
