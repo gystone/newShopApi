@@ -53,7 +53,7 @@ class TagController extends ApiController
             DB::commit();
 
             return $this->message('同步完成');
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
             return $this->failed('同步失败，请稍候重试');
         }
