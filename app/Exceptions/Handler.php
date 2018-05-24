@@ -81,10 +81,6 @@ class Handler extends ExceptionHandler
             return $this->failed('非法请求', 404);
         }
 
-        if ($exception instanceof ApiException) {
-            return $this->failed($exception->getMessage(), $exception->getCode());
-        }
-
         return parent::render($request, $exception);
     }
 }
