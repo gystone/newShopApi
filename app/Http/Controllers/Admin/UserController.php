@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\UserCollection;
 use App\Models\Admin\AdminUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends ApiController
@@ -33,7 +34,7 @@ class UserController extends ApiController
 
         $list = $this->user;
         if ($sort) {
-            foreach ($sort as $k => $v) {
+            foreach ($sort as $k => $v) {Log::info($v);Log::info($k);
                 $list = $list->orderBy($k, $v);
             }
         }
