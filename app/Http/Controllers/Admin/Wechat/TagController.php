@@ -35,8 +35,10 @@ class TagController extends ApiController
                 $tag_users_list = $this->tag->usersOfTag($v['id']);
 
                 $tag_users_db = [];
-                foreach ($tag_users_list['data']['openid'] as $item) {
-                    $tag_users_db[] = ['tag_id' => $v['id'], 'openid' => $item];
+                if (isset($tag_users_list['data']['openid'])) {
+                    foreach ($tag_users_list['data']['openid'] as $item) {
+                        $tag_users_db[] = ['tag_id' => $v['id'], 'openid' => $item];
+                    }
                 }
                 DB::table('wechat_tag_users')->insert($tag_users_db);
 
