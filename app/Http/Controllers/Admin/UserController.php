@@ -34,13 +34,13 @@ class UserController extends ApiController
 
         $list = $this->user;
         if ($sort) {
-            foreach ($sort as $k => $v) {Log::info($v);Log::info($k);
+            foreach ($sort as $k => $v) {
                 $list = $list->orderBy($k, $v);
             }
         }
         if ($search) {
             foreach ($search as $k => $v) {
-                $list = $list->where($k, '%'.$v.'%');
+                $list = $list->where($k, 'like', '%'.$v.'%');
             }
         }
         return $this->success(new UserCollection($list->paginate(10)));
