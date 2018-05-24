@@ -13,6 +13,6 @@ class WechatTag extends Model
 
     public function tag_users()
     {
-        return $this->belongsToMany(WechatUser::class, 'wechat_tag_users', 'openid', 'tag_id');
+        return $this->belongsToMany(WechatUser::class, 'wechat_tag_users', 'tag_id', 'openid');
     }
 }
