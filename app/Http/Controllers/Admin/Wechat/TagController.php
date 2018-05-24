@@ -115,7 +115,7 @@ class TagController extends ApiController
             foreach ($tagids as $tagid) {
                 $res = $this->tag->tagUsers($openids, $tagid);
             }
-
+Log::info($res);
             // FIXME: 存入数据表
             if ($res['errcode'] === 0) {
                 return $this->message('标签设置成功');
