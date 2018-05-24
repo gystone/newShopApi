@@ -108,11 +108,14 @@ class TagController extends ApiController
 
     public function tagUsers(Request $request)
     {
-        $openids = $request->openid;
-        $tagid = $request->tagid;
+        $openids = $request->openids;
+        $tagids = $request->tagids;
 
         if (is_array($openids)) {
-            $res = $this->tag->tagUsers($openids, $tagid);Log::info($res);
+            foreach ($tagids as $tagid) {
+                $res = $this->tag->tagUsers($openids, $tagid);
+            }
+
             // FIXME: 存入数据表
             if ($res['errcode'] === 0) {
                 return $this->message('标签设置成功');
