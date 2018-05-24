@@ -18,8 +18,7 @@ Log:info($v['title']);
     }
 
     public function search($query, $search = null)
-    {
-        Log:info($search);
+    { 
         if ($search) {
             foreach ($search as $k => $v) {
                 $query = $query->where($k, 'like', '%'.$v.'%');
