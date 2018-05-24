@@ -26,7 +26,7 @@ class RoleRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'name' => 'required|unique:roles,name',
+                    'name' => 'required|unique:admin_roles,name',
                     'permissions' => 'required|array',
                 ];
                 break;
