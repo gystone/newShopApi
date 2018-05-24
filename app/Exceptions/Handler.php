@@ -57,20 +57,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-//        if ($exception instanceof UnauthorizedHttpException) {
-//            return $this->failed($exception->getMessage(), 401);
-//        }
+        if ($exception instanceof UnauthorizedHttpException) {
+            return $this->failed('请重新登录', 401);
+        }
 
         if ($exception instanceof TokenInvalidException) {
             return $this->failed('用户未登录', 401);
-        }
-
-        if ($exception instanceof TokenBlacklistedException) {
-            return $this->failed('Token已进入黑名单，请使用刷新Token', 401);
-        }
-
-        if ($exception instanceof TokenExpiredException) {
-            return $this->failed('Token过期且不能刷新', 401);
         }
 
         if ($exception instanceof ValidationException) {
@@ -80,7 +72,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ModelNotFoundException) {
             return $this->failed('非法请求', 404);
         }
-        return $this->failed('Token已进入黑名单，请使用刷新Token', 401);
+
         return parent::render($request, $exception);
     }
 }
