@@ -47,11 +47,12 @@ class LoginController extends ApiController
 
     public function info()
     {
+        $user = auth('api_admin')->user();
         return $this->success([
             'roles' => '',
-            'name' => auth('api_admin')->user()->username,
+            'name' => $user->username,
             'avatar' => '',
-            'checkedCities' => auth('api_admin')->user()->getCheckedCities(),
+            'checkedCities' => $user->getCheckedCities(),
         ]);
     }
 }
