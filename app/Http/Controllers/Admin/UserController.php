@@ -32,17 +32,8 @@ class UserController extends ApiController
         $sort = \request()->get('sort');
         $search = \request()->get('search');
 
-        $list = $this->user;
-        if ($sort) {
-            foreach ($sort as $k => $v) {
-                $list = $list->orderBy($k, $v);
-            }
-        }
-        if ($search) {
-            foreach ($search as $k => $v) {
-                $list = $list->where($k, 'like', '%'.$v.'%');
-            }
-        }
+        $list = $this->user->sortAndSearch($sort, $search);
+
         return $this->success(new UserCollection($list->paginate(10)));
     }
 
