@@ -27,54 +27,11 @@ class AdminTablesSeeder extends Seeder
         Role::truncate();
         Role::create([
             'name' => '超级管理员',
-            'slug' => 'administrator',
+            'permissions' => array('admin'),
         ]);
 
         // add role to user.
         Administrator::first()->roles()->save(Role::first());
-
-        //create a permission
-        Permission::truncate();
-        Permission::insert([
-            [
-                'name'        => '全部权限',
-                'slug'        => '*',
-                'http_method' => '',
-                'http_path'   => '*',
-            ],
-            [
-                'name'        => '首页',
-                'slug'        => 'dashboard',
-                'http_method' => 'GET',
-                'http_path'   => '/',
-            ],
-            [
-                'name'        => '登录',
-                'slug'        => 'auth.login',
-                'http_method' => '',
-                'http_path'   => "/auth/login\r\n/auth/logout",
-            ],
-            [
-                'name'        => '用户设置',
-                'slug'        => 'auth.setting',
-                'http_method' => 'GET,PUT',
-                'http_path'   => '/auth/setting',
-            ],
-            [
-                'name'        => '权限管理',
-                'slug'        => 'auth.management',
-                'http_method' => '',
-                'http_path'   => "/auth/roles\r\n/auth/permissions\r\n/auth/menu\r\n/auth/logs",
-            ],
-            [
-                'name'        => '微信相关',
-                'slug'        => 'wechat',
-                'http_method' => '',
-                'http_path'   => "/wechat*",
-            ],
-        ]);
-
-        Role::first()->permissions()->save(Permission::first());
 
         // add default menus.
         Menu::truncate();
