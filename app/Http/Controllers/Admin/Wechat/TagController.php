@@ -138,7 +138,6 @@ class TagController extends ApiController
                 }
             }
 
-            // FIXME: 存入数据表
             return $this->message('标签设置成功');
         } else {
             return $this->failed('参数有误');
