@@ -6,10 +6,11 @@ trait SortSearch
 {
     public function sort($query, $sort = null)
     {
-        Log:info($sort);
+        
         if ($sort) {
             foreach ($sort as $k => $v) {
-                $query = $query->orderBy($k, $v);
+Log:info($v);
+                // $query = $query->orderBy($k, $v);
             }
         }
 
