@@ -14,6 +14,11 @@ class RoleCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection;
+        return [
+            'data' => $this->collection,
+            'total' => $this->total(),
+            'per_page' => $this->perPage(),
+            'current_page' => $this->currentPage(),
+        ];
     }
 }
