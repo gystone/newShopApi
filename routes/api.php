@@ -50,6 +50,7 @@ Route::group([
         $router->get('info', 'LoginController@info');
         // 认证后才能访问的路由
         $router->get('user', 'UserController@index');
+        $router->get('user/{user}', 'UserController@show');
         $router->post('user', 'UserController@store');
         $router->patch('user/{user}', 'UserController@update');
         $router->delete('user/{user}', 'UserController@destroy');

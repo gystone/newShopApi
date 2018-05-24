@@ -60,6 +60,11 @@ class UserController extends ApiController
         }
     }
 
+    public function show(AdminUser $user)
+    {
+        return $this->success($user);
+    }
+
     /**
      * Update the specified resource in storage.
      *
