@@ -56,6 +56,7 @@ Route::group([
         $router->post('upload_avatar', 'UserController@uploadAvatar');
 
         $router->get('role', 'RoleController@index');
+        $router->get('role/{role}', 'RoleController@show');
         $router->post('role', 'RoleController@store');
         $router->patch('role/{role}', 'RoleController@update');
         $router->delete('role/{role}', 'RoleController@destroy');
