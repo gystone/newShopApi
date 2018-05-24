@@ -26,8 +26,7 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        Log:info(request());
+    { 
         $sort = \request()->get('sort');
         $search = \request()->get('search');
 
