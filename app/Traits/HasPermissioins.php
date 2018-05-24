@@ -10,7 +10,7 @@ trait HasPermissioins
     {
         $checkedCities = [];
         if (is_array($this->roles->pluck('permissions'))) {
-            foreach ($this->roles->pluck('permissions') as $permission) {
+            foreach ($this->roles->pluck('permissions') as $permission) {Log::info($permission);
                 if (isset($permission['children'])) {
                     foreach ($permission['children'] as $child) {
                         $checkedCities = array_merge($checkedCities, $child['meta']['checkedCities']);
@@ -19,7 +19,7 @@ trait HasPermissioins
                     $checkedCities = array_merge($checkedCities, $permission['meta']['checkedCities']);
                 }
             }
-        }Log::info($checkedCities);
+        }
         return collect($checkedCities);
     }
 
