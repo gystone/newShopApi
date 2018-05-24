@@ -28,7 +28,7 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->success(new UserCollection($this->user->all()));
+        return $this->success(new UserCollection($this->user->paginate(10)));
     }
 
     /**

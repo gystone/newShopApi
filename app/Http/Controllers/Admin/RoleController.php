@@ -27,7 +27,7 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        return $this->success(new RoleCollection($this->role->all()));
+        return $this->success(new RoleCollection($this->role->paginate(10)));
     }
 
     /**
