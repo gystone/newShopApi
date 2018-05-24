@@ -9,7 +9,7 @@ trait SortSearch
         
         if ($sort) {
             foreach ($sort as $k => $v) {
-Log:info($v);
+Log:info($v['title']);
                 // $query = $query->orderBy($k, $v);
             }
         }
