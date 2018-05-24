@@ -4,9 +4,9 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -77,10 +77,10 @@ class Handler extends ExceptionHandler
             return $this->failed($exception->validator->errors()->first(), 400);
         }
 
-        if ($exception instanceof NotFoundHttpException) {
+        if ($exception instanceof ModelNotFoundException) {
             return $this->failed('非法请求', 404);
         }
-        return $this->failed($exception->getMessage(), 404);
+
         return parent::render($request, $exception);
     }
 }
