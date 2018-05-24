@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatTag;
+use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -148,6 +149,12 @@ class TagController extends ApiController
 
     public function userList(WechatTag $tag)
     {
-        return $this->success(DB::table('wechat_tag_users')->where('tag_id', $tag->id)->paginate(10));
+        $tag_id = $tag->id;
+        $users = WechatUser::whereExists(function ($query) use ($tag_id) {
+            $query->select(DB::raw('openid'))
+                ->from('wechat_tag_users')->where('tag_id', $tag_id)
+                ->whereRaw('wechat_tag_users.openid = wechat_users.openid');
+        })->paginate(10);
+        return $this->success($users);
     }
 }
