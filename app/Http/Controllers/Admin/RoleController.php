@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Auth\Permission;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleCollection;
 use App\Models\Admin\Role;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class RoleController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         DB::beginTransaction();
 
@@ -65,7 +66,7 @@ class RoleController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         DB::beginTransaction();
 

@@ -23,10 +23,29 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
+        switch ($this->method()) {
+            case 'POST':
+                return [
+                    'name' => 'required|unique:roles,name',
+                    'permissions' => 'required|array',
+                ];
+                break;
+            case 'PATCH':
+                return [
+                    'name' => 'unique:roles,name',
+                    'permissions' => 'array',
+                ];
+                break;
+        }
+    }
+
+    public function messages()
+    {
         return [
-            'slug' => 'required',
-            'name' => 'required',
-            'permission_id' => 'required|exists:admin_permissions,id',
+            'name.required' => '请输入角色名称',
+            'name.unique' => '角色名称重复',
+            'permissions.required' => '请为角色分配权限',
+            'permission.array' => '权限类型有误',
         ];
     }
 }
