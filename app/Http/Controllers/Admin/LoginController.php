@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\ApiController;
+use App\Models\Admin\AdminUser;
 
 class LoginController extends ApiController
 {
@@ -47,7 +48,7 @@ class LoginController extends ApiController
 
     public function info()
     {
-        $user = auth('api_admin')->user();
+        $user = AdminUser::find(auth('api_admin')->user()->id);
         return $this->success([
             'roles' => '',
             'name' => $user->username,
