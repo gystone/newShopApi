@@ -28,7 +28,21 @@ class UserController extends ApiController
      */
     public function index()
     {
-        return $this->success(new UserCollection($this->user->paginate(10)));
+        $sort = \request()->get('sort');
+        $search = \request()->get('search');
+
+        $list = $this->user;
+        if ($sort) {
+            foreach ($sort as $k => $v) {
+                $list = $list->orderBy($k, $v);
+            }
+        }
+        if ($search) {
+            foreach ($search as $k => $v) {
+                $list = $list->where($k, '%'.$v.'%');
+            }
+        }
+        return $this->success(new UserCollection($list->paginate(10)));
     }
 
     /**
