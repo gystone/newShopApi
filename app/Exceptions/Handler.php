@@ -6,6 +6,7 @@ use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -74,6 +75,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ValidationException) {
             return $this->failed($exception->validator->errors()->first(), 400);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->failed('非法请求', 404);
         }
 
         if ($exception instanceof ApiException) {
