@@ -33,7 +33,7 @@ class TagController extends ApiController
             Log::info('正在同步标签');
             foreach ($list['tags'] as $k => $v) {
                 $tag_users_list = $this->tag->usersOfTag($v['id']);
-Log::info($tag_users_list);
+
                 $tag_users_db = [];
                 if (isset($tag_users_list['data']['openid'])) {
                     foreach ($tag_users_list['data']['openid'] as $item) {
@@ -148,6 +148,6 @@ Log::info($tag_users_list);
 
     public function userList(WechatTag $tag)
     {
-
+        return $this->success($tag->tag_users());
     }
 }

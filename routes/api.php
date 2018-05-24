@@ -88,6 +88,7 @@ Route::group([
             $router->patch('tag_update/{tag}', 'TagController@update');
             $router->delete('tag_delete/{tag}', 'TagController@delete');
             $router->post('tag_users', 'TagController@tagUsers');
+            $router->get('tag_users/{tag}', 'TagController@userList');
 
             $router->get('user_sync', 'UserController@sync');
             $router->get('user_list', 'UserController@list');

@@ -17,7 +17,6 @@ class CreateWechatTagUsersTable extends Migration
             $table->integer('tag_id');
             $table->string('openid', 50);
             $table->index(['tag_id', 'openid']);
-            $table->timestamps();
         });
     }
 
