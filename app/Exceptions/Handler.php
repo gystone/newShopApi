@@ -8,6 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
@@ -60,11 +61,15 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof TokenInvalidException) {
-            return $this->failed('Token无效', 500);
+            return $this->failed('用户未登录', 401);
         }
 
         if ($exception instanceof TokenBlacklistedException) {
             return $this->failed('Token已进入黑名单，请使用刷新Token', 401);
+        }
+
+        if ($exception instanceof TokenExpiredException) {
+            return $this->failed('Token过期且不能刷新', 401);
         }
 
         if ($exception instanceof ValidationException) {
