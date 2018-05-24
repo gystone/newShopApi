@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Wechat\WechatTag;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TagController extends ApiController
@@ -24,11 +25,21 @@ class TagController extends ApiController
      */
     public function sync()
     {
+        DB::beginTransaction();
+
         try {
             $list = $this->tag->list();
 
             Log::info('正在同步标签');
             foreach ($list['tags'] as $k => $v) {
+                $tag_users_list = $this->tag->usersOfTag($v['id']);
+
+                $tag_users_db = [];
+                foreach ($tag_users_list['data']['openid'] as $item) {
+                    $tag_users_db[] = ['tag_id' => $v['id'], 'openid' => $item];
+                }
+                DB::table('wechat_tag_users')->insert($tag_users_db);
+
                 WechatTag::updateOrCreate([
                     'id' => $v['id']
                 ], [
@@ -39,8 +50,11 @@ class TagController extends ApiController
             }
             Log::info('标签同步完成');
 
+            DB::commit();
+
             return $this->message('同步完成');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->failed('同步失败，请稍候重试');
         }
     }
@@ -111,19 +125,28 @@ class TagController extends ApiController
         $openids = $request->openids;
         $tagids = $request->tagids;
 
-        if (is_array($openids)) {
+        if (is_array($openids) && is_array($tagids)) {
             foreach ($tagids as $tagid) {
                 $res = $this->tag->tagUsers($openids, $tagid);
+
+                if ($res['errcode'] === 0) {
+                    $tag_users_db = [];
+                    foreach ($openids as $openid) {
+                        $tag_users_db[] = ['tag_id' => $tagid, 'openid' => $openid];
+                    }
+                    DB::table('wechat_tag_users')->insert($tag_users_db);
+                }
             }
-Log::info($res);
+
             // FIXME: 存入数据表
-            if ($res['errcode'] === 0) {
-                return $this->message('标签设置成功');
-            } else {
-                return $this->failed('标签设置失败，请稍候重试');
-            }
+            return $this->message('标签设置成功');
         } else {
             return $this->failed('参数有误');
         }
+    }
+
+    public function userList(WechatTag $tag)
+    {
+
     }
 }
