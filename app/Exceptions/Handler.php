@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof TokenBlacklistedException) {
-            return $this->failed('Token已进入黑名单，请使用刷新Token');
+            return $this->failed('Token已进入黑名单，请使用刷新Token', 401);
         }
 
         if ($exception instanceof ValidationException) {
