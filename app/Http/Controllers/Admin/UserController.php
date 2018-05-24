@@ -32,7 +32,8 @@ class UserController extends ApiController
         $sort = \request()->get('sort');
         $search = \request()->get('search');
 
-        $list = $this->user->sortAndSearch($sort, $search);
+        $list = $this->user;
+        $list = $list->sortAndSearch($list, $sort, $search);
 
         return $this->success(new UserCollection($list->paginate(10)));
     }
