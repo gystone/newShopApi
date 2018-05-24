@@ -148,6 +148,6 @@ class TagController extends ApiController
 
     public function userList(WechatTag $tag)
     {
-        return $this->success(DB::table('wechat_tag_users')->find($tag->id)->paginate(10));
+        return $this->success(DB::table('wechat_tag_users')->where('tag_id', $tag->id)->paginate(10));
     }
 }
