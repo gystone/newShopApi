@@ -27,7 +27,13 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        return $this->success(new RoleCollection($this->role->paginate(10)));
+        $sort = \request()->get('sort');
+        $search = \request()->get('search');
+
+        $list = $this->role;
+        $list = $list->sortAndSearch($list, $sort, $search);
+
+        return $this->success(new RoleCollection($list->paginate(10)));
     }
 
     /**
