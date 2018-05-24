@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Permission
 {
     public static function check($permission)
-    {
+    {Log::info(auth('api_admin')->user()->isAdministrator());
         if (auth('api_admin')->user()->isAdministrator()) {
             return true;
         }
