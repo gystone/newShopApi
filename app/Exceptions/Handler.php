@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof NotFoundHttpException) {
             return $this->failed('非法请求', 404);
         }
-        return $this->failed('非法请求', 404);
+        return $this->failed($exception->getMessage(), 404);
         return parent::render($request, $exception);
     }
 }
