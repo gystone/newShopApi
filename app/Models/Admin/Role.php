@@ -2,10 +2,13 @@
 
 namespace App\Models\Admin;
 
+use App\Traits\SortSearch;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    use SortSearch;
+
     protected $table = 'admin_roles';
 
     protected $fillable = [
