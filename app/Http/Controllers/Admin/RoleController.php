@@ -54,6 +54,7 @@ class RoleController extends ApiController
 
     public function show(Role $role)
     {
+        Permission::check('keyboardChart_post');
         return $this->success(new \App\Http\Resources\Admin\Role($role));
     }
 
