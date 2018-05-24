@@ -15,7 +15,7 @@ class CreateWechatTagUsersTable extends Migration
     {
         Schema::create('wechat_tag_users', function (Blueprint $table) {
             $table->integer('tag_id');
-            $table->integer('openid');
+            $table->string('openid', 20);
             $table->index(['tag_id', 'openid']);
             $table->timestamps();
         });
