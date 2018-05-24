@@ -63,7 +63,8 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof ValidationException) {
-            return $this->failed($exception->getMessage(), 400);
+//            return $this->failed($exception->getMessage(), 400);
+            return respond($exception->getMessage(), 400);
         }
 
         if ($exception instanceof ApiException) {
