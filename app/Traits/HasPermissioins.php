@@ -8,7 +8,7 @@ trait HasPermissioins
 {
     public function getCheckedCities()
     {
-        $checkedCities = [];
+        $checkedCities = [];Log::info(gettype($this->roles->pluck('permissions')));
         if (is_array($this->roles->pluck('permissions'))) {
             foreach ($this->roles->pluck('permissions') as $permission) {Log::info($permission);
                 if (isset($permission['children'])) {
