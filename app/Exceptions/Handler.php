@@ -57,9 +57,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof UnauthorizedHttpException) {
-            return $this->failed($exception->getMessage(), 401);
-        }
+//        if ($exception instanceof UnauthorizedHttpException) {
+//            return $this->failed($exception->getMessage(), 401);
+//        }
 
         if ($exception instanceof TokenInvalidException) {
             return $this->failed('用户未登录', 401);
