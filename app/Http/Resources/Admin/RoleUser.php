@@ -17,7 +17,7 @@ class RoleUser extends Resource
         return array(
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug,
+            'permissions' => $this->permissions,
         );
     }
 }

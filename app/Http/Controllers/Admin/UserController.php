@@ -53,7 +53,7 @@ class UserController extends ApiController
 
             DB::commit();
 
-            return $this->success($user);
+            return $this->success(new User($user));
         } catch (\Exception $exception) {
             DB::rollBack();
             return $this->failed('添加失败，请稍候重试');
@@ -62,7 +62,7 @@ class UserController extends ApiController
 
     public function show(AdminUser $user)
     {
-        return $this->success($user);
+        return $this->success(new User($user));
     }
 
     /**
@@ -89,7 +89,7 @@ class UserController extends ApiController
 
             DB::commit();
 
-            return $this->success($user);
+            return $this->success(new User($user));
         } catch (\Exception $exception) {
             DB::rollBack();
             return $this->failed('更新失败');
