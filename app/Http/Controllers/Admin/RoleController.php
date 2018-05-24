@@ -40,14 +40,9 @@ class RoleController extends ApiController
         DB::beginTransaction();
 
         $attributes = $request->only('name', 'permissions');
-        $permission_ids = $request->permission_id;
 
         try {
             $role = $this->role->create($attributes);
-
-//            if (isset($permission_ids) && is_array($permission_ids)) {
-//                $this->insertRolePermission($permission_ids, $role->id);
-//            }
 
             DB::commit();
             return $this->success($role);
@@ -69,15 +64,9 @@ class RoleController extends ApiController
         DB::beginTransaction();
 
         $attributes = $request->only('name', 'permissions');
-        $permission_ids = $request->permission_id;
 
         try {
             $role->update($attributes);
-
-//            if (isset($permission_ids) && is_array($permission_ids)) {
-//                DB::table('admin_role_permissions')->where('role_id', $role->id)->delete();
-//                $this->insertRolePermission($permission_ids, $role->id);
-//            }
 
             DB::commit();
             return $this->success($role);
@@ -98,22 +87,13 @@ class RoleController extends ApiController
         DB::beginTransaction();
 
         try {
-            DB::table('admin_user_permissions')->where('role_id', $role->id)->delete();
             $role->delete();
 
             DB::commit();
             return $this->message('删除成功');
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
             return $this->failed('删除失败，请稍候重试');
         }
-    }
-
-    private function insertRolePermission(array $permission_ids, int $id) {
-        $role_permissions = array();
-        foreach ($permission_ids as $k => $v) {
-            $role_permissions[$k] = array('permission_id' => $v, 'role_id' => $id);
-        }
-        DB::table('admin_role_permissions')->insert($role_permissions);
     }
 }
