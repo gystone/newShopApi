@@ -33,7 +33,20 @@ trait HasPermissioins
     }
 
     public function isCannot(string $permission) : bool
-    {Log::info($this->isCan($permission));
+    {
         return !$this->isCan($permission);
+    }
+
+    public function isAdministrator() : bool
+    {
+        if (is_array($this->roles->pluck('permissions')->first())) {
+            foreach ($this->roles->pluck('permissions')->first() as $permission) {
+                if ($permission === 'admin') {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
