@@ -148,6 +148,6 @@ class TagController extends ApiController
 
     public function userList(WechatTag $tag)
     {
-        return $this->success($tag->tag_users());
+        return $this->success($tag->tag_users()->paginate(10));
     }
 }
