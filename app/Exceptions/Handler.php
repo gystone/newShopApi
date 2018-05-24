@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ModelNotFoundException) {
             return $this->failed('非法请求', 404);
         }
-
+        return $this->failed('Token已进入黑名单，请使用刷新Token', 401);
         return parent::render($request, $exception);
     }
 }
