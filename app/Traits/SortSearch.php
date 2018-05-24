@@ -22,7 +22,7 @@ trait SortSearch
                 $query = $query->where($k, 'like', '%'.$v.'%');
             }
         }
-
+    Log:info($query);
         return $query;
     }
 
