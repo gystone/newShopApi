@@ -32,7 +32,7 @@ class RoleRequest extends FormRequest
                 break;
             case 'PATCH':
                 return [
-                    'name' => 'unique:roles,name',
+                    'name' => 'unique:admin_roles,name',
                     'permissions' => 'array',
                 ];
                 break;
