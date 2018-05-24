@@ -8,9 +8,8 @@ trait SortSearch
     {
         
         if ($sort) {
-            foreach ($sort as $k => $v) {
-Log:info($v['title']);
-                // $query = $query->orderBy($k, $v);
+            foreach ($sort as $k => $v) { 
+                $query = $query->orderBy($k, $v);
             }
         }
 
