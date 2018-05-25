@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\MaterialImageRequest;
 use App\Http\Requests\Wechat\MaterialNewsRequest;
+use App\Http\Requests\Wechat\MaterialVideoRequest;
+use App\Http\Requests\Wechat\MaterialVoiceRequest;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
@@ -336,7 +339,7 @@ class MaterialController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function materialImgUpload(Request $request)
+    public function materialImgUpload(MaterialImageRequest $request)
     {
         $image = $request->file('img');
 
@@ -367,7 +370,7 @@ class MaterialController extends ApiController
         }
     }
 
-    public function materialVoiceUpload(Request $request)
+    public function materialVoiceUpload(MaterialVoiceRequest $request)
     {
         $voice = $request->file('voice');
 
@@ -397,7 +400,7 @@ class MaterialController extends ApiController
         }
     }
 
-    public function materialVideoUpload(Request $request)
+    public function materialVideoUpload(MaterialVideoRequest $request)
     {
         $video = $request->file('video');
         $title = $request->title;
