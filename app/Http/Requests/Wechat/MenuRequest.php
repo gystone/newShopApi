@@ -25,19 +25,19 @@ class MenuRequest extends FormRequest
     {
         return [
             'body.buttons' => 'required|array|max:3',
-            'body.buttons.*.sub_button' => 'required_without:body.buttons.*.type|array|max:5',
-            'body.buttons.*.name' => 'required|max:16',
-            'body.buttons.*.type' => 'required_without:body.buttons.*.sub_button|in:view,click,miniprogram',
-            'body.buttons.*.key' => 'required_if:body.buttons.*.type,click|string|max:128',
-            'body.buttons.*.url' => 'required_if:body.buttons.*.type,miniprogram,view|url|max:1024',
-            'body.buttons.*.appid' => 'required_if:body.buttons.*.type,miniprogram',
-            'body.buttons.*.pagepath' => 'required_if:body.buttons.*.type,miniprogram',
-            'body.buttons.*.sub_button.*.name' => 'required|max:60',
-            'body.buttons.*.sub_button.*.type' => 'required|in:view,click,miniprogram',
-            'body.buttons.*.sub_button.*.key' => 'required_if:body.buttons.*.sub_button.*.type,click|string|max:128',
-            'body.buttons.*.sub_button.*.url' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram,view|url|max:1024',
-            'body.buttons.*.sub_button.*.appid' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram',
-            'body.buttons.*.sub_button.*.pagepath' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram',
+//            'body.buttons.*.sub_button' => 'required_without:body.buttons.*.type|array|max:5',
+//            'body.buttons.*.name' => 'required|max:16',
+//            'body.buttons.*.type' => 'required_without:body.buttons.*.sub_button|in:view,click,miniprogram',
+//            'body.buttons.*.key' => 'required_if:body.buttons.*.type,click|string|max:128',
+//            'body.buttons.*.url' => 'required_if:body.buttons.*.type,miniprogram,view|url|max:1024',
+//            'body.buttons.*.appid' => 'required_if:body.buttons.*.type,miniprogram',
+//            'body.buttons.*.pagepath' => 'required_if:body.buttons.*.type,miniprogram',
+//            'body.buttons.*.sub_button.*.name' => 'required|max:60',
+//            'body.buttons.*.sub_button.*.type' => 'required|in:view,click,miniprogram',
+//            'body.buttons.*.sub_button.*.key' => 'required_if:body.buttons.*.sub_button.*.type,click|string|max:128',
+//            'body.buttons.*.sub_button.*.url' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram,view|url|max:1024',
+//            'body.buttons.*.sub_button.*.appid' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram',
+//            'body.buttons.*.sub_button.*.pagepath' => 'required_if:body.buttons.*.sub_button.*.type,miniprogram',
         ];
     }
 

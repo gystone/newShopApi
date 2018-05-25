@@ -39,12 +39,12 @@ class MaterialNewsRequest extends FormRequest
     {
         return [
             'content.news_item.*.title.required' => '图文标题必填',
-            'content.news_item.*.digest.max' => '图文摘要最长64个字符',
-            'content.news_item.*.author.max' => '图文作者最长10个字符',
-            'content.news_item.*.content.required' => '图文内容必填',
-            'content.news_item.*.content_source_url.url' => '图文原文链接格式非法',
-            'content.news_item.*.thumb_media_id.required' => '图文封面必填',
-            'content.news_item.*.show_cover_pic.in' => '是否覆盖封面值非法',
+//            'content.news_item.*.digest.max' => '图文摘要最长64个字符',
+//            'content.news_item.*.author.max' => '图文作者最长10个字符',
+//            'content.news_item.*.content.required' => '图文内容必填',
+//            'content.news_item.*.content_source_url.url' => '图文原文链接格式非法',
+//            'content.news_item.*.thumb_media_id.required' => '图文封面必填',
+//            'content.news_item.*.show_cover_pic.in' => '是否覆盖封面值非法',
             'content.news_item.max' => '多图文消息最多8条',
         ];
     }
