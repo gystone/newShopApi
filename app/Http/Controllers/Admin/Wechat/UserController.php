@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\UserRequest;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class UserController extends ApiController
         return $this->success(WechatUser::paginate(10));
     }
 
-    public function remark(WechatUser $user, Request $request)
+    public function remark(WechatUser $user, UserRequest $request)
     {
         $remark = $request->remark;
 
@@ -70,7 +71,7 @@ class UserController extends ApiController
         }
     }
 
-    public function block(Request $request)
+    public function block(UserRequest $request)
     {
         $openids = $request->openids;
 
@@ -87,7 +88,7 @@ class UserController extends ApiController
         }
     }
 
-    public function unblock(Request $request)
+    public function unblock(UserRequest $request)
     {
         $openids = $request->openids;
 
