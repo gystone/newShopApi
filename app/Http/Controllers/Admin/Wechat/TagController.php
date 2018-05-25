@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\TagRequest;
 use App\Models\Wechat\WechatTag;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
@@ -78,7 +79,7 @@ class TagController extends ApiController
      * @return mixed
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    public function create(Request $request)
+    public function create(TagRequest $request)
     {
         $name = $request->name;
 
@@ -96,7 +97,7 @@ class TagController extends ApiController
         }
     }
 
-    public function update(WechatTag $tag, Request $request)
+    public function update(WechatTag $tag, TagRequest $request)
     {
         $name = $request->name;
 
@@ -123,7 +124,7 @@ class TagController extends ApiController
         }
     }
 
-    public function tagUsers(Request $request)
+    public function tagUsers(TagRequest $request)
     {
         $openids = $request->openids;
         $tagids = $request->tagids;
