@@ -32,7 +32,7 @@ class WechatController extends Controller
     public function serve()
     {
         Log::info('request arrived.');
-        $this->server->push(function ($message) {Log::info($message);
+        $this->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
                     switch ($message['Event']) {
@@ -75,9 +75,9 @@ class WechatController extends Controller
                             );
                             break;
                         case 'CLICK':
-                            $menu = WechatMenu::where('type', 'normal')->first();Log::info($menu);
+                            $menu = WechatMenu::where('type', 'normal')->first();
                             if ($menu) {
-                                $msg = $menu->buttons['msg'][$message['EventKey']];
+                                $msg = $menu->buttons['msg'][$message['EventKey']];Log::info($msg);
                                 return $this->replyContent($msg);
                             }
                             break;
