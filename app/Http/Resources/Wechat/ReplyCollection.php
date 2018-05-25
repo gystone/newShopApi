@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Wechat;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class BroadcastRecordCollection extends ResourceCollection
+class ReplyCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

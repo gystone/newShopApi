@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\ReplyRequest;
+use App\Http\Resources\ReplyCollection;
 use App\Models\Wechat\WechatReply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +31,7 @@ class ReplyController extends ApiController
 
     public function list()
     {
-        return $this->success(WechatReply::latest()->get());
+        return $this->success(new ReplyCollection(WechatReply::latest()->paginate(10)));
     }
 
     public function update(WechatReply $reply, ReplyRequest $request)
