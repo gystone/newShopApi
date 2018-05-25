@@ -64,7 +64,7 @@ class MenuRequest extends FormRequest
             'body.buttons.*.pagepath.required_if' => '请输入小程序的页面路径',
             'body.buttons.*.sub_button.*.name.required' => '请填写子菜单标题',
             'body.buttons.*.sub_button.*.name.max' => '子菜单标题最长不能超过60个字符',
-            'body.buttons.*.sub_button.*.type.required_without' => '请选择子菜单类型',
+            'body.buttons.*.sub_button.*.type.required' => '请选择子菜单类型',
             'body.buttons.*.sub_button.*.type.in' => '子菜单类型不合法',
             'body.buttons.*.sub_button.*.key.required_if' => '请输入子菜单KEY值',
             'body.buttons.*.sub_button.*.key.string' => '子菜单KEY值为长度不超过128的字符串',
