@@ -29,8 +29,8 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $sort = json_decode(\request()->get('sort'));
-        $search = json_decode(\request()->get('search'));
+        $sort = json_decode(\request()->get('sort'), true);
+        $search = json_decode(\request()->get('search'), true);
 
         $list = $this->user;
         $list = $list->sortAndSearch($list, $sort, $search);
