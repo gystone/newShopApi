@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\MenuRequest;
 use App\Models\Wechat\WechatMenu;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
@@ -45,8 +46,7 @@ class MenuController extends ApiController
         return $this->success($menu ? $menu->buttons : []);
     }
 
-    // TODO: request加验证
-    public function create(Request $request)
+    public function create(MenuRequest $request)
     {
         $body = $request->body;
 
