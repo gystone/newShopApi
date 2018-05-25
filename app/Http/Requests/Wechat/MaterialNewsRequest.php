@@ -24,13 +24,13 @@ class MaterialNewsRequest extends FormRequest
     public function rules()
     {
         return [
-            'content.news_item.*.title' => 'required',
-            'content.news_item.*.digest' => 'max:64',
-            'content.news_item.*.author' => 'max:10',
-            'content.news_item.*.content' => 'required',
-            'content.news_item.*.content_source_url' => 'url',
-            'content.news_item.*.thumb_media_id' => 'required',
-            'content.news_item.*.show_cover_pic' => 'in:0,1',
+//            'content.news_item.*.title' => 'required',
+//            'content.news_item.*.digest' => 'max:64',
+//            'content.news_item.*.author' => 'max:10',
+//            'content.news_item.*.content' => 'required',
+//            'content.news_item.*.content_source_url' => 'url',
+//            'content.news_item.*.thumb_media_id' => 'required',
+//            'content.news_item.*.show_cover_pic' => 'in:0,1',
             'content.news_item' => 'max:8',
         ];
     }
