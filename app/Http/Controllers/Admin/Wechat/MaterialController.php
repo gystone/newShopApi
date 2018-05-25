@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\MaterialNewsRequest;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
@@ -249,7 +250,7 @@ class MaterialController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function materialNewsUpdate(WechatMaterial $wechatMaterial, Request $request)
+    public function materialNewsUpdate(WechatMaterial $wechatMaterial, MaterialNewsRequest $request)
     {
         $wechatMaterial->content = ['news_item' => []];
         $material_content = $wechatMaterial->content;
@@ -292,7 +293,7 @@ class MaterialController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function materialNewsUpload(Request $request)
+    public function materialNewsUpload(MaterialNewsRequest $request)
     {
         $wechatMaterial = new WechatMaterial();
 
