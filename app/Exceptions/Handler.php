@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof ValidationException) {
-            return $this->failed($exception->validator->errors()->first(), 400);
+            return $this->failed($exception->validator->errors()->first(), $exception->getCode());
         }
 
         if ($exception instanceof ModelNotFoundException) {
