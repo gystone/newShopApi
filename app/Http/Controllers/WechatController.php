@@ -77,7 +77,7 @@ class WechatController extends Controller
                         case 'CLICK':
                             $menu = WechatMenu::where('type', 'normal')->first();
                             if ($menu) {
-                                $msg = $menu->buttons['msg'][$message['EventKey']];Log::info($msg);
+                                $msg = $menu->buttons['msg'][$message['EventKey']];Log::info($menu->buttons['msg']);
                                 return $this->replyContent($msg);
                             }
                             break;
