@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\ReplyRequest;
+use App\Http\Resources\Wechat\Reply;
 use App\Http\Resources\Wechat\ReplyCollection;
 use App\Models\Wechat\WechatReply;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ReplyController extends ApiController
         $res = WechatReply::create($attributes);
 
         if ($res) {
-            return $this->success($res);
+            return $this->success(new Reply($res));
         } else {
             return $this->failed('设置失败，请稍候重试');
         }
@@ -41,7 +42,7 @@ class ReplyController extends ApiController
         $res = $reply->update($attributes);
 
         if ($res) {
-            return $this->success($reply);
+            return $this->success(new Reply($reply));
         } else {
             $this->failed('修改失败，请稍候重试');
         }
