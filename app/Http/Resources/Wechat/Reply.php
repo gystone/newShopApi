@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Wechat;
 
 use App\Models\Wechat\WechatMaterial;
 use Illuminate\Http\Resources\Json\Resource;

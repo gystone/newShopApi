@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\ReplyRequest;
-use App\Http\Resources\ReplyCollection;
+use App\Http\Resources\Wechat\ReplyCollection;
 use App\Models\Wechat\WechatReply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
