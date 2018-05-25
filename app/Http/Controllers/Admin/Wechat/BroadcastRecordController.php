@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\BroadcastRecordRequest;
 use App\Http\Resources\Wechat\BroadcastRecordCollection;
 use App\Jobs\BroadcastMessage;
 use App\Models\Wechat\BroadcastRecord;
@@ -23,7 +24,7 @@ class BroadcastRecordController extends ApiController
         $this->broadcasting = $application->broadcasting;
     }
 
-    public function send(Request $request)
+    public function send(BroadcastRecordRequest $request)
     {
         if ($request->is_cron) {
             $send_time = $request->send_time;
