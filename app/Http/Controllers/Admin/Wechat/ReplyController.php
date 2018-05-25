@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Wechat\ReplyRequest;
 use App\Models\Wechat\WechatReply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,7 @@ class ReplyController extends ApiController
         auth()->shouldUse('api_admin');
     }
 
-    public function store(Request $request)
+    public function store(ReplyRequest $request)
     {
         $attributes = $request->only('rule_name', 'keywords','contents', 'is_reply_all', 'is_open');
 
@@ -32,7 +33,7 @@ class ReplyController extends ApiController
         return $this->success(WechatReply::latest()->get());
     }
 
-    public function update(WechatReply $reply, Request $request)
+    public function update(WechatReply $reply, ReplyRequest $request)
     {
         $attributes = $request->only('keywords','contents', 'is_reply_all', 'is_open');
 
