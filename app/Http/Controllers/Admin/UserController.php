@@ -31,7 +31,7 @@ class UserController extends ApiController
     {
         $sort = json_decode(\request()->get('sort'), true);
         $search = json_decode(\request()->get('search'), true);
-dd($sort);
+
         $list = $this->user;
         $list = $list->sortAndSearch($list, $sort, $search);
 
