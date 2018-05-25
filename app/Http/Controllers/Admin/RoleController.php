@@ -27,8 +27,8 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        $sort = \request()->get('sort');
-        $search = \request()->get('search');
+        $sort = json_decode(\request()->get('sort'));
+        $search = json_decode(\request()->get('search'));
 
         $list = $this->role;
         $list = $list->sortAndSearch($list, $sort, $search);
