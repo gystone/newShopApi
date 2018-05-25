@@ -6,8 +6,9 @@ trait SortSearch
 {
     public function sort($query, $sort = null)
     {
+        
         if ($sort) {
-            foreach ($sort as $k => $v) {
+            foreach ($sort as $k => $v) { 
                 $query = $query->orderBy($k, $v);
             }
         }
@@ -16,13 +17,13 @@ trait SortSearch
     }
 
     public function search($query, $search = null)
-    {
+    { 
         if ($search) {
             foreach ($search as $k => $v) {
                 $query = $query->where($k, 'like', '%'.$v.'%');
             }
         }
-
+    
         return $query;
     }
 
