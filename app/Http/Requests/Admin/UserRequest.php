@@ -47,7 +47,7 @@ class UserRequest extends FormRequest
         return [
             'username.required' => '请输入用户名',
             'name.required' => '请输入姓名',
-            'avatar.required' => '头像不能为空',
+            // 'avatar.required' => '头像不能为空',
             'password.required' => '请输入密码',
             'password.confirmed' => '密码不匹配',
             'role_id.required' => '请分配角色',
