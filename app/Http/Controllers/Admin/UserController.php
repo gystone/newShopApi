@@ -36,7 +36,7 @@ class UserController extends ApiController
         $list = $list->sortAndSearch($list, $sort, $search);
 
         if (\request()->get('page') == 0) {
-            return $this->success(new UserCollection($list->get()));
+            return $this->success(User::collection($list->get()));
         } else {
             return $this->success(new UserCollection($list->paginate(\request()->get('limit') ?? 10)));
         }
