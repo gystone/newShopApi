@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
                 return [
                     'username' => 'required',
                     'name' => 'required',
-                    // 'avatar' => 'required',
+                   // // 'avatar' => 'required',
                     'password' => 'required|confirmed',
                     'role_id' => 'required|exists:admin_roles,id',
                 ];
