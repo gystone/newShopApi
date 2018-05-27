@@ -34,7 +34,7 @@ class RoleController extends ApiController
         $list = $list->sortAndSearch($list, $sort, $search);
 
         if (\request()->get('page') == 0) {
-            return $this->success(App\Http\Resources\Admin\Role::collection($list->get()));
+            return $this->success(\App\Http\Resources\Admin\Role::collection($list->get()));
         } else {
             return $this->success(new RoleCollection($list->paginate(\request()->get('limit') ?? 10)));
         }
