@@ -51,7 +51,7 @@ class UserController extends ApiController
     public function store(UserRequest $request)
     {
         DB::beginTransaction();
-
+Log:info($request);
         $attributes = $request->only(['username', 'name', 'avatar', 'password']);
         $role_ids = $request->role_id;
 
