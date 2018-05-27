@@ -40,7 +40,7 @@ Route::group([
 ], function () {
     // 认证
     Route::post('login', 'LoginController@login');
-
+    Route::post('upload_avatar', 'UserController@uploadAvatar');
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-admin-auth'
@@ -54,7 +54,6 @@ Route::group([
         $router->post('user', 'UserController@store');
         $router->patch('user/{user}', 'UserController@update');
         $router->delete('user/{user}', 'UserController@destroy');
-        $router->post('upload_avatar', 'UserController@uploadAvatar');
 
         $router->get('role', 'RoleController@index');
         $router->get('role/{role}', 'RoleController@show');
