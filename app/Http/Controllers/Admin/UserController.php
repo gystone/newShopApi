@@ -87,7 +87,7 @@ class UserController extends ApiController
     {
         $attributes = $request->only(['username', 'name', 'avatar', 'password']);
         $role_ids = $request->role_id;
-
+        Log:info($request);
         DB::beginTransaction();
 
         try {
