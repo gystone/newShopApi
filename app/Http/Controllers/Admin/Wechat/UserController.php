@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\UserRequest;
+use App\Http\Resources\Wechat\User;
 use App\Http\Resources\Wechat\UserCollection;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
@@ -124,7 +125,7 @@ class UserController extends ApiController
 
         if (isset($list['data']) && count($list['data']['openid'])) {
             foreach ($list['data']['openid'] as $k => $v) {
-                $res_list[] = WechatUser::where('openid', $v)->first();
+                $res_list[] = new User(WechatUser::where('openid', $v)->first());
             }
         }
         return $this->success($res_list);
