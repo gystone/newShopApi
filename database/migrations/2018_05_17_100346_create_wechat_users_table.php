@@ -27,6 +27,7 @@ class CreateWechatUsersTable extends Migration
             $table->timestamp('subscribe_time')->default(now());
             $table->timestamp('unsubscribe_time')->default(now());
             $table->enum('status', ['subscribe', 'unsubscribe', 'nonesubscribe'])->default('subscribe');
+            $table->boolean('is_blacklist')->default(0);
         });
     }
 
