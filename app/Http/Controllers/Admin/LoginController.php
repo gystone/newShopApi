@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\Admin\User;
 use App\Models\Admin\AdminUser;
 
 class LoginController extends ApiController
@@ -49,12 +50,9 @@ class LoginController extends ApiController
     public function info()
     {
         $user = AdminUser::find(auth('api_admin')->user()->id);
-        return $this->success([
-            'id' => $user->id,
-            'roles' => '',
-            'name' => $user->username,
-            'avatar' => '',
-            'checkedCities' => $user->getCheckedCities(),
-        ]);
+        $res = new User($user);
+        $res = array_merge($res, ['checkedCities' => $user->getCheckedCities(),]);
+
+        return $this->success($res);
     }
 }
