@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Admin\UpdateInfoRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Resources\Admin\User;
 use App\Http\Resources\Admin\UserCollection;
@@ -154,5 +155,19 @@ class UserController extends ApiController
         $path = $request->file('avatar')->store('images/avatars','admin');
 
         return $this->success(['path' => $path, 'url' => Storage::disk('admin')->url($path)]);
+    }
+
+    public function updateInfo(UpdateInfoRequest $request)
+    {
+        $attributes = $request->only('name', 'avatar', 'password');
+
+        $user = AdminUser::find($request->id);
+        $res = $user->update($attributes);
+
+        if ($res) {
+            return $this->success($user);
+        } else {
+            return $this->failed('更新失败，请稍候重试');
+        }
     }
 }
