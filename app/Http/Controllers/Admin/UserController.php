@@ -160,13 +160,13 @@ class UserController extends ApiController
     public function updateInfo(UpdateInfoRequest $request)
     {
         $attributes = $request->only('name', 'avatar', 'password');
-Log::info(auth('api_admin')->user()->id);
-//        $res = AdminUser::where('id', auth('api_admin')->user()->id)->update($attributes);
 
-//        if ($res) {
-//            return $this->success($res);
-//        } else {
-//            return $this->failed('更新失败，请稍候重试');
-//        }
+        $res = AdminUser::where('id', auth('api_admin')->user()->id)->update($attributes);
+
+        if ($res) {
+            return $this->success($res);
+        } else {
+            return $this->failed('更新失败，请稍候重试');
+        }
     }
 }
