@@ -58,7 +58,7 @@ class UserController extends ApiController
         try {
             $user = $this->user->create($attributes);
 
-            if (isset($role_ids) && is_array($role_ids)) {
+            if (isset($role_ids)) {
                 $this->insertRoleUser($role_ids, $user->id);
             }
 
@@ -93,7 +93,7 @@ class UserController extends ApiController
         try {
             $user->update($attributes);
 
-            if (isset($role_ids) && is_array($role_ids)) {
+            if (isset($role_ids)) {
                 DB::table('admin_role_users')->where('user_id', $user->id)->delete();
                 $this->insertRoleUser($role_ids, $user->id);
             }
@@ -128,11 +128,16 @@ class UserController extends ApiController
         }
     }
 
-    private function insertRoleUser(array $role_ids, int $id) {
+    private function insertRoleUser($role_ids, int $id) {
         $role_users = array();
-        foreach ($role_ids as $k => $v) {
-            $role_users[$k] = array('role_id' => $v, 'user_id' => $id);
+        if (is_array($role_ids)) {
+            foreach ($role_ids as $k => $v) {
+                $role_users[$k] = array('role_id' => $v, 'user_id' => $id);
+            }
+        } else {
+            $role_users = array('role_id' => $role_ids, 'user_id' => $id);
         }
+
         DB::table('admin_role_users')->insert($role_users);
     }
 
