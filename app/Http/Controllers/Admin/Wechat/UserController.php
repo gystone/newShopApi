@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\UserRequest;
+use App\Http\Resources\Wechat\UserCollection;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends ApiController
 {
@@ -20,6 +23,8 @@ class UserController extends ApiController
 
     public function sync()
     {
+        DB::beginTransacation();
+
         try {
             $list = $this->user->list();
             foreach ($list['data']['openid'] as $k => $v) {
@@ -44,17 +49,26 @@ class UserController extends ApiController
                         'subscribe_scene' => $user['subscribe_scene'],
                     ]
                 );
+                DB::table('wechat_tag_users')->where('openid', $v)->delete();
+                $tag_users_db = [];
+                foreach ($user['tagid_list'] as $k1 => $v1) {
+                    $tag_users_db[] = ['tag_id' => $v1, 'openid' => $v];
+                }
+                DB::table('wechat_tag_users')->insert($tag_users_db);
             }
 
+            DB::commit();
+
             return $this->message('同步成功');
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {Log::info($exception->getMessage());
+            DB::rollBack();
             return $this->failed('同步失败，请稍候重试');
         }
     }
 
     public function list()
     {
-        return $this->success(WechatUser::paginate(10));
+        return $this->success(new UserCollection(WechatUser::where('status', 'subscribe')->paginate(10)));
     }
 
     public function remark(WechatUser $user, UserRequest $request)
