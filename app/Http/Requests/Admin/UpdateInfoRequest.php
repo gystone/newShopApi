@@ -23,9 +23,7 @@ class UpdateInfoRequest extends FormRequest
      */
     public function rules()
     {
-        $user_id = auth('api_admin')->user()->id;
         return [
-            'id' => 'required|exists:admin_users,id|in:'.$user_id,
             'password' => 'min:6|confirmed',
         ];
     }

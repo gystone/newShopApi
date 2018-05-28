@@ -161,7 +161,7 @@ class UserController extends ApiController
     {
         $attributes = $request->only('name', 'avatar', 'password');
 
-        $user = AdminUser::find($request->id);
+        $user = AdminUser::find(auth('api_admin')->user()->id);
         $res = $user->update($attributes);
 
         if ($res) {
