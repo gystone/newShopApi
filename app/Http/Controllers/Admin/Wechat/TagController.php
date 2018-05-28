@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Wechat;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\TagRequest;
+use App\Http\Resources\Wechat\UserCollection;
 use App\Models\Wechat\WechatTag;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
@@ -156,6 +157,6 @@ class TagController extends ApiController
                 ->from('wechat_tag_users')->where('tag_id', $tag_id)
                 ->whereRaw('wechat_tag_users.openid = wechat_users.openid');
         })->paginate(10);
-        return $this->success($users);
+        return $this->success(new UserCollection($users));
     }
 }
