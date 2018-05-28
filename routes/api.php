@@ -54,7 +54,7 @@ Route::group([
         $router->post('user', 'UserController@store');
         $router->patch('user/{user}', 'UserController@update');
         $router->delete('user/{user}', 'UserController@destroy');
-        $router->patch('user/update_info', 'UserController@updateInfo');
+        $router->post('user/update_info', 'UserController@updateInfo');
         $router->post('upload_avatar', 'UserController@uploadAvatar');
         $router->get('role', 'RoleController@index');
         $router->get('role/{role}', 'RoleController@show');
