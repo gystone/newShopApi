@@ -60,7 +60,7 @@ class UserController extends ApiController
             $blacklist = $this->user->blacklist();
 
             if (isset($blacklist['data']) && count($blacklist['data']['openid'])) {
-                WechatUser::whereIn('openid', $blacklist['data']['openid'])->update(['is_blacelist' => 1]);
+                WechatUser::whereIn('openid', $blacklist['data']['openid'])->update(['is_blacklist' => 1]);
             }
 
             DB::commit();
