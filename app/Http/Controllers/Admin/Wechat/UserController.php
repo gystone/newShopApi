@@ -23,7 +23,7 @@ class UserController extends ApiController
 
     public function sync()
     {
-        DB::beginTransacation();
+        DB::beginTransaction();
 
         try {
             $list = $this->user->list();
