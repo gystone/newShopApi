@@ -10,6 +10,7 @@ use App\Models\Admin\AdminUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends ApiController
@@ -152,6 +153,6 @@ class UserController extends ApiController
         }
         $path = $request->file('avatar')->store('images/avatars','admin');
 
-        return $this->success(['path' => $path]);
+        return $this->success(['path' => $path, 'url' => Storage::disk('admin')->url($path)]);
     }
 }
