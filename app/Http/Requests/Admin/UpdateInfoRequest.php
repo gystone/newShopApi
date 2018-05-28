@@ -27,4 +27,12 @@ class UpdateInfoRequest extends FormRequest
             'password' => 'min:6|confirmed',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'password.required' => '请输入密码',
+            'password.confirmed' => '密码不匹配',
+        ];
+    }
 }
