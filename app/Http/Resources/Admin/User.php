@@ -20,7 +20,7 @@ class User extends Resource
             'username' => $this->username,
             'name' => $this->name,
             'avatar' => Storage::disk('admin')->url($this->avatar ?? 'default.jpg'),
-            'roles' =>  $this->roles->first()->name, //new RoleUserCollection($this->roles),
+            'roles' =>  $this->roles->first()->name ?? null, //new RoleUserCollection($this->roles),
             'created_at' => $this->created_at !== null ? date_format($this->created_at, 'Y-m-d H:i:s') : null,
             'updated_at' => $this->updated_at !== null ? date_format($this->updated_at, 'Y-m-d H:i:s') : null,
         );
