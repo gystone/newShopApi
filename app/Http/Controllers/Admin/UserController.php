@@ -160,7 +160,7 @@ class UserController extends ApiController
     public function updateInfo(UpdateInfoRequest $request)
     {
         $attributes = $request->only('name', 'avatar', 'password');
-
+Log::info(auth('api_admin')->user()->id);
         $res = AdminUser::where('id', auth('api_admin')->user()->id)->update($attributes);
 
         if ($res) {
