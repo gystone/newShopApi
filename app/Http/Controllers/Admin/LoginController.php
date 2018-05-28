@@ -50,6 +50,7 @@ class LoginController extends ApiController
     {
         $user = AdminUser::find(auth('api_admin')->user()->id);
         return $this->success([
+            'id' => $user->id,
             'roles' => '',
             'name' => $user->username,
             'avatar' => '',

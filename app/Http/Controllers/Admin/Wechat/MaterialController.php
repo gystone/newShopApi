@@ -219,7 +219,7 @@ class MaterialController extends ApiController
             return $this->failed('非法访问！', 400);
         }
 
-        return $this->success(WechatMaterial::where('type', $type)->paginate(10));
+        return $this->success(WechatMaterial::where('type', $type)->paginate(20));
     }
 
     /**

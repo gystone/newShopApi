@@ -156,7 +156,7 @@ class TagController extends ApiController
             $query->select(DB::raw('openid'))
                 ->from('wechat_tag_users')->where('tag_id', $tag_id)
                 ->whereRaw('wechat_tag_users.openid = wechat_users.openid');
-        })->paginate(10);
+        })->paginate(20);
         return $this->success(new UserCollection($users));
     }
 }

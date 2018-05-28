@@ -105,7 +105,7 @@ class BroadcastRecordController extends ApiController
 
     public function history()
     {
-        return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(10)));
+        return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(20)));
     }
 
     public function delete(BroadcastRecord $record)
