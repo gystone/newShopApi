@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\Admin\User;
+use App\Http\Resources\Admin\UserInfo;
 use App\Models\Admin\AdminUser;
 
 class LoginController extends ApiController
@@ -33,7 +33,7 @@ class LoginController extends ApiController
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api_admin')->factory()->getTTL() * 60
-        ]);;
+        ]);
     }
 
     /**
@@ -50,9 +50,7 @@ class LoginController extends ApiController
     public function info()
     {
         $user = AdminUser::find(auth('api_admin')->user()->id);
-        $res = new User($user);
-        $res = array_merge($res, ['checkedCities' => $user->getCheckedCities(),]);
 
-        return $this->success($res);
+        return $this->success(new UserInfo($user));
     }
 }
