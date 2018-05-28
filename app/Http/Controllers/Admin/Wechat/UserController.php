@@ -68,7 +68,7 @@ class UserController extends ApiController
 
     public function list()
     {
-        return $this->success(new UserCollection(WechatUser::where('status', 'subscribe')->paginate(10)));
+        return $this->success(new UserCollection(WechatUser::where('status', 'subscribe')->orderBy('subscribe_time', 'desc')->paginate(10)));
     }
 
     public function remark(WechatUser $user, UserRequest $request)

@@ -31,7 +31,8 @@ class User extends Resource
             'province' => $this->province,
             'country' => $this->country,
             'remark' => $this->remark,
-            'tag_list' => $tag_list
+            'tag_list' => $tag_list,
+            'subscribe_time' => $this->subscribe_time
         ];
     }
 }
