@@ -32,7 +32,8 @@ class User extends Resource
             'country' => $this->country,
             'remark' => $this->remark,
             'tag_list' => $tag_list,
-            'subscribe_time' => $this->subscribe_time
+            'subscribe_time' => $this->subscribe_time,
+            'is_blacklist' => $this->is_blacklist,
         ];
     }
 }

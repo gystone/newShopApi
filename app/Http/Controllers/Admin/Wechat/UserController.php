@@ -46,6 +46,7 @@ class UserController extends ApiController
                         'status' => 'subscribe',
                         'unionid' => $user['unionid'] ?? '',
                         'remark' => $user['remark'],
+                        'is_blacklist' => 0,
                     ]
                 );
                 DB::table('wechat_tag_users')->where('openid', $v)->delete();
@@ -54,6 +55,12 @@ class UserController extends ApiController
                     $tag_users_db[] = ['tag_id' => $v1, 'openid' => $v];
                 }
                 DB::table('wechat_tag_users')->insert($tag_users_db);
+            }
+
+            $blacklist = $this->user->blacklist();
+
+            if (isset($blacklist['data']) && count($blacklist['data']['openid'])) {
+                WechatUser::whereIn('openid', $blacklist['data']['openid'])->update(['is_blacelist' => 1]);
             }
 
             DB::commit();
@@ -92,6 +99,7 @@ class UserController extends ApiController
             $res = $this->user->block($openids);
 
             if ($res['errcode'] === 0) {
+                WechatUser::whereIn('openid', $openids)->update(['is_blacklist' => 1]);
                 return $this->message('拉黑设置成功');
             } else {
                 return $this->failed('拉黑失败，请稍候重试');
@@ -108,6 +116,7 @@ class UserController extends ApiController
         if (is_array($openids)) {
             $res = $this->user->unblock($openids);
             if ($res['errcode'] === 0) {
+                WechatUser::whereIn('openid', $openids)->update(['is_blacklist' => 0]);
                 return $this->message('取消拉黑设置成功');
             } else {
                 return $this->failed('取消拉黑失败，请稍候重试');
@@ -119,15 +128,7 @@ class UserController extends ApiController
 
     public function blacklist()
     {
-        $list = $this->user->blacklist();
-
-        $res_list = [];
-
-        if (isset($list['data']) && count($list['data']['openid'])) {
-            foreach ($list['data']['openid'] as $k => $v) {
-                $res_list[] = new User(WechatUser::where('openid', $v)->first());
-            }
-        }
-        return $this->success($res_list);
+        $list = WechatUser::where('is_blacklist', 1)->paginate(10);
+        return $this->success(new UserCollection($list));
     }
 }
