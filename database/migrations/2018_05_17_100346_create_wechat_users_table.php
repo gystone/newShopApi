@@ -24,14 +24,8 @@ class CreateWechatUsersTable extends Migration
             $table->string('province', 255);
             $table->string('country', 255);
             $table->string('remark', 30)->nullable();
-            $table->string('tagid_list', 255)->nullable();
             $table->timestamp('subscribe_time')->default(now());
             $table->timestamp('unsubscribe_time')->default(now());
-            $table->enum('subscribe_scene', [
-                'ADD_SCENE_SEARCH', 'ADD_SCENE_ACCOUNT_MIGRATION', 'ADD_SCENE_PROFILE_CARD',
-                'ADD_SCENE_QR_CODE', 'ADD_SCENEPROFILE LINK', 'ADD_SCENE_PROFILE_ITEM',
-                'ADD_SCENE_PAID', 'ADD_SCENE_OTHERS'
-            ]);
             $table->enum('status', ['subscribe', 'unsubscribe', 'nonesubscribe'])->default('subscribe');
         });
     }

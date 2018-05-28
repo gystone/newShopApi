@@ -54,8 +54,6 @@ class WechatController extends Controller
                                     'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
                                     'status' => 'subscribe',
                                     'remark' => $user['remark'],
-                                    'tagid_list' => $user['tagid_list'],
-                                    'subscribe_scene' => $user['subscribe_scene'],
                                 ]
                             );
 

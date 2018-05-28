@@ -45,8 +45,6 @@ class UserController extends ApiController
                         'status' => 'subscribe',
                         'unionid' => $user['unionid'] ?? '',
                         'remark' => $user['remark'],
-                        'tagid_list' => $user['tagid_list'],
-                        'subscribe_scene' => $user['subscribe_scene'],
                     ]
                 );
                 DB::table('wechat_tag_users')->where('openid', $v)->delete();
