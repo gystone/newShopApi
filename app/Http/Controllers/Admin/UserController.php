@@ -161,12 +161,12 @@ class UserController extends ApiController
     {
         $attributes = $request->only('name', 'avatar', 'password');
 Log::info(auth('api_admin')->user()->id);
-        $res = AdminUser::where('id', auth('api_admin')->user()->id)->update($attributes);
+//        $res = AdminUser::where('id', auth('api_admin')->user()->id)->update($attributes);
 
-        if ($res) {
-            return $this->success($res);
-        } else {
-            return $this->failed('更新失败，请稍候重试');
-        }
+//        if ($res) {
+//            return $this->success($res);
+//        } else {
+//            return $this->failed('更新失败，请稍候重试');
+//        }
     }
 }
