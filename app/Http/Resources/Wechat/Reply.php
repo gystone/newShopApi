@@ -24,10 +24,19 @@ class Reply extends Resource
             } else {
                 $material = WechatMaterial::where(['media_id' => $content['content'], 'type' => $content['type']])->first();
                 if ($material) {
-                    $contents[] = array(
-                        'type' => $content['type'],
-                        'url' => $material->content['path'] ?? ''
-                    );
+                    if ($material->type === 'news') {
+                        $contents[] = array(
+                            'type' => $content['type'],
+                            'thumb_path' => $material->content['news_item'][0]['thumb_path'] ?? null,
+                            'title' => $material->content['news_item'][0]['title'] ?? null,
+                            'digest' => $material->content['news_item'][0]['digest'] ?? null,
+                        );
+                    } else {
+                        $contents[] = array(
+                            'type' => $content['type'],
+                            'url' => $material->content['path'] ?? null
+                        );
+                    }
                 }
             }
         }
