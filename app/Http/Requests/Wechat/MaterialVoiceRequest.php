@@ -24,7 +24,7 @@ class MaterialVoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'voice' => 'required|max:30720'
+            'voice' => 'required|mimes:mp3,wma,wav,amr|max:30720'
         ];
     }
 
@@ -32,7 +32,7 @@ class MaterialVoiceRequest extends FormRequest
     {
         return [
             'voice.required' => '请上传声音文件',
-//            'voice.mimes' => '声音格式支持mp3、wma、wav、amr',
+            'voice.mimes' => '声音格式支持mp3、wma、wav、amr',
             'voice.max' => '文件大小不能超过30M'
         ];
     }
