@@ -307,8 +307,8 @@ class MaterialController extends ApiController
                 'author' => $v['author'],
                 'content' => $v['content'],
                 'thumb_media_id' => $v['thumb_media_id'],
-                'digest' => $v['digest'],
-                'source_url' => $v['content_source_url'],
+                'digest' => $v['digest'] ?? null,
+                'source_url' => $v['content_source_url'] ?? null,
                 'show_cover' => $v['show_cover_pic'],
             ]);
         }
