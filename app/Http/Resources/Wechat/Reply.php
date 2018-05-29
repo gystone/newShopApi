@@ -26,7 +26,7 @@ class Reply extends Resource
                 if ($material) {
                     $contents[] = array(
                         'type' => $content['type'],
-                        'url' => $material->content['path']
+                        'url' => $material->content['path'] ?? ''
                     );
                 }
             }
