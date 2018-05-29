@@ -313,7 +313,7 @@ class MaterialController extends ApiController
             ]);
         }
 
-        $res = $this->material->uploadArticle($article);
+        $res = $this->material->uploadArticle($article);Log::info($res);
         if (isset($res['media_id'])) {
             $res_news = $this->material->get($res['media_id']);
             $material_content['news_item'] = $this->getNewsItem($res_news['news_item']);
