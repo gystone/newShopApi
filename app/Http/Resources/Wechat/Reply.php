@@ -34,6 +34,7 @@ class Reply extends Resource
                     } else {
                         $contents[] = array(
                             'type' => $content['type'],
+                            'title' => $material->content['name'] ?? null,
                             'url' => $material->content['path'] ?? null
                         );
                     }
