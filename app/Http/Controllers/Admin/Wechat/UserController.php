@@ -159,6 +159,10 @@ class UserController extends ApiController
     {
         $content = trim(\request()->get('content'));
 
+        if (! $content) {
+            return $this->success([]);
+        }
+
         $list = WechatUser::where(['status' => 'subscribe', ['nickname', 'like', '%'.$content.'%']])->orderBy('subscribe_time', 'desc')->paginate(20);
 
         return $this->success(new UserCollection($list));
