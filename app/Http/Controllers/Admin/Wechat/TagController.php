@@ -155,7 +155,7 @@ class TagController extends ApiController
         $users = WechatUser::whereExists(function ($query) use ($tag_id) {
             $query->select(DB::raw('openid'))
                 ->from('wechat_tag_users')->where('tag_id', $tag_id)
-                ->whereRaw('wechat_tag_users.openid = wechat_users.openid');
+                ->whereRaw(config('database.connections.mysql.prefix').'wechat_tag_users.openid = '.config('database.connections.mysql.prefix').'wechat_users.openid');
         })->paginate(20);
         return $this->success(new UserCollection($users));
     }
