@@ -81,7 +81,7 @@ Route::group([
             $router->post('material_voice_upload', 'MaterialController@materialVoiceUpload');
             $router->post('material_video_upload', 'MaterialController@materialVideoUpload');
             $router->delete('material_delete', 'MaterialController@materialDelete');
-            $router->get('material/search', 'MaterialController@search');
+            $router->get('material/search/{type}', 'MaterialController@search');
 
             $router->get('tag_sync', 'TagController@sync');
             $router->get('tag_list', 'TagController@list');

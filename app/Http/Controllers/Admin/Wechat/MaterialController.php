@@ -467,4 +467,54 @@ class MaterialController extends ApiController
             return $this->failed('删除失败，请稍候重试');
         }
     }
+
+    public function search($type)
+    {
+        $content = trim(\request()->get('content'));
+
+        switch ($type) {
+            case 'news':
+                $news_list = WechatMaterial::where('type', 'news')->get();
+                $data = [];
+                foreach ($news_list as $k => $v) {
+                    foreach ($v['content']['news_item'] as $k1 => $v1) {
+                        if (stripos($v1['title'], $content) !== false) {
+                            $data[] = $v;
+                        }
+                    }
+                }
+                $res = $this->success($data);
+                break;
+            case 'image':
+                $image_list = WechatMaterial::where('type', 'image')->get();
+                $data = $this->searchOther($image_list, $content);
+                $res = $this->success($data);
+                break;
+            case 'video':
+                $video_list = WechatMaterial::where('type', 'video')->get();
+                $data = $this->searchOther($video_list, $content);
+                $res = $this->success($data);
+                break;
+            case 'voice':
+                $voice_list = WechatMaterial::where('type', 'voice')->get();
+                $data = $this->searchOther($voice_list, $content);
+                $res = $this->success($data);
+                break;
+            default:
+                $res = $this->failed('非法访问');
+        }
+
+        return $res;
+    }
+
+    private function searchOther($list, $content)
+    {
+        $data = [];
+        foreach ($list as $k => $v) {
+            if (stripos($v['content']['name'], $content) !== false) {
+                $data[] = $v;
+            }
+        }
+        return $data;
+    }
 }
