@@ -16,11 +16,13 @@ use Illuminate\Support\Facades\Log;
 class UserController extends ApiController
 {
     private $user;
+    private $tag;
 
     public function __construct(Application $app)
     {
         auth()->shouldUse('api_admin');
         $this->user = $app->user;
+        $this->tag = $app->user_tag;
     }
 
     public function sync()
