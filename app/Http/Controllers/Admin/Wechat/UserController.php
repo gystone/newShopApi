@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Wechat\UserRequest;
 use App\Http\Resources\Wechat\User;
 use App\Http\Resources\Wechat\UserCollection;
+use App\Models\Wechat\WechatTag;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
@@ -27,6 +28,32 @@ class UserController extends ApiController
         DB::beginTransaction();
 
         try {
+
+            $tag_list = $this->tag->list();
+
+            Log::info('正在同步标签');
+            DB::table('wechat_tag_users')->delete();
+            foreach ($tag_list['tags'] as $k => $v) {
+                $tag_users_list = $this->tag->usersOfTag($v['id']);
+
+                $tag_users_db = [];
+                if (isset($tag_users_list['data']['openid'])) {
+                    foreach ($tag_users_list['data']['openid'] as $item) {
+                        $tag_users_db[] = ['tag_id' => $v['id'], 'openid' => $item];
+                    }
+                }
+                DB::table('wechat_tag_users')->insert($tag_users_db);
+
+                WechatTag::updateOrCreate([
+                    'id' => $v['id']
+                ], [
+                    'id' => $v['id'],
+                    'name' => $v['name'],
+                    'count' => $v['count']
+                ]);
+            }
+            Log::info('标签同步完成');
+
             $list = $this->user->list();
             foreach ($list['data']['openid'] as $k => $v) {
                 $user = $this->user->get($v);
@@ -49,12 +76,6 @@ class UserController extends ApiController
                         'is_blacklist' => 0,
                     ]
                 );
-                DB::table('wechat_tag_users')->where('openid', $v)->delete();
-                $tag_users_db = [];
-                foreach ($user['tagid_list'] as $k1 => $v1) {
-                    $tag_users_db[] = ['tag_id' => $v1, 'openid' => $v];
-                }
-                DB::table('wechat_tag_users')->insert($tag_users_db);
             }
 
             $blacklist = $this->user->blacklist();
