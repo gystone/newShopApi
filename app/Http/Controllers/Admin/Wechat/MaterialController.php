@@ -103,7 +103,7 @@ class MaterialController extends ApiController
             $count = 20;
             do {
                 $video_list = $this->material->list('video', $offset, $count);
-                Log::info($video_list);
+
                 if (!isset($video_list['item_count']) || $video_list['item_count'] < 1) {
                     break;
                 }
