@@ -91,7 +91,7 @@ class UserController extends ApiController
             return $this->message('同步成功');
         } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
-            return $this->failed('同步失败，请稍候重试');
+            return $this->failed('同步失败，请稍候重试. 错误信息：'.$exception->getMessage());
         }
     }
 

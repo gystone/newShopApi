@@ -35,7 +35,7 @@ class MenuController extends ApiController
             return $this->message('同步成功');
         } catch (\Exception $exception) {
             Log::info('menu_sync error:'.$exception->getMessage());
-            return $this->failed('同步失败，请稍候重试');
+            return $this->failed('同步失败，请稍候重试. 错误信息：'.$exception->getMessage());
         }
     }
 
