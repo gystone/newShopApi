@@ -81,6 +81,7 @@ Route::group([
             $router->post('material_voice_upload', 'MaterialController@materialVoiceUpload');
             $router->post('material_video_upload', 'MaterialController@materialVideoUpload');
             $router->delete('material_delete', 'MaterialController@materialDelete');
+            $router->get('material/search', 'MaterialController@search');
 
             $router->get('tag_sync', 'TagController@sync');
             $router->get('tag_list', 'TagController@list');
@@ -96,6 +97,7 @@ Route::group([
             $router->post('user_block', 'UserController@block');
             $router->post('user_unblock', 'UserController@unblock');
             $router->get('user_blacklist', 'UserController@blacklist');
+            $router->get('user/search', 'UserController@search');
 
             $router->get('menu_sync', 'MenuController@sync');
             $router->get('menu_list', 'MenuController@list');
