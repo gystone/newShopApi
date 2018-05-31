@@ -65,6 +65,9 @@ class MaterialController extends ApiController
 
                 $offset += $image_list['item_count'];
                 $count = $image_list['total_count'] - $offset;
+                if ($count <= 0) {
+                    break;
+                }
 
             } while (true);
             Log::info('图片素材同步完成');
@@ -94,6 +97,9 @@ class MaterialController extends ApiController
 
                 $offset += $news_list['item_count'];
                 $count = $news_list['total_count'] - $offset;
+                if ($count <= 0) {
+                    break;
+                }
 
             } while (true);
             Log::info('图文素材同步完成');
@@ -131,6 +137,9 @@ class MaterialController extends ApiController
 
                 $offset += $video_list['item_count'];
                 $count = $video_list['total_count'] - $offset;
+                if ($count <= 0) {
+                    break;
+                }
 
             } while (true);
             Log::info('视频素材同步完成');
@@ -165,6 +174,9 @@ class MaterialController extends ApiController
 
                 $offset += $voice_list['item_count'];
                 $count = $voice_list['total_count'] - $offset;
+                if ($count <= 0) {
+                    break;
+                }
 
             } while (true);
             Log::info('音频素材同步完成');
