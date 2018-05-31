@@ -154,4 +154,13 @@ class UserController extends ApiController
         $list = WechatUser::where('is_blacklist', 1)->paginate(20);
         return $this->success(new UserCollection($list));
     }
+
+    public function search()
+    {
+        $content = trim(\request()->get('content'));
+
+        $list = WechatUser::where(['status' => 'subscribe', ['nickname', 'like', '%'.$content.'%']])->orderBy('subscribe_time', 'desc')->paginate(20);
+
+        return $this->success(new UserCollection($list));
+    }
 }
