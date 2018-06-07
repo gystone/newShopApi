@@ -7,12 +7,7 @@ use App\Http\Requests\Wechat\BroadcastRecordRequest;
 use App\Http\Resources\Wechat\BroadcastRecordCollection;
 use App\Jobs\BroadcastMessage;
 use App\Models\Wechat\BroadcastRecord;
-use EasyWeChat\Kernel\Messages\Image;
-use EasyWeChat\Kernel\Messages\Media;
-use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\OfficialAccount\Application;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class BroadcastRecordController extends ApiController
 {
@@ -33,7 +28,7 @@ class BroadcastRecordController extends ApiController
             $delay_m = ceil((strtotime($send_time) - time()) % 86400 % 3600 / 60);
             $delay = $delay_d * 24 * 60 + $delay_h * 60 + $delay_m;
 
-            $record = \App\Models\Wechat\BroadcastRecord::create([
+            $record = BroadcastRecord::create([
                 'tos' => $request->to,
                 'message' => $request->message,
                 'types' => $request->types,
@@ -44,7 +39,7 @@ class BroadcastRecordController extends ApiController
             $send_time = date('Y-m-d H:i');
             $delay = 0;
 
-            $record = \App\Models\Wechat\BroadcastRecord::create([
+            $record = BroadcastRecord::create([
                 'tos' => $request->to,
                 'message' => $request->message,
                 'types' => $request->types,
@@ -64,7 +59,10 @@ class BroadcastRecordController extends ApiController
 
     public function history()
     {
-        return $this->success(new BroadcastRecordCollection(\App\Models\Wechat\BroadcastRecord::paginate(20)));
+        return $this->success(\request('page') ?
+            new BroadcastRecordCollection(BroadcastRecord::paginate(\request('limit') ?? 20)) :
+            \App\Http\Resources\Wechat\BroadcastRecord::collection(BroadcastRecord::all())
+        );
     }
 
     public function delete(BroadcastRecord $record)

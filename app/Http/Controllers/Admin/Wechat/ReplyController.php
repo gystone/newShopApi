@@ -32,7 +32,10 @@ class ReplyController extends ApiController
 
     public function list()
     {
-        return $this->success(new ReplyCollection(WechatReply::latest()->paginate(20)));
+        return $this->success(\request('page') ?
+            new ReplyCollection(WechatReply::latest()->paginate(\request('limit') ?? 20)) :
+            Reply::collection(WechatReply::latest()->get())
+        );
     }
 
     public function update(WechatReply $reply, ReplyRequest $request)

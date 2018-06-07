@@ -97,7 +97,12 @@ class UserController extends ApiController
 
     public function list()
     {
-        return $this->success(new UserCollection(WechatUser::where('status', 'subscribe')->orderBy('subscribe_time', 'desc')->paginate(20)));
+        $users = WechatUser::where('status', 'subscribe')->orderBy('subscribe_time', 'desc');
+
+        return $this->success(\request('page') ?
+            new UserCollection($users->paginate(\request('limit') ?? 20)) :
+            User::collection($users->get())
+        );
     }
 
     public function remark(WechatUser $user, UserRequest $request)
@@ -151,8 +156,11 @@ class UserController extends ApiController
 
     public function blacklist()
     {
-        $list = WechatUser::where('is_blacklist', 1)->paginate(20);
-        return $this->success(new UserCollection($list));
+        $list = WechatUser::where('is_blacklist', 1);
+        return $this->success(\request('page') ?
+            new UserCollection($list->paginate(\request('limit') ?? 20)) :
+            User::collection($list->get())
+        );
     }
 
     public function search()

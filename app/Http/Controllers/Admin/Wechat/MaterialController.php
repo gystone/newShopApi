@@ -233,7 +233,9 @@ class MaterialController extends ApiController
             return $this->failed('非法访问！', 400);
         }
 
-        return $this->success(WechatMaterial::where('type', $type)->paginate(20));
+        $list = WechatMaterial::where('type', $type)->latest('id');
+
+        return $this->success($request->page ? $list->paginate($request->limit ?? 20) : $list->get());
     }
 
     /**
@@ -476,7 +478,7 @@ class MaterialController extends ApiController
 
         switch ($type) {
             case 'news':
-                $news_list = WechatMaterial::where('type', 'news')->get();
+                $news_list = WechatMaterial::where('type', 'news')->latest('id')->get();
                 $data = [];
                 foreach ($news_list as $k => $v) {
                     foreach ($v['content']['news_item'] as $k1 => $v1) {
@@ -485,20 +487,21 @@ class MaterialController extends ApiController
                         }
                     }
                 }
+                $res = array_unique($data);
                 $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'image':
-                $image_list = WechatMaterial::where('type', 'image')->get();
+                $image_list = WechatMaterial::where('type', 'image')->latest('id')->get();
                 $data = $this->searchOther($image_list, $content);
                 $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'video':
-                $video_list = WechatMaterial::where('type', 'video')->get();
+                $video_list = WechatMaterial::where('type', 'video')->latest('id')->get();
                 $data = $this->searchOther($video_list, $content);
                 $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'voice':
-                $voice_list = WechatMaterial::where('type', 'voice')->get();
+                $voice_list = WechatMaterial::where('type', 'voice')->latest('id')->get();
                 $data = $this->searchOther($voice_list, $content);
                 $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
@@ -517,7 +520,7 @@ class MaterialController extends ApiController
                 $data[] = $v;
             }
         }
-        return $data;
+        return array_unique($data);
     }
 
     private function paginated($data, $num)

@@ -70,7 +70,7 @@ class TagController extends ApiController
      */
     public function list()
     {
-        return $this->success(WechatTag::all());
+        return $this->success(\request('page') ? WechatTag::paginate(\request('limit' ?? 20)) : WechatTag::all());
     }
 
     /**
@@ -172,7 +172,10 @@ class TagController extends ApiController
             $query->select(DB::raw('openid'))
                 ->from('wechat_tag_users')->where('tag_id', $tag_id)
                 ->whereRaw(config('database.connections.mysql.prefix').'wechat_tag_users.openid = '.config('database.connections.mysql.prefix').'wechat_users.openid');
-        })->paginate(20);
-        return $this->success(new UserCollection($users));
+        });
+        return $this->success(\request('page') ?
+            new UserCollection($users->paginate(\request('limit') ?? 20)) :
+            User::collection($users->get())
+        );
     }
 }
