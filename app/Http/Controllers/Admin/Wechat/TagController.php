@@ -131,6 +131,20 @@ class TagController extends ApiController
         $tagids = $request->tagids;
 
         if (is_array($openids) && is_array($tagids)) {
+            $untagids = WechatTag::whereNotIn('id', $tagids)->get(['id']);
+
+            if (count($untagids)) {
+                foreach ($untagids as $item) {
+                    $untagid = $item->id;
+                    $res_untag = $this->tag->untagUsers($openids, $untagid);
+
+                    if ($res_untag['errcode'] === 0) {
+                        DB::table('wechat_tag_users')->where('tag_id', $untagid)->whereIn('openid', $openids)->delete();
+                        WechatTag::where('id', $untagid)->decrement('count', count($openids));
+                    }
+                }
+            }
+
             foreach ($tagids as $tagid) {
                 $res = $this->tag->tagUsers($openids, $tagid);
 
@@ -140,6 +154,7 @@ class TagController extends ApiController
                         $tag_users_db[] = ['tag_id' => $tagid, 'openid' => $openid];
                     }
                     DB::table('wechat_tag_users')->insert($tag_users_db);
+                    WechatTag::where('id', $tagid)->increment('count', count($tag_users_db));
                 }
             }
 
