@@ -47,6 +47,18 @@ class LoginController extends ApiController
         return $this->setStatusCode(204)->message('注销成功');
     }
 
+    public function refresh()
+    {
+        $token = auth('api_admin')->refresh();
+
+        return $this->setStatusCode(201)
+        ->success([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api_admin')->factory()->getTTL() * 60
+        ]);
+    }
+
     public function info()
     {
         $user = AdminUser::find(auth('api_admin')->user()->id);

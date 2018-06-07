@@ -29,6 +29,7 @@ Route::group([
         'middleware' => 'jwt-auth'
     ], function ($router) {
         $router->delete('logout', 'LoginController@logout');
+        $router->post('refresh', 'LoginController@refresh');
         // 认证后才能访问的路由
     });
 });
@@ -46,6 +47,7 @@ Route::group([
         'middleware' => 'jwt-admin-auth'
     ], function ($router) {
         $router->delete('logout', 'LoginController@logout');
+        $router->post('refresh', 'LoginController@refresh');
 
         $router->get('info', 'LoginController@info');
         // 认证后才能访问的路由
