@@ -11,6 +11,8 @@ use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -483,22 +485,22 @@ class MaterialController extends ApiController
                         }
                     }
                 }
-                $res = $this->success($data);
+                $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'image':
                 $image_list = WechatMaterial::where('type', 'image')->get();
                 $data = $this->searchOther($image_list, $content);
-                $res = $this->success($data);
+                $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'video':
                 $video_list = WechatMaterial::where('type', 'video')->get();
                 $data = $this->searchOther($video_list, $content);
-                $res = $this->success($data);
+                $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             case 'voice':
                 $voice_list = WechatMaterial::where('type', 'voice')->get();
                 $data = $this->searchOther($voice_list, $content);
-                $res = $this->success($data);
+                $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
                 break;
             default:
                 $res = $this->failed('非法访问');
@@ -516,5 +518,20 @@ class MaterialController extends ApiController
             }
         }
         return $data;
+    }
+
+    private function paginated($data, $num)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage() - 1;
+
+        $collection = new Collection($data);
+
+        $perPage = $num;
+
+        $currentPageSearchResults = $collection->slice($currentPage * $perPage, $perPage)->all();
+
+        $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
+
+        return $paginatedSearchResults->data();
     }
 }
