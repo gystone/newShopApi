@@ -25,6 +25,8 @@ class BroadcastRecord extends Resource
         }
         if ($this->msg_id) {
             $status = $app->broadcasting->status($this->msg_id);
+        } elseif ($this->send_time < date('Y-m-d H:i:s')) {
+            $status = '发送失败';
         } else {
             $status = '未发送';
         }

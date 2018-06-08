@@ -62,8 +62,10 @@ class BroadcastMessage implements ShouldQueue
 Log::info($record->send_time);
 //            $broadcasting = app('wechat.official_account')->broadcasting;
 //            $res = $broadcasting->sendMessage($message, $record->to['users']);
-//            $record->msg_id = $res['msg_id'];
-//            $record->save();
+//            if (isset($res['msg_id'])) {
+//                $record->msg_id = $res['msg_id'];
+//                $record->save();
+//            }
         }
 
     }
