@@ -31,6 +31,7 @@ class Reply extends Resource
                             'title' => $material->content['news_item'][0]['title'] ?? null,
                             'digest' => $material->content['news_item'][0]['digest'] ?? null,
                             'media_id' => $material->media_id,
+                            'news_content' => $content['news_content'] ?? null,
                         );
                     } else {
                         $contents[] = array(
