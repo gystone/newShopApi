@@ -487,8 +487,13 @@ class MaterialController extends ApiController
                         }
                     }
                 }
-                $res = array_unique($data);
-                $res = $this->success(\request('page') ? $this->paginated($data, \request('limit') ?? 20) : $data);
+
+                // 结果去重
+                $res_data = [];
+                foreach (array_unique($data) as $item) {
+                    $res_data[] = json_decode($item, true);
+                }
+                $res = $this->success(\request('page') ? $this->paginated($res_data, \request('limit') ?? 20) : $res_data);
                 break;
             case 'image':
                 $image_list = WechatMaterial::where('type', 'image')->latest('id')->get();
@@ -520,7 +525,7 @@ class MaterialController extends ApiController
                 $data[] = $v;
             }
         }
-        return array_unique($data);
+        return $data;
     }
 
     private function paginated($data, $num)
