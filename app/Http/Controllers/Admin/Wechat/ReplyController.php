@@ -38,6 +38,11 @@ class ReplyController extends ApiController
         );
     }
 
+    public function getContentByKeyword(ReplyRequest $request)
+    {
+        return $this->success(new Reply(WechatReply::where('rule_name', $request->rule_name)->first()));
+    }
+
     public function update(WechatReply $reply, ReplyRequest $request)
     {
         $attributes = $request->only('keywords','contents', 'is_reply_all', 'is_open');

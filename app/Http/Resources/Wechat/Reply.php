@@ -44,7 +44,7 @@ class Reply extends Resource
 
         return [
             'id' => $this->id,
-            'rule_name' => 'dsf',
+            'rule_name' => $this->rule_name,
             'keywords' => $this->keywords,
             'contents' => $contents,
             'is_reply_all' => $this->is_reply_all,

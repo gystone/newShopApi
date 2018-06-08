@@ -24,6 +24,11 @@ class ReplyRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
+            case 'GET':
+                return [
+                    'rule_name' => 'required|exists:wechat_replies,rule_name',
+                ];
+                break;
             case 'POST':
                 return [
                     'rule_name' => 'required|between:2,50',
@@ -58,6 +63,7 @@ class ReplyRequest extends FormRequest
         return [
             'rule_name.required' => '请输入规则名称',
             'rule_name.between' => '规则名称应为2-50之间字符串',
+            'rule_name.exists' => '规则不存在',
             'keywords.required' => '请输入关键词',
             'keywords.array' => '非法访问',
 //            'keywords.*.match_mode.required' => '请选择关键词匹配方式',
