@@ -7,10 +7,6 @@ use App\Http\Requests\Wechat\ReplyRequest;
 use App\Http\Resources\Wechat\Reply;
 use App\Http\Resources\Wechat\ReplyCollection;
 use App\Models\Wechat\WechatReply;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class ReplyController extends ApiController
 {
@@ -83,28 +79,11 @@ class ReplyController extends ApiController
         }
 
         // 结果去重
-        $res_data = [];
-        foreach (array_unique($data) as $item) {
-            $res_data[] = json_decode($item, true);
-        }
+        $data = array_unique($data);
+        $res_data = WechatReply::whereIn('id', $data);
         $res = $this->success(\request('page') ?
-            new $this->paginated($res_data, \request('limit') ?? 20) : $res_data);
+            new ReplyCollection($res_data->paginate(\request('limit') ?? 20)) : Reply::collection($res_data->get()));
 
         return $res;
-    }
-
-    private function paginated($data, $num)
-    {
-        $currentPage = LengthAwarePaginator::resolveCurrentPage() - 1;
-
-        $collection = new Collection($data);
-
-        $perPage = $num;
-
-        $currentPageSearchResults = $collection->slice($currentPage * $perPage, $perPage)->all();
-
-        $paginatedSearchResults= new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
-
-        return $paginatedSearchResults;
     }
 }
