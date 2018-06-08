@@ -111,6 +111,7 @@ Route::group([
             $router->get('reply_content', 'ReplyController@getContentByKeyword');
             $router->patch('reply_update/{reply}', 'ReplyController@update');
             $router->delete('reply_delete/{reply}', 'ReplyController@delete');
+            $router->get('reply/search', 'ReplyController@search');
 
             $router->post('broadcast_send', 'BroadcastRecordController@send');
             $router->get('broadcast_history', 'BroadcastRecordController@history');

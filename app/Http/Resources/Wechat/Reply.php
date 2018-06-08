@@ -30,12 +30,14 @@ class Reply extends Resource
                             'thumb_path' => $material->content['news_item'][0]['thumb_path'] ?? null,
                             'title' => $material->content['news_item'][0]['title'] ?? null,
                             'digest' => $material->content['news_item'][0]['digest'] ?? null,
+                            'media_id' => $material->media_id,
                         );
                     } else {
                         $contents[] = array(
                             'type' => $content['type'],
                             'title' => $material->content['name'] ?? null,
-                            'url' => $material->content['path'] ?? null
+                            'url' => $material->content['path'] ?? null,
+                            'media_id' => $material->media_id,
                         );
                     }
                 }
