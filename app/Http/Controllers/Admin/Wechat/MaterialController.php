@@ -358,6 +358,7 @@ class MaterialController extends ApiController
     public function materialImgUpload(MaterialImageRequest $request)
     {
         $image = $request->file('img');
+        $title = $request->title;
 
         $path = 'wechat/images/';
 
@@ -372,7 +373,7 @@ class MaterialController extends ApiController
                     'media_id' => $res['media_id'],
                     'type' => 'image',
                     'content' => array(
-                        'name' => $image->getClientOriginalName(),
+                        'name' => $title ?? $image->getClientOriginalName(),
                         'update_time' => date('Y-m-d H:i:s'),
                         'url' => $res['url'],
                         'path' => $path,
@@ -389,6 +390,7 @@ class MaterialController extends ApiController
     public function materialVoiceUpload(MaterialVoiceRequest $request)
     {
         $voice = $request->file('voice');
+        $title = $request->title;
 
         $path = 'wechat/voices/';
 
@@ -403,7 +405,7 @@ class MaterialController extends ApiController
                     'media_id' => $res['media_id'],
                     'type' => 'voice',
                     'content' => array(
-                        'name' => $voice->getClientOriginalName(),
+                        'name' => $title ?? $voice->getClientOriginalName(),
                         'update_time' => date('Y-m-d H:i:s'),
                         'path' => $path,
                     )
