@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jwt-auth' => \App\Http\Middleware\JWTAuth::class,
         'jwt-admin-auth' => \App\Http\Middleware\JWTAdminAuth::class,
+        'wechat.config' => \App\Http\Middleware\WechatConfig::class,
     ];
 }

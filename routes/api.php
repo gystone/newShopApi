@@ -71,7 +71,8 @@ Route::group([
 
         $router->group([
             'prefix' => 'wechat',
-            'namespace' => 'Wechat'
+            'namespace' => 'Wechat',
+            'middleware' => 'wechat.config'
         ], function ($router) {
             $router->get('material_sync', 'MaterialController@materialSync');
             $router->get('material_list', 'MaterialController@materialList');
