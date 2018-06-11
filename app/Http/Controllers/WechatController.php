@@ -83,7 +83,7 @@ class WechatController extends Controller
                     break;
                 case 'text':
                     Log::info($message['Content']);
-                    $replys = WechatReply::where('is_open', 1)->get();
+                    $replys = WechatReply::whereNotIn('rule_name', ['关注回复', '默认回复'])->where('is_open', 1)->get();
 
                     foreach ($replys as $reply) {Log::info($this->isMatch($reply->keywords, strtolower($message['Content'])));
                         if ($this->isMatch($reply->keywords, strtolower($message['Content'])) === true) {
