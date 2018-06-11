@@ -85,7 +85,7 @@ class WechatController extends Controller
                     Log::info($message['Content']);
                     $replys = WechatReply::where('is_open', 1)->get();
 
-                    foreach ($replys as $reply) {
+                    foreach ($replys as $reply) {Log::info($this->isMatch($reply->keywords, strtolower($message['Content'])));
                         if ($this->isMatch($reply->keywords, strtolower($message['Content'])) === true) {
                             return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                         }
