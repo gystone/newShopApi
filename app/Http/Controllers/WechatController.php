@@ -90,10 +90,6 @@ class WechatController extends Controller
                             return $this->messageContent($reply, $message['FromUserName'], strtolower($message['Content']));
                         }
                     }
-                    return '你好';
-                    break;
-                default:
-                    return '收到其它消息';
                     break;
             }
             $default_reply = WechatReply::where('is_open', 1)->where('rule_name', '默认回复')->first();
@@ -133,7 +129,7 @@ class WechatController extends Controller
         foreach ($new_keywords as $keyword) {
             if ($keyword['match_mode'] === 'equal' && $content === strtolower($keyword['content'])) {
                 return true;
-            } elseif ($keyword['match_mode'] === 'contain' && stripos($keyword['content'], $content) >= 0) {
+            } elseif ($keyword['match_mode'] === 'contain' && stripos($content, $keyword['content']) >= 0) {
                 return true;
             }
         }
