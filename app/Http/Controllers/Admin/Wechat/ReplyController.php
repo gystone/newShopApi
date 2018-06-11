@@ -31,8 +31,8 @@ class ReplyController extends ApiController
     public function list()
     {
         return $this->success(\request('page') ?
-            new ReplyCollection(WechatReply::latest()->paginate(\request('limit') ?? 20)) :
-            Reply::collection(WechatReply::latest()->get())
+            new ReplyCollection(WechatReply::whereNotIn('rule_name', ['关注回复', '默认回复'])->latest()->paginate(\request('limit') ?? 20)) :
+            Reply::collection(WechatReply::whereNotIn('rule_name', ['关注回复', '默认回复'])->latest()->get())
         );
     }
 
