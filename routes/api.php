@@ -51,6 +51,7 @@ Route::group([
 
         $router->get('info', 'LoginController@info');
         // 认证后才能访问的路由
+        // 管理员
         $router->get('user', 'UserController@index');
         $router->get('user/{user}', 'UserController@show');
         $router->post('user', 'UserController@store');
@@ -58,16 +59,13 @@ Route::group([
         $router->delete('user/{user}', 'UserController@destroy');
         $router->post('user/update_info', 'UserController@updateInfo');
         $router->post('upload_avatar', 'UserController@uploadAvatar');
+
+        // 角色
         $router->get('role', 'RoleController@index');
         $router->get('role/{role}', 'RoleController@show');
         $router->post('role', 'RoleController@store');
         $router->patch('role/{role}', 'RoleController@update');
         $router->delete('role/{role}', 'RoleController@destroy');
-
-        $router->get('permission', 'PermissionController@index');
-        $router->post('permission', 'PermissionController@store');
-        $router->patch('permission/{permission}', 'PermissionController@update');
-        $router->delete('permission/{permission}', 'PermissionController@destroy');
 
         $router->group([
             'prefix' => 'wechat',
