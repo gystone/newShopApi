@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\TagRequest;
 use App\Http\Resources\Wechat\UserCollection;
 use App\Models\Wechat\WechatTag;
@@ -12,13 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class TagController extends ApiController
+class TagController extends BaseController
 {
     private $tag;
 
     public function __construct(Application $app)
     {
-        auth()->shouldUse('api_admin');
         $this->tag = $app->user_tag;
     }
 

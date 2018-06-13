@@ -2,20 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\ApiController;
 use App\Http\Resources\Admin\UserInfo;
 use App\Models\Admin\AdminUser;
 
-class LoginController extends ApiController
+class LoginController extends BaseController
 {
-    /**
-     * AuthController constructor.
-     */
-    public function __construct()
-    {
-        auth()->shouldUse('api_admin');
-    }
-
     /**
      * 登录
      * @return \Illuminate\Http\JsonResponse

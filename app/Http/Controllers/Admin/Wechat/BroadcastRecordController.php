@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\BroadcastRecordRequest;
 use App\Http\Resources\Wechat\BroadcastRecordCollection;
 use App\Jobs\BroadcastMessage;
 use App\Models\Wechat\BroadcastRecord;
 use EasyWeChat\OfficialAccount\Application;
 
-class BroadcastRecordController extends ApiController
+class BroadcastRecordController extends BaseController
 {
     private $broadcasting;
 
     public function __construct(Application $application)
     {
-        auth()->shouldUse('api_admin');
         $this->broadcasting = $application->broadcasting;
     }
 

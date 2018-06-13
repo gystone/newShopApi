@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\ReplyRequest;
 use App\Http\Resources\Wechat\Reply;
 use App\Http\Resources\Wechat\ReplyCollection;
 use App\Models\Wechat\WechatReply;
 
-class ReplyController extends ApiController
+class ReplyController extends BaseController
 {
-    public function __construct()
-    {
-        auth()->shouldUse('api_admin');
-    }
-
     public function store(ReplyRequest $request)
     {
         $attributes = $request->only('rule_name', 'keywords','contents', 'is_reply_all', 'is_open');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\MaterialImageRequest;
 use App\Http\Requests\Wechat\MaterialNewsRequest;
 use App\Http\Requests\Wechat\MaterialVideoRequest;
@@ -17,13 +17,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class MaterialController extends ApiController
+class MaterialController extends BaseController
 {
     private $material;
     
     public function __construct(Application $app)
     {
-        auth()->shouldUse('api_admin');
         $this->material = $app->material;
     }
 

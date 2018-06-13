@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Auth\Permission;
-use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleCollection;
 use App\Models\Admin\Role;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class RoleController extends ApiController
+class RoleController extends BaseController
 {
     private $role;
 
     public function __construct(Role $role)
     {
-        auth()->shouldUse('api_admin');
         $this->role = $role;
     }
     /**

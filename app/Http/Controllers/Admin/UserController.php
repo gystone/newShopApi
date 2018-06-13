@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\UpdateInfoRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Resources\Admin\User;
@@ -10,17 +9,15 @@ use App\Http\Resources\Admin\UserCollection;
 use App\Models\Admin\AdminUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends ApiController
+class UserController extends BaseController
 {
     private $user;
 
     public function __construct(AdminUser $user)
     {
-        auth()->shouldUse('api_admin');
         $this->user = $user;
     }
 

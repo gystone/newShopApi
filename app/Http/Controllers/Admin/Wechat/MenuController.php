@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\Admin\Wechat;
 
-use App\Exceptions\ApiException;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\MenuRequest;
 use App\Models\Wechat\WechatMenu;
 use EasyWeChat\OfficialAccount\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class MenuController extends ApiController
+class MenuController extends BaseController
 {
     private $menu;
 
     public function __construct(Application $application)
     {
-        auth()->shouldUse('api_admin');
         $this->menu = $application->menu;
     }
 
