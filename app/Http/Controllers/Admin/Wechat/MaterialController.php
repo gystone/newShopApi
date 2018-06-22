@@ -108,6 +108,16 @@ class MaterialController extends BaseController
             Log::info('正在同步视频素材');
             $offset = 0;
             $count = 20;
+            // 设置超时参数
+            $opts=array(
+                "http"=>array(
+                    "method"=>"GET",
+                    "timeout"=>3
+                    ),
+                );
+            // 创建数据流上下文
+            $context = stream_context_create($opts);
+
             do {
                 $video_list = $this->material->list('video', $offset, $count);
 
@@ -118,7 +128,7 @@ class MaterialController extends BaseController
                 foreach ($video_list['item'] as $k => $v) {
                     $video_source = $this->material->get($v['media_id']);
                     $path = 'wechat/videos/'.pathinfo(parse_url($video_source['down_url'])['path'])['basename'];
-                    if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url']))) {
+                    if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url'], false, $context))) {
                         $video_path = Storage::disk('admin')->url($path);
                         WechatMaterial::updateOrCreate([
                             'media_id' => $v['media_id']
