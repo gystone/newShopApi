@@ -18,6 +18,7 @@ class CreateWechatMaterialsTable extends Migration
             $table->string('media_id');
             $table->enum('type', ['news', 'image', 'video', 'voice']);
             $table->longText('content');
+            $table->timestamps();
         });
     }
 
