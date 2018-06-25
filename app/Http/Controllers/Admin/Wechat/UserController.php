@@ -32,7 +32,9 @@ class UserController extends BaseController
             $tag_list = $this->tag->list();
 
             Log::info('正在同步标签');
-            DB::table('wechat_tag_users')->delete();
+            DB::table('wechat_tag_users')->truncate();
+            WechatTag::truncate();
+            $tags_db = [];
             foreach ($tag_list['tags'] as $k => $v) {
                 $tag_users_list = $this->tag->usersOfTag($v['id']);
 
@@ -42,26 +44,30 @@ class UserController extends BaseController
                         $tag_users_db[] = ['tag_id' => $v['id'], 'openid' => $item];
                     }
                 }
-                DB::table('wechat_tag_users')->insert($tag_users_db);
 
-                WechatTag::updateOrCreate([
-                    'id' => $v['id']
-                ], [
+                $tags_db[] = [
                     'id' => $v['id'],
                     'name' => $v['name'],
                     'count' => $v['count']
-                ]);
+                ];
             }
+            DB::table('wechat_tag_users')->insert($tag_users_db);
+            WechatTag::insert($tags_db);
             Log::info('标签同步完成');
 
-            $list = $this->user->list();
-            foreach ($list['data']['openid'] as $k => $v) {
-                $user = $this->user->get($v);
-                WechatUser::updateOrCreate(
-                    [
-                        'openid' => $v
-                    ],
-                    [
+            $users_db = [];
+            WechatUser::truncate();
+            $nextOpenid = null;
+            do {
+                $list = $this->user->list($nextOpenid);
+
+                if ($list['count'] === 0) {
+                    break;
+                }
+
+                foreach ($list['data']['openid'] as $k => $v) {
+                    $user = $this->user->get($v);
+                    $users_db[] = [
                         'openid' => $v,
                         'nickname' => $user['nickname'],
                         'sex' => $user['sex'],
@@ -74,14 +80,34 @@ class UserController extends BaseController
                         'unionid' => $user['unionid'] ?? '',
                         'remark' => $user['remark'],
                         'is_blacklist' => 0,
-                    ]
-                );
-            }
+                    ];
+                }
 
-            $blacklist = $this->user->blacklist();
+                if ($list['count'] < 10000) {
+                    break;
+                }
+                $nextOpenid = $list['next_openid'];
+            } while(true);
+            WechatUser::insert($users_db);
 
-            if (isset($blacklist['data']) && count($blacklist['data']['openid'])) {
-                WechatUser::whereIn('openid', $blacklist['data']['openid'])->update(['is_blacklist' => 1]);
+            $beginOpenid = null;
+            $blacklist_db = [];
+            do {
+                $blacklist = $this->user->blacklist($beginOpenid);
+                if ($blacklist['count'] === 0) {
+                    break;
+                }
+
+                $blacklist_db = array_merge($blacklist_db, $blacklist['data']['openid']);
+
+                if ($blacklist['count'] < 10000) {
+                    break;
+                }
+                $beginOpenid = $blacklist['next_openid'];
+            } while(true);
+
+            if (count($blacklist_db)) {
+                WechatUser::whereIn('openid', $blacklist_db)->update(['is_blacklist' => 1]);
             }
 
             DB::commit();

@@ -36,6 +36,10 @@ class MaterialController extends BaseController
         DB::beginTransaction();
 
         try {
+            // 清空素材表
+            WechatMaterial::truncate();
+            $material_db = [];
+            $material_images = [];
             Log::info('正在同步图片素材');
             $offset = 0;
             $count = 20;
@@ -49,18 +53,16 @@ class MaterialController extends BaseController
                     $stream = $this->material->get($v['media_id']);
                     $path = 'wechat/images/'.md5($v['media_id'].$v['name']);
                     if (Storage::disk('admin')->put($path, $stream)) {
-                        WechatMaterial::updateOrCreate([
-                            'media_id' => $v['media_id']
-                        ], [
+                        $material_images[] = [
                             'media_id' => $v['media_id'],
                             'type' => 'image',
-                            'content' => array(
+                            'content' => serialize(array(
                                 'name' => $v['name'],
                                 'update_time' => date('Y-m-d H:i:s', $v['update_time']),
                                 'url' => $v['url'],
                                 'path' => Storage::disk('admin')->url($path),
-                            )
-                        ]);
+                            ))
+                        ];
                     }
                 }
 
@@ -71,6 +73,12 @@ class MaterialController extends BaseController
                 }
 
             } while (true);
+
+            // 图片素材插入数据库
+            if ($material_images) {
+                WechatMaterial::insert($material_images);
+                DB::commit();
+            }
             Log::info('图片素材同步完成');
 
             Log::info('正在同步图文素材');
@@ -87,13 +95,11 @@ class MaterialController extends BaseController
                     $content['news_item'] = $this->getNewsItem($v['content']['news_item']);
                     $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
 
-                    WechatMaterial::updateOrCreate([
-                        'media_id' => $v['media_id']
-                    ], [
+                    $material_db[] = [
                         'media_id' => $v['media_id'],
                         'type' => 'news',
-                        'content' => $content
-                    ]);
+                        'content' => serialize($content)
+                    ];
                 }
 
                 $offset += $news_list['item_count'];
@@ -108,6 +114,16 @@ class MaterialController extends BaseController
             Log::info('正在同步视频素材');
             $offset = 0;
             $count = 20;
+            // 设置超时参数
+            $opts = array(
+                "http" => array(
+                    "method" => "GET",
+                    "timeout" => 10
+                ),
+            );
+            // 创建数据流上下文
+            $context = stream_context_create($opts);
+
             do {
                 $video_list = $this->material->list('video', $offset, $count);
 
@@ -118,21 +134,19 @@ class MaterialController extends BaseController
                 foreach ($video_list['item'] as $k => $v) {
                     $video_source = $this->material->get($v['media_id']);
                     $path = 'wechat/videos/'.pathinfo(parse_url($video_source['down_url'])['path'])['basename'];
-                    if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url']))) {
+                    if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url'], false, $context))) {
                         $video_path = Storage::disk('admin')->url($path);
-                        WechatMaterial::updateOrCreate([
-                            'media_id' => $v['media_id']
-                        ], [
+                        $material_db[] = [
                             'media_id' => $v['media_id'],
                             'type' => 'video',
-                            'content' => array(
+                            'content' => serialize(array(
                                 'name' => $video_source['title'],
                                 'description' => $video_source['description'],
-                                'update_time' => $v['update_time'],
+                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
                                 'down_url' => $video_source['down_url'],
                                 'path' => $video_path
-                            )
-                        ]);
+                            ))
+                        ];
                     }
                 }
 
@@ -159,17 +173,15 @@ class MaterialController extends BaseController
                     $stream = $this->material->get($v['media_id']);
                     $path = 'wechat/voices/'.$v['name'];
                     if (Storage::disk('admin')->put($path, $stream)) {
-                        WechatMaterial::updateOrCreate([
-                            'media_id' => $v['media_id']
-                        ], [
+                        $material_db[] = [
                             'media_id' => $v['media_id'],
                             'type' => 'voice',
-                            'content' => array(
+                            'content' => serialize(array(
                                 'name' => $v['name'],
-                                'update_time' => $v['update_time'],
+                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
                                 'path' => Storage::disk('admin')->url($path)
-                            )
-                        ]);
+                            ))
+                        ];
                     }
                 }
 
@@ -181,6 +193,9 @@ class MaterialController extends BaseController
 
             } while (true);
             Log::info('音频素材同步完成');
+
+            // 素材插入数据库
+            WechatMaterial::insert($material_db);
 
             DB::commit();
 
