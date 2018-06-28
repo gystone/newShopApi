@@ -14,6 +14,7 @@ class MenuController extends BaseController
 
     public function __construct(Application $application)
     {
+        parent::__construct();
         $this->menu = $application->menu;
     }
 

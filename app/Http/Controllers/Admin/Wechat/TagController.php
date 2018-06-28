@@ -18,6 +18,7 @@ class TagController extends BaseController
 
     public function __construct(Application $app)
     {
+        parent::__construct();
         $this->tag = $app->user_tag;
     }
 

@@ -18,6 +18,7 @@ class UserController extends BaseController
 
     public function __construct(AdminUser $user)
     {
+        parent::__construct();
         $this->user = $user;
     }
 

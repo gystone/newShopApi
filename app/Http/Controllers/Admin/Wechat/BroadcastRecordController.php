@@ -15,6 +15,7 @@ class BroadcastRecordController extends BaseController
 
     public function __construct(Application $application)
     {
+        parent::__construct();
         $this->broadcasting = $application->broadcasting;
     }
 
