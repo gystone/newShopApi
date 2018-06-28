@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\Wechat\UserRequest;
 use App\Http\Resources\Wechat\User;
 use App\Http\Resources\Wechat\UserCollection;
+use App\Jobs\SyncWechatUsers;
 use App\Models\Wechat\WechatTag;
 use App\Models\Wechat\WechatUser;
 use EasyWeChat\OfficialAccount\Application;
@@ -55,40 +56,8 @@ class UserController extends BaseController
             WechatTag::insert($tags_db);
             Log::info('标签同步完成');
 
-            $users_db = [];
-            WechatUser::truncate();
-            $nextOpenid = null;
-            do {
-                $list = $this->user->list($nextOpenid);
-
-                if ($list['count'] === 0) {
-                    break;
-                }
-
-                foreach ($list['data']['openid'] as $k => $v) {
-                    $user = $this->user->get($v);
-                    $users_db[] = [
-                        'openid' => $v,
-                        'nickname' => $user['nickname'],
-                        'sex' => $user['sex'],
-                        'city' => $user['city'],
-                        'province' => $user['province'],
-                        'country' => $user['country'],
-                        'headimgurl' => $user['headimgurl'],
-                        'subscribe_time' => date('Y-m-d H:i:s', $user['subscribe_time']),
-                        'status' => 'subscribe',
-                        'unionid' => $user['unionid'] ?? '',
-                        'remark' => $user['remark'],
-                        'is_blacklist' => 0,
-                    ];
-                }
-
-                if ($list['count'] < 10000) {
-                    break;
-                }
-                $nextOpenid = $list['next_openid'];
-            } while(true);
-            WechatUser::insert($users_db);
+            // 同步粉丝
+            SyncWechatUsers::dispatch();
 
             $beginOpenid = null;
             $blacklist_db = [];
@@ -116,6 +85,31 @@ class UserController extends BaseController
         } catch (\Exception $exception) {Log::info($exception->getMessage());
             DB::rollBack();
             return $this->failed('同步失败，请稍候重试. 错误信息：'.$exception->getMessage());
+        }
+    }
+
+    public function syncUser()
+    {
+        $userList = WechatUser::whereNull('nickname')->whereNull('headimgurl')->get(['openid']);
+        foreach ($userList as $user) {
+            $res = $this->user->get($user->openid);
+            if (isset($res['openid'])) {
+                WechatUser::where('openid', $res['openid'])->update([
+                    'nickname' => $res['nickname'],
+                    'sex' => $res['sex'],
+                    'city' => $res['city'],
+                    'province' => $res['province'],
+                    'country' => $res['country'],
+                    'headimgurl' => $res['headimgurl'],
+                    'subscribe_time' => date('Y-m-d H:i:s', $res['subscribe_time']),
+                    'status' => 'subscribe',
+                    'unionid' => $res['unionid'] ?? '',
+                    'remark' => $res['remark'],
+                    'is_blacklist' => 0,
+                ]);
+            } else {
+                Log::info($res);
+            }
         }
     }
 

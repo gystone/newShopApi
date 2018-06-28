@@ -7,6 +7,10 @@ use App\Http\Requests\Wechat\MaterialImageRequest;
 use App\Http\Requests\Wechat\MaterialNewsRequest;
 use App\Http\Requests\Wechat\MaterialVideoRequest;
 use App\Http\Requests\Wechat\MaterialVoiceRequest;
+use App\Jobs\SyncWechatImage;
+use App\Jobs\SyncWechatNews;
+use App\Jobs\SyncWechatVideo;
+use App\Jobs\SyncWechatVoice;
 use App\Models\Wechat\WechatMaterial;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\OfficialAccount\Application;
@@ -33,171 +37,26 @@ class MaterialController extends BaseController
      */
     public function materialSync()
     {
-        DB::beginTransaction();
-
         try {
             // 清空素材表
             WechatMaterial::truncate();
             $material_db = [];
             $material_images = [];
             Log::info('正在同步图片素材');
-            $offset = 0;
-            $count = 20;
-            do {
-                if ($count < 1) {
-                    break;
-                }
-                $image_list = $this->material->list('image', $offset, $count);
-
-                foreach ($image_list['item'] as $k => $v) {
-                    $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/images/'.md5($v['media_id'].$v['name']);
-                    if (Storage::disk('admin')->put($path, $stream)) {
-                        $material_images[] = [
-                            'media_id' => $v['media_id'],
-                            'type' => 'image',
-                            'content' => serialize(array(
-                                'name' => $v['name'],
-                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
-                                'url' => $v['url'],
-                                'path' => Storage::disk('admin')->url($path),
-                            ))
-                        ];
-                    }
-                }
-
-                $offset += $image_list['item_count'];
-                $count = $image_list['total_count'] - $offset;
-                if ($count <= 0) {
-                    break;
-                }
-
-            } while (true);
-
-            // 图片素材插入数据库
-            if ($material_images) {
-                WechatMaterial::insert($material_images);
-                DB::commit();
-            }
+            SyncWechatImage::dispatch();
             Log::info('图片素材同步完成');
 
-            Log::info('正在同步图文素材');
-            $offset = 0;
-            $count = 20;
-            do {
-                if ($count < 1) {
-                    break;
-                }
-                $news_list = $this->material->list('news', $offset, $count);
-
-                foreach ($news_list['item'] as $k => $v) {
-                    $content = [];
-                    $content['news_item'] = $this->getNewsItem($v['content']['news_item']);
-                    $content['update_time'] = date('Y-m-d H:i:s', $v['update_time']);
-
-                    $material_db[] = [
-                        'media_id' => $v['media_id'],
-                        'type' => 'news',
-                        'content' => serialize($content)
-                    ];
-                }
-
-                $offset += $news_list['item_count'];
-                $count = $news_list['total_count'] - $offset;
-                if ($count <= 0) {
-                    break;
-                }
-
-            } while (true);
-            Log::info('图文素材同步完成');
-
             Log::info('正在同步视频素材');
-            $offset = 0;
-            $count = 20;
-            // 设置超时参数
-            $opts = array(
-                "http" => array(
-                    "method" => "GET",
-                    "timeout" => 10
-                ),
-            );
-            // 创建数据流上下文
-            $context = stream_context_create($opts);
-
-            do {
-                $video_list = $this->material->list('video', $offset, $count);
-
-                if (!isset($video_list['item_count']) || $video_list['item_count'] < 1) {
-                    break;
-                }
-
-                foreach ($video_list['item'] as $k => $v) {
-                    $video_source = $this->material->get($v['media_id']);
-                    $path = 'wechat/videos/'.pathinfo(parse_url($video_source['down_url'])['path'])['basename'];
-                    if (Storage::disk('admin')->put($path, file_get_contents($video_source['down_url'], false, $context))) {
-                        $video_path = Storage::disk('admin')->url($path);
-                        $material_db[] = [
-                            'media_id' => $v['media_id'],
-                            'type' => 'video',
-                            'content' => serialize(array(
-                                'name' => $video_source['title'],
-                                'description' => $video_source['description'],
-                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
-                                'down_url' => $video_source['down_url'],
-                                'path' => $video_path
-                            ))
-                        ];
-                    }
-                }
-
-                $offset += $video_list['item_count'];
-                $count = $video_list['total_count'] - $offset;
-                if ($count <= 0) {
-                    break;
-                }
-
-            } while (true);
+            SyncWechatVideo::dispatch();
             Log::info('视频素材同步完成');
 
             Log::info('正在同步音频素材');
-            $offset = 0;
-            $count = 20;
-            do {
-                $voice_list = $this->material->list('voice', $offset, $count);
-
-                if (!isset($voice_list['item_count']) || $voice_list['item_count'] < 1) {
-                    break;
-                }
-
-                foreach ($voice_list['item'] as $k => $v) {
-                    $stream = $this->material->get($v['media_id']);
-                    $path = 'wechat/voices/'.$v['name'];
-                    if (Storage::disk('admin')->put($path, $stream)) {
-                        $material_db[] = [
-                            'media_id' => $v['media_id'],
-                            'type' => 'voice',
-                            'content' => serialize(array(
-                                'name' => $v['name'],
-                                'update_time' => date('Y-m-d H:i:s', $v['update_time']),
-                                'path' => Storage::disk('admin')->url($path)
-                            ))
-                        ];
-                    }
-                }
-
-                $offset += $voice_list['item_count'];
-                $count = $voice_list['total_count'] - $offset;
-                if ($count <= 0) {
-                    break;
-                }
-
-            } while (true);
+            SyncWechatVoice::dispatch();
             Log::info('音频素材同步完成');
 
-            // 素材插入数据库
-            WechatMaterial::insert($material_db);
-
-            DB::commit();
+            Log::info('正在同步图文素材');
+            SyncWechatNews::dispatch()->delay(now()->addMinutes(2));
+            Log::info('图文素材同步完成');
 
             return $this->message('同步成功');
         } catch (\Exception $exception) {Log::info($exception->getMessage());
