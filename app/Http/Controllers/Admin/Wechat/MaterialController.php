@@ -27,6 +27,7 @@ class MaterialController extends BaseController
     
     public function __construct(Application $app)
     {
+        parent::__construct();
         $this->material = $app->material;
     }
 
@@ -40,8 +41,6 @@ class MaterialController extends BaseController
         try {
             // 清空素材表
             WechatMaterial::truncate();
-            $material_db = [];
-            $material_images = [];
             Log::info('正在同步图片素材');
             SyncWechatImage::dispatch();
             Log::info('图片素材同步完成');

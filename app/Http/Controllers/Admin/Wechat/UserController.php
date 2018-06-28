@@ -20,6 +20,7 @@ class UserController extends BaseController
 
     public function __construct(Application $app)
     {
+        parent::__construct();
         $this->user = $app->user;
         $this->tag = $app->user_tag;
     }
