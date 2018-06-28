@@ -266,8 +266,12 @@ class MaterialController extends BaseController
         $title = $request->title;
 
         $path = 'wechat/voices/';
-
         if ($voice_path = Storage::disk('admin')->put($path, $voice)) {
+            if (pathinfo($voice_path, PATHINFO_EXTENSION) == 'mpga') {
+                $new_path = $path.pathinfo($voice_path, PATHINFO_FILENAME).'.mp3';
+                Storage::disk('admin')->move($voice_path, $new_path);
+                $voice_path = $new_path;
+            }
             $res = $this->material->uploadVoice('uploads/'.$voice_path);
             $path = Storage::disk('admin')->url($voice_path);
 
@@ -284,7 +288,7 @@ class MaterialController extends BaseController
                     )
                 ]);
                 return $this->success($voice_res);
-            } else {
+            } else {Log::info($res);
                 return $this->failed('上传失败，请稍候重试');
             }
 

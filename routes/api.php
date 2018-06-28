@@ -93,6 +93,7 @@ Route::group([
             $router->get('tag_users/{tag}', 'TagController@userList');
 
             $router->get('user_sync', 'UserController@sync');
+            $router->get('user_sync_other', 'UserController@syncUser');
             $router->get('user_list', 'UserController@list');
             $router->patch('user_remark/{user}', 'UserController@remark');
             $router->post('user_block', 'UserController@block');
