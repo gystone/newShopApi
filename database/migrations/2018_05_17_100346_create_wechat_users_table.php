@@ -16,17 +16,17 @@ class CreateWechatUsersTable extends Migration
         Schema::create('wechat_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('openid', 255);
-            $table->string('nickname', 255);
+            $table->string('nickname', 255)->nullable();
             $table->boolean('sex')->default(1);
             $table->string('unionid', 255)->nullable();
-            $table->string('headimgurl', 255);
-            $table->string('city', 255);
-            $table->string('province', 255);
-            $table->string('country', 255);
+            $table->string('headimgurl', 255)->nullable();
+            $table->string('city', 255)->nullable();
+            $table->string('province', 255)->nullable();
+            $table->string('country', 255)->nullable();
             $table->string('remark', 30)->nullable();
             $table->timestamp('subscribe_time')->default(now());
             $table->timestamp('unsubscribe_time')->default(now());
-            $table->enum('status', ['subscribe', 'unsubscribe', 'nonesubscribe'])->default('subscribe');
+            $table->enum('status', ['subscribe', 'unsubscribe', 'nonesubscribe'])->default('nonesubscribe');
             $table->boolean('is_blacklist')->default(0);
         });
     }
