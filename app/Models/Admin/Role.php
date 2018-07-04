@@ -30,11 +30,6 @@ class Role extends Model
         return $this->belongsToMany(AdminUser::class, 'admin_role_users');
     }
 
-//    public function permissions()
-//    {
-//        return $this->belongsToMany(Permission::class, 'admin_role_permissions');
-//    }
-
     public function menu()
     {
         return $this->belongsToMany(Menu::class, 'admin_role_menu');
