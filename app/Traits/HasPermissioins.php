@@ -9,6 +9,11 @@ trait HasPermissioins
     public function getCheckedCities()
     {
         $checkedCities = [];
+
+        if ($this->isAdministrator()) {
+            return collect(['admin']);
+        }
+
         if (is_array($this->roles->pluck('permissions')->first())) {
             foreach ($this->roles->pluck('permissions')->first() as $permission) {
                 if (isset($permission['children'])) {
