@@ -2,13 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Auth\Permission;
-use App\Http\Controllers\ApiController;
 use App\Models\Image;
-use App\Service\Vote\VoteStageService;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class SettingController extends BaseController
 {
@@ -27,7 +21,7 @@ class SettingController extends BaseController
         ];
 
         modify_env($data);
-        Cache::forget('setting_logo');
+
         return $this->message('设置成功');
     }
 
@@ -54,18 +48,11 @@ class SettingController extends BaseController
 
         modify_env($data);
 
-        $url = Image::where('id', config('site.logo'))->value('url');
-        Cache::forever('setting_logo',$url);
-        $stage = $this->voteStageService->getStageByCurrent();
-        if ($stage) {
-            Cache::tags('indexList'.$stage['id'])->flush();
-        }
         return $this->message('设置成功');
     }
 
     public function getSite()
     {
-        Permission::check('adminSetting_get');
         $data = [
             'name' => config('site.name'),
             'logo' => config('site.logo') ? url(Image::where('id', config('site.logo'))->value('url')) : config('site.logo'),
