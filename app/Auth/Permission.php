@@ -25,6 +25,8 @@ class Permission
         if (auth('api_admin')->user()->isCannot($permission)) {
             static::error();
         }
+
+        return true;
     }
 
     public static function error()
@@ -57,10 +59,5 @@ class Permission
         }
 
         return $response;
-    }
-
-    public function isAdmin($permission)
-    {
-
     }
 }
