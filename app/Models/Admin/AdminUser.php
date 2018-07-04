@@ -57,9 +57,4 @@ class AdminUser extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Role::class, 'admin_role_users', 'user_id', 'role_id');
     }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class, 'admin_user_permissions');
-    }
 }
