@@ -51,6 +51,17 @@ Route::group([
 
         $router->get('info', 'LoginController@info');
         // 认证后才能访问的路由
+
+        // 设置
+        $router->group([
+            'prefix' => 'setting'
+        ], function ($router) {
+            $router->get('wechat', 'SettingController@getWechat');
+            $router->post('wechat', 'SettingController@setWechat');
+            $router->get('site', 'SettingController@getSite');
+            $router->post('site', 'SettingController@setSite');
+        });
+
         // 管理员
         $router->get('user', 'UserController@index');
         $router->get('user/{user}', 'UserController@show');
