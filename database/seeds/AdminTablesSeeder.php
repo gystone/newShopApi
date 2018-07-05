@@ -15,7 +15,7 @@ class AdminTablesSeeder extends Seeder
     {
         AdminUser::create([
             'username' => 'admin',
-            'password' => bcrypt('admin'),
+            'password' => '$2y$10$0wXh/bGVPaXvqwG/e4cIbOZQXJwp1yIkh1l/LsHyMGx1HZnFfY04W',
             'name'     => '超级管理员',
         ]);
 
