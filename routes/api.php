@@ -24,6 +24,9 @@ Route::group([
     // 认证
     Route::post('login', 'LoginController@login');;
 
+    //上传图片
+    Route::post('api_upload_image','ImageController@store');
+
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-auth'
@@ -41,7 +44,8 @@ Route::group([
 ], function () {
     // 认证
     Route::post('login', 'LoginController@login');
-    
+    //上传图片
+    Route::post('admin_upload_image','ImageController@store');
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-admin-auth'
