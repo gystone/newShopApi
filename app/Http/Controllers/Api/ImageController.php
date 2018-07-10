@@ -26,9 +26,7 @@ class ImageController extends Controller
         try {
             $path = $request->file('image')->store(config('common.upload.url') . $time, config('common.upload.disks'));
             $ret_arr['url'] = $path;
-            $image = Image::query();
-            $image = $image->fill($ret_arr);
-            $image = $image->save();
+            $image = Image::create($ret_arr);
             return $this->success(new \App\Http\Resources\Image($image));
         } catch (\Exception $exception) {
             throw new ApiException();
