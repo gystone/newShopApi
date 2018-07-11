@@ -13,6 +13,12 @@ class ImageController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * 后台图片上传
+     * @param ImageRequest $request
+     * @return mixed
+     * @throws ApiException
+     */
     public function store(ImageRequest $request)
     {
         $ret_arr = [
@@ -29,7 +35,10 @@ class ImageController extends Controller
             $image = Image::create($ret_arr);
             return $this->success(new \App\Http\Resources\Image($image));
         } catch (\Exception $exception) {
-            throw new ApiException();
+            if(config('common.upload.disks') == 'qiniu'){
+                throw new ApiException('上传失败，请检查七牛配置项是否正确');
+            }
+            throw new ApiException('图片上传失败，请稍后重试');
         }
     }
 }
