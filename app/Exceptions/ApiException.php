@@ -9,11 +9,22 @@
 namespace App\Exceptions;
 
 
+use App\Traits\ApiResponse;
+
 class ApiException extends \Exception
 {
-    function __construct($msg = '', $code = 500)
+    use ApiResponse;
+
+    function __construct(string $message = '', int $code = 500)
     {
-        parent::__construct($msg, $code);
+        parent::__construct($message, $code);
+    }
+
+    public function render()
+    {
+
+        return $this->failed($this->message,$this->code);
+
     }
 
 
