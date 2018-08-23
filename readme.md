@@ -13,13 +13,14 @@ php artisan migrate --seed
 https://github.com/GeneaLabs/laravel-model-caching
 
 功能说明：
-1、搜索
-2、缓存predis
-3、微信相关封装
-4、jwt
-5、七牛
-6、cors跨域
-7、lang语言包
+1. 分页、搜索、排序
+2. 缓存
+3. 微信相关封装
+4. jwt
+5. 七牛
+7. cors跨域支持
+8. lang语言包
+
 
 生产环境
 1. composer install --no-dev
