@@ -65,6 +65,10 @@ class Handler extends ExceptionHandler
             return $this->failed('用户未登录', 401);
         }
 
+        if ($exception instanceof OpenidNotFoundException) {
+            return $this->failed('验证出现问题，请重新登录', 401);
+        }
+
         if ($exception instanceof ValidationException) {
             return $this->failed($exception->validator->errors()->first(), 400);
         }
