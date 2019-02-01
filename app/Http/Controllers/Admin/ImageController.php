@@ -30,7 +30,7 @@ class ImageController extends Controller
         }
         $time = date('Y/m/d');
         try {
-            $path = $request->file('image')->store(config('common.upload.url') . $time, config('common.upload.disks'));
+            $path = $request->file('images')->store(config('common.upload.url') . $time, config('common.upload.disks'));
             $ret_arr['url'] = '/uploads/'.$path;
             $image = Image::create($ret_arr);
             return $this->success(new \App\Http\Resources\Image($image));
