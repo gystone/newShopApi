@@ -1,4 +1,8 @@
 <?php
+/**
+ * Author: 赵振 <270281156@qq.com>
+ * Date: 2019/2/26 下午12:28
+ */
 
 namespace App\Traits;
 
@@ -39,7 +43,7 @@ trait ApiResponse
     public function respond($data, $header = [])
     {
 
-        return Response::json($data,$this->getStatusCode(),$header);
+        return Response::json($data, $this->getStatusCode(), $header);
     }
 
     /**
@@ -48,19 +52,16 @@ trait ApiResponse
      * @param null $code
      * @return mixed
      */
-    public function status($status, array $data, $code = null){
-
-        if ($code){
-            $this->setStatusCode($code);
-        }
-
-        $status = [
+    public function status($status, $message = null, $data = null, $code = 0)
+    {
+        $response = [
             'status' => $status,
-            'code' => $this->statusCode
+            'code' => $code,
+            'message' => $message,
+            'data' => $data
         ];
 
-        $data = array_merge($status,$data);
-        return $this->respond($data);
+        return $this->respond($response);
 
     }
 
@@ -70,59 +71,21 @@ trait ApiResponse
      * @param string $status
      * @return mixed
      */
-    public function failed($message, $code = FoundationResponse::HTTP_BAD_REQUEST, $status = 'error'){
-
-        return $this->setStatusCode($code)->message($message,$status);
-    }
-
-    /**
-     * @param $message
-     * @param string $status
-     * @return mixed
-     */
-    public function message($message, $status = "success"){
-
-        return $this->status($status,[
-            'message' => $message
-        ]);
-    }
-
-    /**
-     * @param string $message
-     * @return mixed
-     */
-    public function internalError($message = "Internal Error!"){
-
-        return $this->failed($message,FoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * @param string $message
-     * @return mixed
-     */
-    public function created($message = "created")
+    public function failed($message, $code = -1)
     {
-        return $this->setStatusCode(FoundationResponse::HTTP_CREATED)
-            ->message($message);
-
+        return $this->status("fail", $message,[],$code);
     }
+
 
     /**
      * @param $data
      * @param string $status
      * @return mixed
      */
-    public function success($data, $status = "success"){
-
-        return $this->status($status,compact('data'));
-    }
-
-    /**
-     * @param string $message
-     * @return mixed
-     */
-    public function notFond($message = 'Not Fond!')
+    public function success($data = null, $message = null)
     {
-        return $this->failed($message,Foundationresponse::HTTP_NOT_FOUND);
+
+        return $this->status("success", $message, $data);
     }
+
 }

@@ -19,13 +19,14 @@ Route::any('test', 'WechatController@test');
 Route::group([
     'namespace' => 'Api'
 ], function () {
+    //测试登录
+    Route::post('test_login', 'LoginMiniController@testLogin');
 
-    Route::get('test', 'TestController@index');
     // 认证
     Route::post('login', 'LoginController@login');;
 
     //上传图片
-    Route::post('upload_image','ImageController@store');
+    Route::post('upload_image', 'ImageController@store');
 
     // JWT-Auth
     Route::group([
@@ -34,6 +35,16 @@ Route::group([
         $router->delete('logout', 'LoginController@logout');
         $router->post('refresh', 'LoginController@refresh');
         // 认证后才能访问的路由
+
+
+        Route::group(['prefix' => 'user'], function () {
+            //用户地址列表
+            Route::get('addresses', 'UserAddressesController@index')->name('user_addresses.index');
+
+
+        });
+
+
     });
 });
 
@@ -45,7 +56,7 @@ Route::group([
     // 认证
     Route::post('login', 'LoginController@login');
     //上传图片
-    Route::post('upload_image','ImageController@store');
+    Route::post('upload_image', 'ImageController@store');
     // JWT-Auth
     Route::group([
         'middleware' => 'jwt-admin-auth'

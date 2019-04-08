@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    protected $table = 'wechat_users';
 
     /**
      * The attributes that are mass assignable.
@@ -44,5 +45,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
     }
 }
