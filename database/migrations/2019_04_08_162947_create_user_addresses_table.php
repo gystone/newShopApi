@@ -16,12 +16,12 @@ class CreateUserAddressesTable extends Migration
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('wechat_users')->onDelete('cascade');
             $table->string('province');
             $table->string('city');
             $table->string('district');
             $table->string('address');
-            $table->unsignedInteger('zip');
+            $table->unsignedInteger('zip')->default(0);
             $table->string('contact_name');
             $table->string('contact_phone');
             $table->dateTime('last_used_at')->nullable();

@@ -40,6 +40,14 @@ Route::group([
         Route::group(['prefix' => 'user'], function () {
             //用户地址列表
             Route::get('addresses', 'UserAddressesController@index')->name('user_addresses.index');
+            //添加地址
+            Route::post('addresses', 'UserAddressesController@store')->name('user_addresses.store');
+            //地址详情
+            Route::get('addresses/{userAddress}','UserAddressesController@show');
+            //修改地址
+            Route::patch('addresses/{userAddress}','UserAddressesController@update');
+            //删除地址
+            Route::delete('addresses/{userAddress}','UserAddressesController@destroy');
 
 
         });
