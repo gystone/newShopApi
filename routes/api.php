@@ -43,11 +43,11 @@ Route::group([
             //添加地址
             Route::post('addresses', 'UserAddressesController@store')->name('user_addresses.store');
             //地址详情
-            Route::get('addresses/{userAddress}','UserAddressesController@show');
+            Route::get('addresses/{userAddress}', 'UserAddressesController@show');
             //修改地址
-            Route::patch('addresses/{userAddress}','UserAddressesController@update');
+            Route::patch('addresses/{userAddress}', 'UserAddressesController@update');
             //删除地址
-            Route::delete('addresses/{userAddress}','UserAddressesController@destroy');
+            Route::delete('addresses/{userAddress}', 'UserAddressesController@destroy');
 
 
         });
@@ -151,5 +151,12 @@ Route::group([
             $router->get('broadcast_history', 'BroadcastRecordController@history');
             $router->delete('broadcast_delete/{record}', 'BroadcastRecordController@delete');
         });
+
+
+        Route::group(['prefix' => 'wechat_user'], function () {
+            Route::get('list', 'WechatUserController@index');
+        });
+
+
     });
 });
