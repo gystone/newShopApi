@@ -63,7 +63,16 @@ Route::group([
             Route::delete('favorite/{product}', 'ProductsController@disfavor');
             //收藏列表
             Route::get('favorite','ProductsController@favorites');
+        });
 
+        //购物车
+        Route::group(['prefix'=>'cart'],function(){
+            //添加
+            Route::post('add','CartController@add');
+            //列表
+            Route::get('list', 'CartController@index');
+            //移除购物车商品
+            Route::delete('remove/{productSku}','CartController@remove');
 
         });
 
