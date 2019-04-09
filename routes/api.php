@@ -73,7 +73,12 @@ Route::group([
             Route::get('list', 'CartController@index');
             //移除购物车商品
             Route::delete('remove/{productSku}','CartController@remove');
+        });
 
+        //订单
+        Route::group(['prefix'=>'order'],function(){
+            //提交订单
+            Route::post('add','OrdersController@store');
         });
 
 

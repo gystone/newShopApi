@@ -21,7 +21,7 @@ class UserAddressesController extends Controller
 
     public function index()
     {
-        $addresses = $this->user->addresses()->orderBy('updated_at', 'desc')->get();
+        $addresses = $this->user->addresses()->orderBy('last_used_at','desc')->orderBy('id','desc')->get();
         return $this->success($addresses, '地址列表');
     }
 
