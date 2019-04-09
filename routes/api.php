@@ -48,8 +48,11 @@ Route::group([
             Route::patch('addresses/{userAddress}', 'UserAddressesController@update');
             //删除地址
             Route::delete('addresses/{userAddress}', 'UserAddressesController@destroy');
+        });
 
 
+        Route::group(['prefix'=>'goods'],function(){
+            Route::get('list','ProductsController@index');
         });
 
 

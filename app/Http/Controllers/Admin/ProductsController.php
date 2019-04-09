@@ -87,13 +87,27 @@ class ProductsController extends BaseController
             return $this->success([], '更新成功');
 
         } catch (\Exception $exception) {
-
+            \DB::rollBack();
             return $this->failed('更新失败');
         }
+    }
 
+    public function destroy(Product $product)
+    {
+        \DB::beginTransaction();
+        try {
+            $product->skus()->delete();
+            $product->delete();
+            \DB::commit();
+            return $this->success([], '删除成功');
+        } catch (\Exception $exception) {
+            \DB::rollBack();
+            return $this->failed('删除失败');
 
+        }
 
     }
+
 
 
 }

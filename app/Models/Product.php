@@ -15,6 +15,7 @@ class Product extends Model
         'on_sale' => 'boolean', // on_sale 是一个布尔类型的字段
     ];
 
+
     // 与商品SKU关联
     public function skus()
     {
@@ -22,9 +23,11 @@ class Product extends Model
     }
 
 
-//    public function ()
-//    {
-//
-//    }
+
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
 
 }
