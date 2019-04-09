@@ -157,6 +157,9 @@ Route::group([
             Route::get('list', 'WechatUserController@index');
         });
 
+        //商品
+        Route::resource('products', 'ProductsController');
+
 
     });
 });
