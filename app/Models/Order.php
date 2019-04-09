@@ -59,6 +59,12 @@ class Order extends Model
         'paid_at',
     ];
 
+    protected $appends =[
+        'refund_status_msg',
+        'ship_status_msg'
+    ];
+
+
     protected static function boot()
     {
         parent::boot();
@@ -105,15 +111,15 @@ class Order extends Model
 
 
     //物流状态
-    public function getShipStatusAttribute($value)
+    public function getShipStatusMsgAttribute()
     {
-        return static::$shipStatusMap[$value];
+        return static::$shipStatusMap[$this->ship_status];
     }
 
     //退款状态
-    public function getRefundStatusAttribute($value)
+    public function getRefundStatusMsgAttribute()
     {
-        return static::$refundStatusMap[$value];
+        return static::$refundStatusMap[$this->refund_status];
     }
 
 

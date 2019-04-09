@@ -195,6 +195,10 @@ Route::group([
         Route::resource('products', 'ProductsController');
         //订单
         Route::resource('orders','OrderController');
+        //发货
+        Route::post('orders/ship/{order}','OrderController@ship');
+        //设为已付款
+        Route::post('orders/pay/{order}','OrderController@pay');
 
 
     });
