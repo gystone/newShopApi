@@ -52,11 +52,16 @@ Route::group([
 
 
         //商品
-        Route::group(['prefix'=>'goods'],function(){
+        Route::group(['prefix'=>'product'],function(){
             //列表
             Route::get('list','ProductsController@index');
             //详情
             Route::get('show/{product}','ProductsController@show');
+            //收藏
+            Route::post('favorite/{product}','ProductsController@favor');
+            //取消收藏
+            Route::delete('favorite/{product}', 'ProductsController@disfavor');
+
         });
 
 

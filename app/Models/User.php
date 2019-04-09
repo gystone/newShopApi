@@ -52,4 +52,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(UserAddress::class);
     }
+
+    public function favoriteProducts()
+    {
+        return $this->belongsToMany(Product::class,'user_favorite_products','user_id','product_id')->withTimestamps()
+            ->orderBy('user_favorite_products.created_at', 'desc');
+    }
+    
 }
