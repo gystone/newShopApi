@@ -193,6 +193,8 @@ Route::group([
 
         //商品
         Route::resource('products', 'ProductsController');
+        //订单
+        Route::resource('orders','OrderController');
 
 
     });

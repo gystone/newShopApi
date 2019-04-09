@@ -104,4 +104,19 @@ class Order extends Model
     }
 
 
+    //物流状态
+    public function getShipStatusAttribute($value)
+    {
+        return static::$shipStatusMap[$value];
+    }
+
+    //退款状态
+    public function getRefundStatusAttribute($value)
+    {
+        return static::$refundStatusMap[$value];
+    }
+
+
+
+
 }
