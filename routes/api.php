@@ -79,6 +79,11 @@ Route::group([
         Route::group(['prefix'=>'order'],function(){
             //提交订单
             Route::post('add','OrdersController@store');
+            //订单列表
+            Route::get('list','OrdersController@index');
+            //订单详情
+            Route::get('show/{order}','OrdersController@show');
+
         });
 
 

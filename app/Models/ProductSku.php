@@ -23,6 +23,7 @@ class ProductSku extends Model
         return $this->newQuery()->where('id', $this->id)->where('stock', '>=', $amount)->decrement('stock', $amount);
     }
 
+    //加库存
     public function addStock($amount)
     {
 
