@@ -61,4 +61,14 @@ class ProductsController extends Controller
 
     }
 
+    //收藏列表
+    public function favorites()
+    {
+        $user = auth('api')->user();
+        $favor_list = $user->favoriteProducts()->get();
+
+        return $this->success($favor_list,'收藏列表');
+
+    }
+
 }

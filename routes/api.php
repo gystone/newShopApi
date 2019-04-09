@@ -61,6 +61,9 @@ Route::group([
             Route::post('favorite/{product}','ProductsController@favor');
             //取消收藏
             Route::delete('favorite/{product}', 'ProductsController@disfavor');
+            //收藏列表
+            Route::get('favorite','ProductsController@favorites');
+
 
         });
 
