@@ -18,4 +18,17 @@ class ProductsController extends Controller
         return $this->success($products);
     }
 
+    public function show(Product $product,Request $request)
+    {
+
+        if(!$product->on_sale){
+            return $this->failed('商品未上架');
+        }
+        $product->image;
+        $product->skus;
+
+        return $this->success($product, '商品详情');
+
+    }
+
 }

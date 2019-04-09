@@ -51,8 +51,12 @@ Route::group([
         });
 
 
+        //商品
         Route::group(['prefix'=>'goods'],function(){
+            //列表
             Route::get('list','ProductsController@index');
+            //详情
+            Route::get('show/{product}','ProductsController@show');
         });
 
 
