@@ -8,6 +8,7 @@ use App\Http\Requests\Api\ApplyRefundRequest;
 use App\Http\Requests\Api\OrderRequest;
 use App\Http\Requests\Api\SendReviewRequest;
 use App\Jobs\CloseOrder;
+use App\Models\CouponCode;
 use App\Models\Order;
 use App\Models\ProductSku;
 use App\Models\UserAddress;
@@ -35,8 +36,15 @@ class OrdersController extends Controller
     {
         $user = $this->user;
         $address = UserAddress::find($request->address_id);
+        $coupon = null;
 
-        $order = $orderService->store($user, $address, $request->remark, $request->items);
+        // 如果用户提交了优惠码 todo 有待优化，暂不开启
+//        if ($code = $request->coupon_code) {
+//            $coupon = CouponCode::where('code', $code)->firstOrFail();
+//        }
+
+
+        $order = $orderService->store($user, $address, $request->remark, $request->items, $coupon);
 
         return $this->success($order, '提交成功');
     }

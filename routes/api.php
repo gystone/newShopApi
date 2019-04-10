@@ -88,9 +88,12 @@ Route::group([
             //订单评价
             Route::post('review/{order}', 'OrdersController@sendReview');
             //申请退款
-            Route::post('apply_refund/{order}','OrdersController@applyRefund');
+            Route::post('apply_refund/{order}', 'OrdersController@applyRefund');
 
         });
+
+        //检查优惠券
+        Route::get('coupon/check','CouponCodesController@checkCouponCode');
 
 
     });
@@ -206,7 +209,13 @@ Route::group([
         //设为已付款
         Route::post('orders/pay/{order}', 'OrderController@pay');
         //拒绝退款
-        Route::post('orders/refund/{order}','OrderController@handleRefund');
+        Route::post('orders/refund/{order}', 'OrderController@handleRefund');
+
+        //优惠券
+        Route::group(['prefix' => 'coupon'], function () {
+            //列表
+            Route::get('list', 'CouponCodeController@index');
+        });
 
 
     });
