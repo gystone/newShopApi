@@ -87,6 +87,8 @@ Route::group([
             Route::post('received/{order}', 'OrdersController@received');
             //订单评价
             Route::post('review/{order}', 'OrdersController@sendReview');
+            //申请退款
+            Route::post('apply_refund/{order}','OrdersController@applyRefund');
 
         });
 
@@ -203,6 +205,8 @@ Route::group([
         Route::post('orders/ship/{order}', 'OrderController@ship');
         //设为已付款
         Route::post('orders/pay/{order}', 'OrderController@pay');
+        //拒绝退款
+        Route::post('orders/refund/{order}','OrderController@handleRefund');
 
 
     });

@@ -15,6 +15,7 @@ use App\Models\ProductSku;
 use App\Models\User;
 use App\Models\UserAddress;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Request;
 
 class OrderService
 {
@@ -78,5 +79,35 @@ class OrderService
 //        dispatch(new CloseOrder($order, config('app.order_ttl')));
 
         return $order;
+    }
+
+
+    //退款逻辑
+    public function refundOrder($order)
+    {
+        //生成退款订单号
+        $refundNo = Order::getAvailableRefundNo();
+
+        // 判断该订单的支付方式
+        switch ($order->payment_method) {
+            case 'wechat':
+                // 微信的先留空
+                // todo
+                break;
+            case 'alipay':
+                // 支付宝先留空
+                // todo
+                break;
+            case '线下支付':
+                // 将订单的退款状态标记为退款成功并保存退款订单号
+                $order->update([
+                    'refund_no' => $refundNo,
+                    'refund_status' => Order::REFUND_STATUS_SUCCESS,
+                ]);
+                break;
+            default:
+                throw new ApiException('未知订单支付方式：' . $order->payment_method);
+                break;
+        }
     }
 }

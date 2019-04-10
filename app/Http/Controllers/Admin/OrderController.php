@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\ApiException;
+use App\Http\Requests\Admin\HandleRefundRequest;
 use App\Models\Order;
+use App\Service\OrderService;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,7 +62,7 @@ class OrderController extends BaseController
         if ($order->ship_status !== Order::SHIP_STATUS_PENDING) {
             return $this->failed('该订单已发货');
         }
-         $this->validate($request, [
+        $this->validate($request, [
             'express_company' => ['nullable'],
             'express_no' => ['nullable'],
         ], [], [
@@ -81,6 +83,48 @@ class OrderController extends BaseController
             return $this->success([], '发货成功');
         } else {
             return $this->failed('发货失败');
+        }
+
+    }
+
+    //退款审核
+    public function handleRefund(Order $order, HandleRefundRequest $request, OrderService $orderService)
+    {
+        // 判断订单状态是否正确
+        if ($order->refund_status !== Order::REFUND_STATUS_APPLIED) {
+            return $this->failed('订单状态不正确');
+        }
+
+        \DB::beginTransaction();
+        try {
+            // 是否同意退款
+            if ($request->agree) {
+                // 清空拒绝退款理
+                $extra = $order->extra ?: [];
+                unset($extra['refund_disagree_reason']);
+                $order->update([
+                    'extra' => $extra,
+                ]);
+
+                // 调用退款逻辑
+                $orderService->refundOrder($order);
+
+            } else {
+                // 将拒绝退款理由放到订单的 extra 字段中
+                $extra = $order->extra ?: [];
+                $extra['refund_disagree_reason'] = $request->reason;
+                // 将订单的退款状态改为未退款
+                $order->update([
+                    'refund_status' => Order::REFUND_STATUS_PENDING,
+                    'extra' => $extra,
+                ]);
+            }
+            \DB::commit();
+            return $this->success([], '审核成功');
+        } catch (\Exception $exception) {
+            \DB::rollBack();
+            return $this->failed('审核失败');
+
         }
 
 

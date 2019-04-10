@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\OrderReviewed;
 use App\Exceptions\ApiException;
+use App\Http\Requests\Api\ApplyRefundRequest;
 use App\Http\Requests\Api\OrderRequest;
 use App\Http\Requests\Api\SendReviewRequest;
 use App\Jobs\CloseOrder;
@@ -122,7 +123,36 @@ class OrdersController extends Controller
             \DB::rollBack();
             return $this->failed('评价失败');
         }
+    }
 
+    //申请退款
+    public function applyRefund(Order $order, ApplyRefundRequest $request)
+    {
+        $this->authorize('own', $order);
+        // 判断订单是否已付款
+        if (!$order->paid_at) {
+            return $this->failed('该订单未支付，不可退款');
+        }
+
+        // 判断订单退款状态是否正确
+        if ($order->refund_status !== Order::REFUND_STATUS_PENDING) {
+            return $this->failed('该订单已经申请过退款，请勿重复申请');
+        }
+
+        // 将用户输入的退款理由放到订单的 extra 字段中
+        $extra = $order->extra ?: [];
+        $extra['refund_reason'] = $request->reason;
+        // 将订单退款状态改为已申请退款
+        $re = $order->update([
+            'refund_status' => Order::REFUND_STATUS_APPLIED,
+            'extra' => $extra,
+        ]);
+
+        if ($re) {
+            return $this->success([], '申请退款成功');
+        } else {
+            return $this->failed('申请退款失败');
+        }
 
     }
 
