@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OrderReviewed;
 use App\Exceptions\ApiException;
 use App\Http\Requests\Api\OrderRequest;
+use App\Http\Requests\Api\SendReviewRequest;
 use App\Jobs\CloseOrder;
 use App\Models\Order;
 use App\Models\ProductSku;
@@ -32,7 +34,7 @@ class OrdersController extends Controller
     {
         $user = $this->user;
         $address = UserAddress::find($request->address_id);
-        
+
         $order = $orderService->store($user, $address, $request->remark, $request->items);
 
         return $this->success($order, '提交成功');
@@ -57,6 +59,70 @@ class OrdersController extends Controller
         $order->load(['items.product', 'items.productSku']);
 
         return $this->success($order, '订单详情');
+
+    }
+
+    //确认收货
+    public function received(Order $order)
+    {
+        $this->authorize('own', $order);
+
+        // 判断订单的发货状态是否为已发货
+        if ($order->ship_status !== Order::SHIP_STATUS_DELIVERED) {
+            return $this->failed('发货状态不正确');
+        }
+
+        // 更新发货状态为已收到
+        $re = $order->update(['ship_status' => Order::SHIP_STATUS_RECEIVED]);
+
+        if ($re) {
+            return $this->success([], '确认成功');
+        } else {
+            return $this->failed('确认失败');
+        }
+
+    }
+
+    //订单评价
+    public function sendReview(Order $order, SendReviewRequest $request)
+    {
+        $this->authorize('own', $order);
+
+        if (!$order->paid_at) {
+            return $this->failed('该订单未支付，不可评价');
+        }
+        if ($order->reviewed) {
+            return $this->failed('该订单已评价，不可重复提交');
+        }
+
+        $reviews = $request->reviews;
+        // 开启事务
+        \DB::beginTransaction();
+        try {
+            // 遍历用户提交的数据
+            foreach ($reviews as $review) {
+                $orderItem = $order->items()->find($review['id']);
+                // 保存评分和评价
+                $orderItem->update([
+                    'rating' => $review['rating'],
+                    'review' => $review['review'],
+                    'reviewed_at' => Carbon::now(),
+                ]);
+            }
+            // 将订单标记为已评价
+            $order->update(['reviewed' => true]);
+
+            //发送事件计算商品总评价和平均分数事件
+//            event(new OrderReviewed($order));
+
+            \DB::commit();
+
+            return $this->success([], '评价成功');
+        } catch (\Exception $exception) {
+            \DB::rollBack();
+            return $this->failed('评价失败');
+        }
+
 
     }
 

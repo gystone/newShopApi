@@ -60,7 +60,7 @@ class OrderController extends BaseController
         if ($order->ship_status !== Order::SHIP_STATUS_PENDING) {
             return $this->failed('该订单已发货');
         }
-        $data = $this->validate($request, [
+         $this->validate($request, [
             'express_company' => ['nullable'],
             'express_no' => ['nullable'],
         ], [], [

@@ -52,37 +52,41 @@ Route::group([
 
 
         //商品
-        Route::group(['prefix'=>'product'],function(){
+        Route::group(['prefix' => 'product'], function () {
             //列表
-            Route::get('list','ProductsController@index');
+            Route::get('list', 'ProductsController@index');
             //详情
-            Route::get('show/{product}','ProductsController@show');
+            Route::get('show/{product}', 'ProductsController@show');
             //收藏
-            Route::post('favorite/{product}','ProductsController@favor');
+            Route::post('favorite/{product}', 'ProductsController@favor');
             //取消收藏
             Route::delete('favorite/{product}', 'ProductsController@disfavor');
             //收藏列表
-            Route::get('favorite','ProductsController@favorites');
+            Route::get('favorite', 'ProductsController@favorites');
         });
 
         //购物车
-        Route::group(['prefix'=>'cart'],function(){
+        Route::group(['prefix' => 'cart'], function () {
             //添加
-            Route::post('add','CartController@add');
+            Route::post('add', 'CartController@add');
             //列表
             Route::get('list', 'CartController@index');
             //移除购物车商品
-            Route::delete('remove/{productSku}','CartController@remove');
+            Route::delete('remove/{productSku}', 'CartController@remove');
         });
 
         //订单
-        Route::group(['prefix'=>'order'],function(){
+        Route::group(['prefix' => 'order'], function () {
             //提交订单
-            Route::post('add','OrdersController@store');
+            Route::post('add', 'OrdersController@store');
             //订单列表
-            Route::get('list','OrdersController@index');
+            Route::get('list', 'OrdersController@index');
             //订单详情
-            Route::get('show/{order}','OrdersController@show');
+            Route::get('show/{order}', 'OrdersController@show');
+            //确认收货
+            Route::post('received/{order}', 'OrdersController@received');
+            //订单评价
+            Route::post('review/{order}', 'OrdersController@sendReview');
 
         });
 
@@ -194,11 +198,11 @@ Route::group([
         //商品
         Route::resource('products', 'ProductsController');
         //订单
-        Route::resource('orders','OrderController');
+        Route::resource('orders', 'OrderController');
         //发货
-        Route::post('orders/ship/{order}','OrderController@ship');
+        Route::post('orders/ship/{order}', 'OrderController@ship');
         //设为已付款
-        Route::post('orders/pay/{order}','OrderController@pay');
+        Route::post('orders/pay/{order}', 'OrderController@pay');
 
 
     });
